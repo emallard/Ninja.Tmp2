@@ -1,0 +1,42 @@
+defaultEntryPoints = ["http", "https"]
+
+[entryPoints]
+    [entryPoints.http]
+        address = ":80"
+    [entryPoints.https]
+        address = ":443"
+[api]
+
+[file]
+
+# rules
+[backends]
+    [backends.backend1]
+        [backends.backend1.servers]
+            [backends.backend1.servers.server0]
+                url = "http://172.17.0.1:5000"
+
+    [backends.backend2]
+        [backends.backend2.servers]
+            [backends.backend2.servers.server0]
+                url = "http://172.17.0.1:8000"
+
+
+[frontends]
+    [frontends.frontend1]
+        entryPoints = ["http"]
+        backend = "backend1"
+        priority = 10
+        [frontends.frontend1.routes]
+            [frontends.frontend1.routes.route0]
+                rule = "Host:dev.test.test;PathPrefix:/api"
+
+    [frontends.frontend2]
+        entryPoints = ["http"]
+        backend = "backend2"
+        priority = 9
+        [frontends.frontend2.routes]
+            [frontends.frontend2.routes.route0]
+                rule = "Host:dev.test.test"
+
+

@@ -1,0 +1,1 @@
+docker run --rm --volume="$PWD/traefik.toml:/etc/traefik/traefik.toml" --network="host" traefik:1.7.7-alpine

@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "sourceMap": false,
+    "allowJs": true,
+    "rootDir": "./src",
+    "outDir": "./lib",
+    "moduleResolution": "node",
+    "experimentalDecorators": true
+  },
+  "exclude": [
+    "node_modules",
+    "src/lit-html",
+    "src/lit-element",
+    "_site"
+  ],
+  "include": [
+    "**/*.ts"
+  ]
+}

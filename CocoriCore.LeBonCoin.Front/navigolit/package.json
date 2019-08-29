@@ -1,0 +1,32 @@
+{
+    "name": "litelement-typescript",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.html",
+    "scripts": {
+        "bundle": "rollup -c",
+        "webpack": "webpack",
+        "webpack-dev-server": "webpack-dev-server --history-api-fallback",
+        "dev": "npm run webpack-dev-server -- --env.mode development"
+    },
+    "dependencies": {
+        "lit-element": "^2.2.1",
+        "navigo": "^7.1.2"
+    },
+    "devDependencies": {
+        "rollup": "^1.19.4",
+        "rollup-plugin-commonjs": "^10.0.2",
+        "rollup-plugin-node-resolve": "^5.2.0",
+        "webpack": "^4.23.1",
+        "webpack-cli": "^3.0.8",
+        "webpack-dev-server": "^3.1.4",
+        "webpack-merge": "^4.1.3"
+    },
+    "keywords": [
+        "web components",
+        "shadow dom",
+        "litelement",
+        "custom elements",
+        "lit-html"
+    ]
+}
