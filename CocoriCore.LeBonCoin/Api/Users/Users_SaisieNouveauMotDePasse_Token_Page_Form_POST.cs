@@ -16,9 +16,16 @@ namespace CocoriCore.LeBonCoin
 
     public class Users_SaisieNouveauMotDePasse_Token_Page_Form_POSTHandler : MessageHandler<Users_SaisieNouveauMotDePasse_Token_Page_Form_POST, Users_SaisieNouveauMotDePasse_Token_Page_Form_POSTResponse>
     {
+        private readonly IExecuteHandler executeHandler;
+
+        public Users_SaisieNouveauMotDePasse_Token_Page_Form_POSTHandler(IExecuteHandler executeHandler)
+        {
+            this.executeHandler = executeHandler;
+        }
+
         public override async Task<Users_SaisieNouveauMotDePasse_Token_Page_Form_POSTResponse> ExecuteAsync(Users_SaisieNouveauMotDePasse_Token_Page_Form_POST message)
         {
-            await Task.CompletedTask;
+            var reponse = await executeHandler.ExecuteAsync(message.Post);
             return new Users_SaisieNouveauMotDePasse_Token_Page_Form_POSTResponse();
         }
     }

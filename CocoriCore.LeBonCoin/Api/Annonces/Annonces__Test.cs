@@ -17,8 +17,8 @@ namespace CocoriCore.LeBonCoin
 
             var vendeurAnnonce = vendeurDashboard
                 .Follow(p => p.NouvelleAnnonce)
-                .GetForm(p => p.Form)
-                .Submit(
+                .Submit(p => p.Form)
+                .With(
                     new Vendeur_NouvelleAnnonce_Page_Form_POST()
                     {
                         Post = new Vendeur_NouvelleAnnonce_POST()
@@ -32,8 +32,8 @@ namespace CocoriCore.LeBonCoin
 
             var visiteur = CreateUser("visiteur");
             var annonces = visiteur
-                .GetForm(p => p.Form)
-                .Submit(new Accueil_Page_Form_GET()
+                .Submit(p => p.Form)
+                .With(new Accueil_Page_Form_GET()
                 {
                     Ville = "Paris",
                     Categorie = ""

@@ -21,16 +21,16 @@ namespace CocoriCore.LeBonCoin
 
     public class Vendeur_Annonces_Id_Page_GETHandler : MessageHandler<Vendeur_Annonces_Id_Page_GET, Vendeur_Annonces_Id_Page>
     {
-        private readonly IMessageBus messageBus;
+        private readonly IExecuteHandler messageBus;
 
-        public Vendeur_Annonces_Id_Page_GETHandler(IMessageBus messageBus)
+        public Vendeur_Annonces_Id_Page_GETHandler(IExecuteHandler messageBus)
         {
             this.messageBus = messageBus;
         }
 
         public async override Task<Vendeur_Annonces_Id_Page> ExecuteAsync(Vendeur_Annonces_Id_Page_GET query)
         {
-            var data = (Vendeur_Annonces_Id_GETResponse)await messageBus.ExecuteAsync(new Vendeur_Annonces_Id_GET()
+            var data = await messageBus.ExecuteAsync(new Vendeur_Annonces_Id_GET()
             {
                 Id = query.Id
             });

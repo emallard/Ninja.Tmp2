@@ -15,7 +15,7 @@ namespace CocoriCore.LeBonCoin
 
     public class Annonces_Page_Form_GETResponse
     {
-        public Annonces_Page_GET Annonces;
+        public Annonces_Page_GET LienAnnonces;
     }
 
 
@@ -31,7 +31,7 @@ namespace CocoriCore.LeBonCoin
             await Task.CompletedTask;
             return new Annonces_Page_Form_GETResponse()
             {
-                Annonces = new Annonces_Page_GET()
+                LienAnnonces = new Annonces_Page_GET()
                 {
                     Ville = message.Ville,
                     Categorie = message.Categorie

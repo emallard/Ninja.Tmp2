@@ -54,7 +54,7 @@ namespace CocoriCore.LeBonCoin
             return new TestBrowserFluent<T>(history, browser).SetPageAndId(nextPage, Id);
         }
 
-        public TestBrowserFluentForm<TPage, TPost, TPostResponse> GetForm<TPost, TPostResponse>(
+        public TestBrowserFluentForm<TPage, TPost, TPostResponse> Submit<TPost, TPostResponse>(
             Func<TPage, Form<TPost, TPostResponse>> form)
             where TPost : IMessage<TPostResponse>
         {
@@ -78,7 +78,7 @@ namespace CocoriCore.LeBonCoin
             this.form = form;
         }
 
-        public TestBrowserFluentSubmitted<TPage, TPost, TPostResponse> Submit(TPost post)
+        public TestBrowserFluentSubmitted<TPage, TPost, TPostResponse> With(TPost post)
         {
             this.browserFluent.history.Event(this.browserFluent.Id, HistoryEventType.Submit, post);
 

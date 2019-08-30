@@ -33,7 +33,7 @@ namespace CocoriCore.LeBonCoin.Api
                                                         .SetPath("api/users/mot-de-passe-oublie");
             builder.Post<Users_MotDePasseOublie_POST>()
                                                         .SetPath("api/users/mot-de-passe-oublie");
-            builder.Get<Vendeur_Dashboard_PAGE>()
+            builder.Get<Vendeur_Dashboard_Page_GET>()
                                                         .SetPath("api/vendeur");
             builder.Get<Vendeur_NouvelleAnnonce_Page_GET>()
                                                         .SetPath("api/vendeur/nouvelle-annonce");

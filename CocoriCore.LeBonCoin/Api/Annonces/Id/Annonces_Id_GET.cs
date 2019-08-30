@@ -13,6 +13,7 @@ namespace CocoriCore.LeBonCoin
 
     public class Annonces_Id_GETResponse
     {
+        public Guid Id;
         public string Ville;
         public string Categorie;
         public string Texte;
@@ -33,6 +34,7 @@ namespace CocoriCore.LeBonCoin
             await Task.CompletedTask;
             var response = new Annonces_Id_GETResponse()
             {
+                Id = annonce.Id,
                 Ville = annonce.Ville,
                 Categorie = annonce.Categorie,
                 Texte = annonce.Texte

@@ -5,16 +5,13 @@ using CocoriCore;
 namespace CocoriCore.LeBonCoin
 {
 
-    public class Users_MotDePasseOublie_POST : IMessage<Users_MotDePasseOublie_POSTResponse>, ICommand
+    public class Users_MotDePasseOublie_POST : IMessage<Void>, ICommand
     {
         public string Email;
     }
 
-    public class Users_MotDePasseOublie_POSTResponse
-    {
-    }
 
-    public class Users_MotDePasseOublie_POSTHandler : MessageHandler<Users_MotDePasseOublie_POST, Users_MotDePasseOublie_POSTResponse>
+    public class Users_MotDePasseOublie_POSTHandler : MessageHandler<Users_MotDePasseOublie_POST, Void>
     {
         private readonly IEmailSender emailSender;
         private readonly IRepository repository;
@@ -24,7 +21,7 @@ namespace CocoriCore.LeBonCoin
             this.emailSender = emailSender;
             this.repository = repository;
         }
-        public async override Task<Users_MotDePasseOublie_POSTResponse> ExecuteAsync(Users_MotDePasseOublie_POST query)
+        public async override Task<Void> ExecuteAsync(Users_MotDePasseOublie_POST query)
         {
             var token = new TokenMotDePasseOublie()
             {
@@ -46,7 +43,7 @@ namespace CocoriCore.LeBonCoin
                     }
                 }
             });
-            return new Users_MotDePasseOublie_POSTResponse();
+            return new Void();
         }
     }
 }

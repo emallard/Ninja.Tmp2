@@ -6,31 +6,33 @@ using CocoriCore;
 namespace CocoriCore.LeBonCoin
 {
 
-    public class Users_Connexion_PAGE_FormConnexion_POST : IMessage<Users_Connexion_PAGE_FormConnexion_POSTResponse>
+    public class Users_Connexion_Page_FormConnexion_POST : IMessage<Users_Connexion_Page_FormConnexion_POSTResponse>
     {
         public Users_Connexion_POST Post;
     }
 
-    public class Users_Connexion_PAGE_FormConnexion_POSTResponse
+    public class Users_Connexion_Page_FormConnexion_POSTResponse
     {
-        public Vendeur_Dashboard_PAGE DashboardPage;
+        public IClaims Claims;
+        public Vendeur_Dashboard_Page_GET DashboardPage;
     }
 
-    public class Users_Connexion_PAGE_FormConnexionHandler : MessageHandler<Users_Connexion_PAGE_FormConnexion_POST, Users_Connexion_PAGE_FormConnexion_POSTResponse>
+    public class Users_Connexion_Page_FormConnexionHandler : MessageHandler<Users_Connexion_Page_FormConnexion_POST, Users_Connexion_Page_FormConnexion_POSTResponse>
     {
-        private readonly IMessageBus messageBus;
+        private readonly IExecuteHandler executeHandler;
 
-        public Users_Connexion_PAGE_FormConnexionHandler(IMessageBus messageBus)
+        public Users_Connexion_Page_FormConnexionHandler(IExecuteHandler executeHandler)
         {
-            this.messageBus = messageBus;
+            this.executeHandler = executeHandler;
         }
 
-        public override async Task<Users_Connexion_PAGE_FormConnexion_POSTResponse> ExecuteAsync(Users_Connexion_PAGE_FormConnexion_POST message)
+        public override async Task<Users_Connexion_Page_FormConnexion_POSTResponse> ExecuteAsync(Users_Connexion_Page_FormConnexion_POST message)
         {
-            var response = (Users_Connexion_POST)await messageBus.ExecuteAsync(message.Post);
-            return new Users_Connexion_PAGE_FormConnexion_POSTResponse()
+            var response = await executeHandler.ExecuteAsync(message.Post);
+            return new Users_Connexion_Page_FormConnexion_POSTResponse()
             {
-                DashboardPage = new Vendeur_Dashboard_PAGE()
+                Claims = response.Claims,
+                DashboardPage = new Vendeur_Dashboard_Page_GET()
             };
         }
     }

@@ -4,11 +4,11 @@ using CocoriCore;
 
 namespace CocoriCore.LeBonCoin
 {
-    public class Vendeur_Dashboard_PAGE : IPage<Vendeur_Dashboard_PAGEResponse>, IQuery
+    public class Vendeur_Dashboard_Page_GET : IPage<Vendeur_Dashboard_Page>, IQuery
     {
     }
 
-    public class Vendeur_Dashboard_PAGEResponse
+    public class Vendeur_Dashboard_Page
     {
         public Vendeur_Dashboard_GETResponse Data;
         public Vendeur_NouvelleAnnonce_Page_GET NouvelleAnnonce = new Vendeur_NouvelleAnnonce_Page_GET();
@@ -16,20 +16,20 @@ namespace CocoriCore.LeBonCoin
         public MenuUtilisateur MenuUtilisateur = new MenuUtilisateur();
     }
 
-    public class Vendeur_Dashboard_PAGEHandler : MessageHandler<Vendeur_Dashboard_PAGE, Vendeur_Dashboard_PAGEResponse>
+    public class Vendeur_Dashboard_PAGEHandler : MessageHandler<Vendeur_Dashboard_Page_GET, Vendeur_Dashboard_Page>
     {
-        private readonly IMessageBus messageBus;
+        private readonly IExecuteHandler executeHandler;
 
-        public Vendeur_Dashboard_PAGEHandler(IMessageBus messageBus)
+        public Vendeur_Dashboard_PAGEHandler(IExecuteHandler messageBus)
         {
-            this.messageBus = messageBus;
+            this.executeHandler = messageBus;
         }
 
-        public override async Task<Vendeur_Dashboard_PAGEResponse> ExecuteAsync(Vendeur_Dashboard_PAGE query)
+        public override async Task<Vendeur_Dashboard_Page> ExecuteAsync(Vendeur_Dashboard_Page_GET query)
         {
-            var data = (Vendeur_Dashboard_GETResponse)await messageBus.ExecuteAsync(new Vendeur_Dashboard_GET());
+            var data = (Vendeur_Dashboard_GETResponse)await executeHandler.ExecuteAsync(new Vendeur_Dashboard_GET());
 
-            return new Vendeur_Dashboard_PAGEResponse()
+            return new Vendeur_Dashboard_Page()
             {
                 Data = data
             };

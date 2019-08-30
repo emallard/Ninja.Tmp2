@@ -23,10 +23,12 @@ namespace CocoriCore.LeBonCoin
     public class Users_Inscription_POSTHandler : MessageHandler<Users_Inscription_POST, Users_Inscription_POSTResponse>
     {
         private readonly IRepository repository;
+        private readonly IHashService hashService;
 
-        public Users_Inscription_POSTHandler(IRepository repository)
+        public Users_Inscription_POSTHandler(IRepository repository, IHashService hashService)
         {
             this.repository = repository;
+            this.hashService = hashService;
         }
 
         public override async Task<Users_Inscription_POSTResponse> ExecuteAsync(Users_Inscription_POST message)
@@ -34,7 +36,8 @@ namespace CocoriCore.LeBonCoin
             var utilisateur = new Utilisateur()
             {
                 Id = Guid.NewGuid(),
-                Email = message.Email
+                Email = message.Email,
+                HashMotDePasse = await this.hashService.HashAsync(message.Password)
             };
 
             var profile = new Profile()

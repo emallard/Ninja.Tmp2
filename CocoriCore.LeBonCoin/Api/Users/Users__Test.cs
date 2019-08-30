@@ -16,8 +16,8 @@ namespace CocoriCore.LeBonCoin
 
             var dashboard =
             user.Display(new Users_Inscription_Page_GET())
-                .GetForm(p => p.Form)
-                .Submit(new Users_Inscription_Page_FormInscription_POST()
+                .Submit(p => p.Form)
+                .With(new Users_Inscription_Page_FormInscription_POST()
                 {
                     Post = new Users_Inscription_POST()
                     {
@@ -28,7 +28,7 @@ namespace CocoriCore.LeBonCoin
                         Prenom = "Brice"
                     }
                 })
-                .ThenFollow(r => r.Vendeur_Dashboard);
+                .ThenFollow(r => r.LienVendeur_Dashboard);
 
             dashboard.Page.Data.Nom.Should().Be("DeNice");
             dashboard.Page.Data.Prenom.Should().Be("Brice");
@@ -54,8 +54,8 @@ namespace CocoriCore.LeBonCoin
 
             var dashboard =
             vendeur1.Display(new Users_Inscription_Page_GET())
-                .GetForm(p => p.Form)
-                .Submit(new Users_Inscription_Page_FormInscription_POST()
+                .Submit(p => p.Form)
+                .With(new Users_Inscription_Page_FormInscription_POST()
                 {
                     Post = new Users_Inscription_POST()
                     {
@@ -71,8 +71,8 @@ namespace CocoriCore.LeBonCoin
             var connexion = vendeur2.Follow(p => p.Connexion);
 
             Action a = () => connexion
-                .GetForm(p => p.Form)
-                .Submit(new Users_Connexion_PAGE_FormConnexion_POST()
+                .Submit(p => p.Form)
+                .With(new Users_Connexion_Page_FormConnexion_POST()
                 {
 
                     Post = new Users_Connexion_POST()
@@ -85,8 +85,8 @@ namespace CocoriCore.LeBonCoin
             a.Should().Throw<Exception>();
 
             Action b = () => connexion
-                .GetForm(p => p.Form)
-                .Submit(new Users_Connexion_PAGE_FormConnexion_POST()
+                .Submit(p => p.Form)
+                .With(new Users_Connexion_Page_FormConnexion_POST()
                 {
                     Post = new Users_Connexion_POST()
                     {
@@ -109,8 +109,8 @@ namespace CocoriCore.LeBonCoin
 
             var confirmation =
             user.Display(new Users_Inscription_Page_GET())
-                .GetForm(p => p.Form)
-                .Submit(new Users_Inscription_Page_FormInscription_POST()
+                .Submit(p => p.Form)
+                .With(new Users_Inscription_Page_FormInscription_POST()
                 {
                     Post = new Users_Inscription_POST()
                     {
@@ -121,12 +121,12 @@ namespace CocoriCore.LeBonCoin
                         Prenom = "Jean"
                     }
                 })
-                .ThenFollow(r => r.Vendeur_Dashboard)
+                .ThenFollow(r => r.LienVendeur_Dashboard)
                 .Follow(p => p.MenuUtilisateur.Deconnexion)
                 .Follow(p => p.Connexion)
                 .Follow(p => p.MotDePasseOublie)
-                .GetForm(p => p.Form)
-                .Submit(
+                .Submit(p => p.Form)
+                .With(
                     new Users_MotDePasseOublie_Page_Form_POST()
                     {
                         Post = new Users_MotDePasseOublie_POST()
@@ -144,8 +144,8 @@ namespace CocoriCore.LeBonCoin
             var lien = emails[0].Body.Lien;
 
             var dashboard = user.Display(lien)
-                .GetForm(p => p.Form)
-                .Submit(
+                .Submit(p => p.Form)
+                .With(
                     new Users_SaisieNouveauMotDePasse_Token_Page_Form_POST()
                     {
                         Post = new Users_SaisieNouveauMotDePasse_Token_POST
@@ -156,8 +156,8 @@ namespace CocoriCore.LeBonCoin
                         }
                     })
                 .ThenFollow(r => r.PageConnexion)
-                .GetForm(p => p.Form)
-                .Submit(new Users_Connexion_PAGE_FormConnexion_POST()
+                .Submit(p => p.Form)
+                .With(new Users_Connexion_Page_FormConnexion_POST()
                 {
                     Post = new Users_Connexion_POST()
                     {

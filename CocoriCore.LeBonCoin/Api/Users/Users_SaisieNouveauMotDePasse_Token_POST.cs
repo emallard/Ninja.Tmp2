@@ -4,18 +4,15 @@ using System.Threading.Tasks;
 namespace CocoriCore.LeBonCoin
 {
 
-    public class Users_SaisieNouveauMotDePasse_Token_POST : IMessage<Users_SaisieNouveauMotDePasse_Token_POSTResponse>
+    public class Users_SaisieNouveauMotDePasse_Token_POST : IMessage<Void>
     {
         public Guid Token;
         public string MotDePasse;
         public string Confirmation;
     }
 
-    public class Users_SaisieNouveauMotDePasse_Token_POSTResponse
-    {
-    }
 
-    public class Users_SaisieNouveauMotDePasse_Token_POSTHandler : MessageHandler<Users_SaisieNouveauMotDePasse_Token_POST, Users_SaisieNouveauMotDePasse_Token_POSTResponse>
+    public class Users_SaisieNouveauMotDePasse_Token_POSTHandler : MessageHandler<Users_SaisieNouveauMotDePasse_Token_POST, Void>
     {
         private readonly IRepository repository;
         private readonly IHashService hashService;
@@ -26,13 +23,13 @@ namespace CocoriCore.LeBonCoin
             this.hashService = hashService;
         }
 
-        public async override Task<Users_SaisieNouveauMotDePasse_Token_POSTResponse> ExecuteAsync(Users_SaisieNouveauMotDePasse_Token_POST message)
+        public async override Task<Void> ExecuteAsync(Users_SaisieNouveauMotDePasse_Token_POST message)
         {
             var token = await repository.LoadAsync<TokenMotDePasseOublie>(message.Token);
             var utilisateur = await repository.LoadAsync<Utilisateur>(x => x.Email, token.Email);
             utilisateur.HashMotDePasse = await this.hashService.HashAsync(message.MotDePasse);
             await repository.UpdateAsync(utilisateur);
-            return new Users_SaisieNouveauMotDePasse_Token_POSTResponse();
+            return new Void();
         }
     }
 }

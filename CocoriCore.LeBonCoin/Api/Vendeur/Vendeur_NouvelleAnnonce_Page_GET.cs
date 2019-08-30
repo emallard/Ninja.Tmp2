@@ -18,9 +18,9 @@ namespace CocoriCore.LeBonCoin
 
     public class Vendeur_NouvelleAnnonce_Page_GETHandler : MessageHandler<Vendeur_NouvelleAnnonce_Page_GET, Vendeur_NouvelleAnnonce_Page>
     {
-        private readonly IMessageBus messageBus;
+        private readonly IExecuteHandler messageBus;
 
-        public Vendeur_NouvelleAnnonce_Page_GETHandler(IMessageBus messageBus)
+        public Vendeur_NouvelleAnnonce_Page_GETHandler(IExecuteHandler messageBus)
         {
             this.messageBus = messageBus;
         }
@@ -30,7 +30,7 @@ namespace CocoriCore.LeBonCoin
             await Task.CompletedTask;
             return new Vendeur_NouvelleAnnonce_Page()
             {
-                Data = (Vendeur_NouvelleAnnonce_GETResponse)await messageBus.ExecuteAsync(new Vendeur_NouvelleAnnonce_GET())
+                Data = await messageBus.ExecuteAsync(new Vendeur_NouvelleAnnonce_GET())
             };
         }
     }

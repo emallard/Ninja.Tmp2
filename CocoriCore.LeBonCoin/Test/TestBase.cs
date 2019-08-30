@@ -29,6 +29,7 @@ namespace CocoriCore.LeBonCoin
             // messagebus
             kernel.Bind<HandlerFinder>().ToConstant(new HandlerFinder(CocoriCore.LeBonCoin.AssemblyInfo.Assembly)).InSingletonScope();
             kernel.Bind<IMessageBus>().To<CocoriCore.LeBonCoin.MessageBus>().InNamedScope("unitofwork");
+            kernel.Bind<IExecuteHandler>().To<ExecuteHandler>().InNamedScope("unitofwork");
 
             kernel.Bind<IEmailReader, IEmailSender>().To<EmailSenderAndReader>().InSingletonScope();
 
@@ -37,8 +38,12 @@ namespace CocoriCore.LeBonCoin
             {
                 if (response is Users_Connexion_POSTResponse r)
                     return r.Claims;
+                if (response is Users_Connexion_Page_FormConnexion_POSTResponse r2)
+                    return r2.Claims;
                 if (response is Users_Inscription_POSTResponse i)
                     return i.Claims;
+                if (response is Users_Inscription_Page_FormInscription_POSTResponse i2)
+                    return i2.Claims;
                 return null;
             }));
             kernel.Bind<IClaimsProvider, IClaimsWriter>().To<ClaimsProviderAndWriter>().InNamedScope("unitofwork");

@@ -4,13 +4,13 @@ using CocoriCore.Page;
 
 namespace CocoriCore.LeBonCoin
 {
-    public class EnTantQueVendeur : IScenario<Accueil_Page, Vendeur_Dashboard_PAGEResponse>
+    public class EnTantQueVendeur : IScenario<Accueil_Page, Vendeur_Dashboard_Page>
     {
-        public TestBrowserFluent<Vendeur_Dashboard_PAGEResponse> Play(TestBrowserFluent<Accueil_Page> browserFluent)
+        public TestBrowserFluent<Vendeur_Dashboard_Page> Play(TestBrowserFluent<Accueil_Page> browserFluent)
         {
             var dashboard = browserFluent.Display(new Users_Inscription_Page_GET())
-                .GetForm(p => p.Form)
-                .Submit(
+                .Submit(p => p.Form)
+                .With(
                     new Users_Inscription_Page_FormInscription_POST()
                     {
                         Post = new Users_Inscription_POST()
@@ -20,7 +20,7 @@ namespace CocoriCore.LeBonCoin
                             PasswordConfirmation = "azerty"
                         }
                     })
-                .ThenFollow(r => r.Vendeur_Dashboard);
+                .ThenFollow(r => r.LienVendeur_Dashboard);
 
             return dashboard;
         }

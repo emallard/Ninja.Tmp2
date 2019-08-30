@@ -10,13 +10,15 @@ namespace CocoriCore.LeBonCoin
     {
         public string Ville;
         public string Categorie;
-        public Form<Villes_GET, Villes_GETResponse> RechercheVille = new Form<Villes_GET, Villes_GETResponse>();
+
     }
 
     public class Annonces_Page
     {
+        //public Get<Annonces_GET, Annonces_GETResponse> Data;
         public Annonces_Page_Item[] Items;
         public Form<Annonces_Page_Form_GET, Annonces_Page_Form_GETResponse> Form = new Form<Annonces_Page_Form_GET, Annonces_Page_Form_GETResponse>();
+        public Form<Villes_GET, Villes_GETResponse> RechercheVille = new Form<Villes_GET, Villes_GETResponse>();
     }
 
     public class Annonces_Page_Item
@@ -27,9 +29,9 @@ namespace CocoriCore.LeBonCoin
 
     public class Annonces_Page_GETHandler : MessageHandler<Annonces_Page_GET, Annonces_Page>
     {
-        private readonly IMessageBus messageBus;
+        private readonly IExecuteHandler messageBus;
 
-        public Annonces_Page_GETHandler(IMessageBus messageBus)
+        public Annonces_Page_GETHandler(IExecuteHandler messageBus)
         {
             this.messageBus = messageBus;
         }

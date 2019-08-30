@@ -20,11 +20,11 @@ namespace CocoriCore.LeBonCoin
 
     public class Categories_GETHandler : MessageHandler<Categories_GET, Categories_GETResponse>
     {
-        private readonly IRepository repository;
+        private readonly CategoryService categoryService;
 
-        public Categories_GETHandler(IRepository repository)
+        public Categories_GETHandler(CategoryService categoryService)
         {
-            this.repository = repository;
+            this.categoryService = categoryService;
         }
 
         public override async Task<Categories_GETResponse> ExecuteAsync(Categories_GET command)
@@ -32,10 +32,7 @@ namespace CocoriCore.LeBonCoin
             await Task.CompletedTask;
             return new Categories_GETResponse()
             {
-                Resultats = new string[] {
-                    "Chaussures",
-                    "Bijoux"
-                }
+                Resultats = categoryService.GetCategories()
             };
         }
     }

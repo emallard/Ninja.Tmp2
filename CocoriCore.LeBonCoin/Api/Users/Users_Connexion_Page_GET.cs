@@ -14,7 +14,7 @@ namespace CocoriCore.LeBonCoin
     public class Users_Connexion_Page
     {
         public Users_MotDePasseOublie_Page_GET MotDePasseOublie = new Users_MotDePasseOublie_Page_GET();
-        public Form<Users_Connexion_PAGE_FormConnexion_POST, Users_Connexion_PAGE_FormConnexion_POSTResponse> Form;
+        public Form<Users_Connexion_Page_FormConnexion_POST, Users_Connexion_Page_FormConnexion_POSTResponse> Form;
     }
 
     public class Users_Connexion_PageHandler : MessageHandler<Users_Connexion_Page_GET, Users_Connexion_Page>
