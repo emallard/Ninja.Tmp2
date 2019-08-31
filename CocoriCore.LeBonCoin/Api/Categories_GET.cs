@@ -7,18 +7,18 @@ using CocoriCore.Linq.Async;
 namespace CocoriCore.LeBonCoin
 {
 
-    public class Categories_GET : IMessage<Categories_GETResponse>
+    public class Categories_GET : IMessage<Categories>
     {
         public string Texte;
     }
 
-    public class Categories_GETResponse
+    public class Categories
     {
         public string[] Resultats;
     }
 
 
-    public class Categories_GETHandler : MessageHandler<Categories_GET, Categories_GETResponse>
+    public class Categories_GETHandler : MessageHandler<Categories_GET, Categories>
     {
         private readonly CategoryService categoryService;
 
@@ -27,10 +27,10 @@ namespace CocoriCore.LeBonCoin
             this.categoryService = categoryService;
         }
 
-        public override async Task<Categories_GETResponse> ExecuteAsync(Categories_GET command)
+        public override async Task<Categories> ExecuteAsync(Categories_GET command)
         {
             await Task.CompletedTask;
-            return new Categories_GETResponse()
+            return new Categories()
             {
                 Resultats = categoryService.GetCategories()
             };
