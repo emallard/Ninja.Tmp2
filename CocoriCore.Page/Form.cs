@@ -21,4 +21,5 @@ namespace CocoriCore
             return typeof(TPostResponse);
         }
     }
+
 }

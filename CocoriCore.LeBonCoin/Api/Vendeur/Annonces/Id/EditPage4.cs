@@ -5,6 +5,7 @@ using CocoriCore;
 
 namespace CocoriCore.LeBonCoin
 {
+
     public class Form4<TMessage, TResponse, TPageResponse>
     {
         public TMessage Message;

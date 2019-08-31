@@ -6,6 +6,14 @@ using CocoriCore;
 namespace CocoriCore.LeBonCoin
 {
 
+    public class PageFormMessage4<TPageGet, TPage, TMessage, TMessageResponse, TFormResponse> : IMessage<TFormResponse>
+    {
+        public TPageGet PageGet;
+        public TMessage Message;
+        public Func<TPage, Form4<TMessage, TMessageResponse, TFormResponse>> Form;
+
+    }
+
     public class PageGetMessage4<T>
     {
 
@@ -24,13 +32,6 @@ namespace CocoriCore.LeBonCoin
         }
     }
 
-    public class PageFormMessage4<TPageGet, TPage, TMessage, TMessageResponse, TFormResponse> : IMessage<TFormResponse>
-    {
-        public TPageGet PageGet;
-        public TMessage Message;
-        public Func<TPage, Form4<TMessage, TMessageResponse, TFormResponse>> Form;
-
-    }
 
     public class PageFormHandler4<TPageGet, TPage, TMessage, TMessageResponse, TFormResponse> :
             MessageHandler<
