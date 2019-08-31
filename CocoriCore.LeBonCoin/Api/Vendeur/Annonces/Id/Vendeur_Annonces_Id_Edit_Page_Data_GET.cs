@@ -14,6 +14,7 @@ namespace CocoriCore.LeBonCoin
     public class Vendeur_Annonces_Id_Edit_Page_Data
     {
         public Vendeur_Annonces_Id_Edit Data;
+        public Vendeur_Annonces_Id_GET LienAnnonce;
     }
 
     public class Vendeur_Annonces_Id_Edit_Page_Data_GETHandler : MessageHandler<Vendeur_Annonces_Id_Edit_Page_Data_GET, Vendeur_Annonces_Id_Edit_Page_Data>
@@ -30,7 +31,8 @@ namespace CocoriCore.LeBonCoin
             var data = await executeHandler.ExecuteAsync(message.Get);
             return new Vendeur_Annonces_Id_Edit_Page_Data
             {
-                Data = data
+                Data = data,
+                LienAnnonce = new Vendeur_Annonces_Id_GET() { Id = message.Get.Id }
             };
         }
     }

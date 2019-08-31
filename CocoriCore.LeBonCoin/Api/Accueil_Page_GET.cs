@@ -12,7 +12,7 @@ namespace CocoriCore.LeBonCoin
         public Users_Connexion_Page_GET Connexion = new Users_Connexion_Page_GET();
         public Users_Inscription_Page_GET Inscription = new Users_Inscription_Page_GET();
         public Form<Accueil_Page_Form_GET, Accueil_Page_Form_GETResponse> Form = new Form<Accueil_Page_Form_GET, Accueil_Page_Form_GETResponse>();
-        public Form<Villes_GET, Villes_GETResponse> RechercheVille = new Form<Villes_GET, Villes_GETResponse>();
+        public Form<Villes_GET, Villes> RechercheVille = new Form<Villes_GET, Villes>();
         public string[] Categories;
         //public Form<Categories_GET, Categories_GETResponse> ListeCategories ;
         //lien : Accueil_Page_Form_GET.Ville => RechercheVille

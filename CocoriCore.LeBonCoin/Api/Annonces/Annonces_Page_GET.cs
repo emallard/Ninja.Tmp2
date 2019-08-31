@@ -18,7 +18,7 @@ namespace CocoriCore.LeBonCoin
         //public Get<Annonces_GET, Annonces_GETResponse> Data;
         public Annonces_Page_Item[] Items;
         public Form<Annonces_Page_Form_GET, Annonces_Page_Form_GETResponse> Form = new Form<Annonces_Page_Form_GET, Annonces_Page_Form_GETResponse>();
-        public Form<Villes_GET, Villes_GETResponse> RechercheVille = new Form<Villes_GET, Villes_GETResponse>();
+        public Form<Villes_GET, Villes> RechercheVille = new Form<Villes_GET, Villes>();
     }
 
     public class Annonces_Page_Item
