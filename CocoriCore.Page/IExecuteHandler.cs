@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace CocoriCore.LeBonCoin
+namespace CocoriCore
 {
     public interface IExecuteHandler
     {

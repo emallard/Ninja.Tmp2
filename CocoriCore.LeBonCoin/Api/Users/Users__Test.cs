@@ -16,22 +16,20 @@ namespace CocoriCore.LeBonCoin
 
             var dashboard =
             user.Display(new Users_Inscription_Page_GET())
-                .Submit(p => p.Form)
-                .With(new Users_Inscription_Page_FormInscription_POST()
-                {
-                    Post = new Users_Inscription_POST()
-                    {
-                        Email = "aa@aa.aa",
-                        Password = "azerty",
-                        PasswordConfirmation = "azerty",
-                        Nom = "DeNice",
-                        Prenom = "Brice"
-                    }
-                })
-                .ThenFollow(r => r.LienVendeur_Dashboard);
+                .Submit(p => p.FormInscription,
+                        m =>
+                        {
+                            m.Email = "aa@aa.aa";
+                            m.Password = "azerty";
+                            m.PasswordConfirmation = "azerty";
+                            m.Nom = "DeNice";
+                            m.Prenom = "Brice";
+                        })
+                .ThenFollow(r => r.PageDashboard);
 
-            dashboard.Page.Data.Nom.Should().Be("DeNice");
-            dashboard.Page.Data.Prenom.Should().Be("Brice");
+            var contenu = dashboard.Submit(x => x.Data.Message);
+            contenu.Nom.Should().Be("DeNice");
+            contenu.Prenom.Should().Be("Brice");
             /*
 
             var accueil = await user.Click(dashboard.MenuUtilisateur.Deconnexion);
@@ -54,46 +52,36 @@ namespace CocoriCore.LeBonCoin
 
             var dashboard =
             vendeur1.Display(new Users_Inscription_Page_GET())
-                .Submit(p => p.Form)
-                .With(new Users_Inscription_Page_FormInscription_POST()
-                {
-                    Post = new Users_Inscription_POST()
-                    {
-                        Email = "aa@aa.aa",
-                        Password = "azerty",
-                        PasswordConfirmation = "azerty",
-                        Nom = "DeNice",
-                        Prenom = "Brice"
-                    }
-                });
+                .Submit(p => p.FormInscription,
+                        m =>
+                        {
+                            m.Email = "aa@aa.aa";
+                            m.Password = "azerty";
+                            m.PasswordConfirmation = "azerty";
+                            m.Nom = "DeNice";
+                            m.Prenom = "Brice";
+                        });
 
             var vendeur2 = CreateUser("vendeur2");
             var connexion = vendeur2.Follow(p => p.Connexion);
 
             Action a = () => connexion
-                .Submit(p => p.Form)
-                .With(new Users_Connexion_Page_FormConnexion_POST()
-                {
-
-                    Post = new Users_Connexion_POST()
-                    {
-                        Email = "aa@aa.aa",
-                        Password = "mauvaisMotDePasse"
-                    }
-                });
+                .Submit(p => p.Form,
+                        m =>
+                        {
+                            m.Email = "aa@aa.aa";
+                            m.Password = "mauvaiMotDePasse";
+                        });
 
             a.Should().Throw<Exception>();
 
             Action b = () => connexion
-                .Submit(p => p.Form)
-                .With(new Users_Connexion_Page_FormConnexion_POST()
-                {
-                    Post = new Users_Connexion_POST()
-                    {
-                        Email = "bb@bb.bb",
-                        Password = "azerty"
-                    }
-                });
+                .Submit(p => p.Form,
+                        m =>
+                        {
+                            m.Email = "bb@bb.bb";
+                            m.Password = "azerty";
+                        });
 
             b.Should().Throw<Exception>();
 
@@ -109,32 +97,22 @@ namespace CocoriCore.LeBonCoin
 
             var confirmation =
             user.Display(new Users_Inscription_Page_GET())
-                .Submit(p => p.Form)
-                .With(new Users_Inscription_Page_FormInscription_POST()
-                {
-                    Post = new Users_Inscription_POST()
-                    {
-                        Email = "aa@aa.aa",
-                        Password = "azerty",
-                        PasswordConfirmation = "azerty",
-                        Nom = "Dupont",
-                        Prenom = "Jean"
-                    }
-                })
-                .ThenFollow(r => r.LienVendeur_Dashboard)
+                .Submit(p => p.FormInscription,
+                        m =>
+                        {
+                            m.Email = "aa@aa.aa";
+                            m.Password = "azerty";
+                            m.PasswordConfirmation = "azerty";
+                            m.Nom = "Dupont";
+                            m.Prenom = "Jean";
+                        })
+                .ThenFollow(r => r.PageDashboard)
                 .Follow(p => p.MenuUtilisateur.Deconnexion)
                 .Follow(p => p.Connexion)
                 .Follow(p => p.MotDePasseOublie)
-                .Submit(p => p.Form)
-                .With(
-                    new Users_MotDePasseOublie_Page_Form_POST()
-                    {
-                        Post = new Users_MotDePasseOublie_POST()
-                        {
-                            Email = "aa@aa.aa"
-                        }
-                    })
-                .ThenFollow(r => r.MotDePasseOublie_Confirmation)
+                .Submit(p => p.Form,
+                        m => m.Email = "aa@aa.aa")
+                .ThenFollow(r => r)
                 .Page;
 
             confirmation.Should().NotBeNull();
@@ -144,28 +122,21 @@ namespace CocoriCore.LeBonCoin
             var lien = emails[0].Body.Lien;
 
             var dashboard = user.Display(lien)
-                .Submit(p => p.Form)
-                .With(
-                    new Users_SaisieNouveauMotDePasse_Token_Page_Form_POST()
-                    {
-                        Post = new Users_SaisieNouveauMotDePasse_Token_POST
+                .Submit(p => p.Form,
+                        m =>
                         {
-                            Token = lien.Token,
-                            MotDePasse = "nouveauPassw0rd",
-                            Confirmation = "nouveauPassw0rd",
-                        }
-                    })
-                .ThenFollow(r => r.PageConnexion)
-                .Submit(p => p.Form)
-                .With(new Users_Connexion_Page_FormConnexion_POST()
-                {
-                    Post = new Users_Connexion_POST()
-                    {
-                        Email = "aa@aa.aa",
-                        Password = "nouveauPassw0rd",
-                    }
-                })
-                .ThenFollow(r => r.DashboardPage);
+                            m.Token = lien.Token;
+                            m.MotDePasse = "nouveauPassw0rd";
+                            m.Confirmation = "nouveauPassw0rd";
+                        })
+                .ThenFollow(r => r)
+                .Submit(p => p.Form,
+                        m =>
+                        {
+                            m.Email = "aa@aa.aa";
+                            m.Password = "nouveauPassw0rd";
+                        })
+                .ThenFollow(r => r.PageDashboard);
 
             dashboard.Page.Should().NotBeNull();
 

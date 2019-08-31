@@ -7,7 +7,13 @@ using CocoriCore.Linq.Async;
 namespace CocoriCore.LeBonCoin
 {
 
-    public class Annonces_GETResponseItem
+    public class Annonces_GET : IMessage<Annonces_Item[]>, IQuery
+    {
+        public string Ville;
+        public string Categorie;
+    }
+
+    public class Annonces_Item
     {
         public Guid Id;
         public string Ville;
@@ -15,18 +21,8 @@ namespace CocoriCore.LeBonCoin
         public string Text;
     }
 
-    public class Annonces_GET : IPage<Annonces_GETResponse>, IQuery
-    {
-        public string Ville;
-        public string Categorie;
-    }
 
-    public class Annonces_GETResponse
-    {
-        public Annonce[] Items;
-    }
-
-    public class Annonces_GETHandler : MessageHandler<Annonces_GET, Annonces_GETResponse>
+    public class Annonces_GETHandler : MessageHandler<Annonces_GET, Annonces_Item[]>
     {
         private readonly IRepository repository;
 
@@ -35,14 +31,16 @@ namespace CocoriCore.LeBonCoin
             this.repository = repository;
         }
 
-        public override async Task<Annonces_GETResponse> ExecuteAsync(Annonces_GET message)
+        public override async Task<Annonces_Item[]> ExecuteAsync(Annonces_GET message)
         {
             var annonces = await repository.Query<Annonce>().Where(a => a.Ville == message.Ville).ToArrayAsync();
-            var response = new Annonces_GETResponse()
+            return annonces.Select(x => new Annonces_Item()
             {
-                Items = annonces
-            };
-            return response;
+                Id = x.Id,
+                Ville = x.Ville,
+                Categorie = x.Categorie,
+                Text = x.Texte
+            }).ToArray();
         }
     }
 }

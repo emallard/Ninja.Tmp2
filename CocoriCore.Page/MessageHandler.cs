@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using CocoriCore;
 
-namespace CocoriCore.LeBonCoin
+namespace CocoriCore
 {
     public abstract class MessageHandler<TQuery, TResponse> : IHandler<TQuery, TResponse> where TQuery : IMessage<TResponse>
     {

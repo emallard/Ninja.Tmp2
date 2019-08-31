@@ -33,7 +33,16 @@ namespace CocoriCore.LeBonCoin
 
         public Type GetHandlerType(IMessage message)
         {
-            return messageHandlerTypes[message.GetType()];
+            var messageType = message.GetType();
+            if (messageType.IsGenericType)
+            {
+                messageType = messageType.GetGenericTypeDefinition();
+                var handlerType = messageHandlerTypes[messageType];
+                var genericsArguments = message.GetType().GetGenericArguments();
+                return handlerType.MakeGenericType(genericsArguments);
+            }
+            else
+                return messageHandlerTypes[messageType];
         }
 
         public Dictionary<Type, Type> GetHandlersByType()

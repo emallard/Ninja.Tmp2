@@ -9,18 +9,14 @@ namespace CocoriCore.LeBonCoin
         public TestBrowserFluent<Vendeur_Dashboard_Page> Play(TestBrowserFluent<Accueil_Page> browserFluent)
         {
             var dashboard = browserFluent.Display(new Users_Inscription_Page_GET())
-                .Submit(p => p.Form)
-                .With(
-                    new Users_Inscription_Page_FormInscription_POST()
-                    {
-                        Post = new Users_Inscription_POST()
+                .Submit(p => p.FormInscription,
+                        m =>
                         {
-                            Email = "aa@aa.aa",
-                            Password = "azerty",
-                            PasswordConfirmation = "azerty"
-                        }
-                    })
-                .ThenFollow(r => r.LienVendeur_Dashboard);
+                            m.Email = "aa@aa.aa";
+                            m.Password = "azerty";
+                            m.PasswordConfirmation = "azerty";
+                        })
+                .ThenFollow(r => r.PageDashboard);
 
             return dashboard;
         }

@@ -27,7 +27,7 @@ namespace CocoriCore.LeBonCoin
             kernel.Bind<IRepository>().To<MemoryRepository>().InNamedScope("unitofwork");
 
             // messagebus
-            kernel.Bind<HandlerFinder>().ToConstant(new HandlerFinder(CocoriCore.LeBonCoin.AssemblyInfo.Assembly)).InSingletonScope();
+            kernel.Bind<HandlerFinder>().ToConstant(new HandlerFinder(CocoriCore.Page.AssemblyInfo.Assembly, CocoriCore.LeBonCoin.AssemblyInfo.Assembly)).InSingletonScope();
             kernel.Bind<IMessageBus>().To<CocoriCore.LeBonCoin.MessageBus>().InNamedScope("unitofwork");
             kernel.Bind<IExecuteHandler>().To<ExecuteHandler>().InNamedScope("unitofwork");
 
@@ -42,7 +42,7 @@ namespace CocoriCore.LeBonCoin
                     return r2.Claims;
                 if (response is Users_Inscription_POSTResponse i)
                     return i.Claims;
-                if (response is Users_Inscription_Page_FormInscription_POSTResponse i2)
+                if (response is Users_Inscription_Page.FormInscriptionResponse i2)
                     return i2.Claims;
                 return null;
             }));
@@ -55,7 +55,7 @@ namespace CocoriCore.LeBonCoin
 
         public TestBrowserFluent<Accueil_Page> CreateUser(string id)
         {
-            return kernel.Get<TestBrowserFluent<int>>().SetPageAndId(0, id).Display(new Accueil_Page_GET());
+            return kernel.Get<TestBrowserFluent<int>>().SetId(id).Display(new Accueil_Page_GET());
         }
 
         public IEmailReader GetEmailReader()

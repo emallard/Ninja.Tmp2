@@ -17,27 +17,23 @@ namespace CocoriCore.LeBonCoin
 
             var vendeurAnnonce = vendeurDashboard
                 .Follow(p => p.NouvelleAnnonce)
-                .Submit(p => p.Form)
-                .With(
-                    new Vendeur_NouvelleAnnonce_Page_Form_POST()
-                    {
-                        Post = new Vendeur_NouvelleAnnonce_POST()
+                .Submit(p => p.Form,
+                        m =>
                         {
-                            Ville = "Paris",
-                            Categorie = "Voitures"
-                        }
-                    })
+                            m.Ville = "Paris";
+                            m.Categorie = "Voitures";
+                        })
                 .ThenFollow(r => r.PageAnnonce)
                 .Page;
 
             var visiteur = CreateUser("visiteur");
             var annonces = visiteur
-                .Submit(p => p.Form)
-                .With(new Accueil_Page_Form_GET()
-                {
-                    Ville = "Paris",
-                    Categorie = ""
-                })
+                .Submit(p => p.Form,
+                        m =>
+                        {
+                            m.Ville = "Paris";
+                            m.Categorie = "";
+                        })
                 .ThenFollow(r => r.Annonces)
                 .Page;
             /*

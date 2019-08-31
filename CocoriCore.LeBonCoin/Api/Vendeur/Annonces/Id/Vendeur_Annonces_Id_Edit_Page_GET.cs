@@ -5,46 +5,62 @@ using CocoriCore;
 
 namespace CocoriCore.LeBonCoin
 {
-    public class Vendeur_Annonces_Id_Edit_Page_GET : IPage<Vendeur_Annonces_Id_Edit_Page>
-    {
-        public Guid Id;
-    }
 
     public class Vendeur_Annonces_Id_Edit_Page
     {
-        public Vendeur_Annonces_Id_Edit Data;
-        public IEnumerable<string> Categories;
-        public Form<Vendeur_Annonces_Id_Edit_Page_Data_GET, Vendeur_Annonces_Id_Edit_Page_Data> GetData;
-        public Form<Categories_GET, Categories> GetCategories;
-        public Form<Villes_GET, Villes> GetVilles;
-        public Form<Vendeur_Annonces_Id_Edit_Page_Form_POST, Vendeur_Annonces_Id_Edit_Page_Form_POSTResponse> Form;
-
-
-    }
-
-    public class Vendeur_Annonces_Id_Edit_PageHandler : MessageHandler<Vendeur_Annonces_Id_Edit_Page_GET, Vendeur_Annonces_Id_Edit_Page>
-    {
-        private readonly IExecuteHandler executeHandler;
-        private readonly CategoryService categoryService;
-
-        public Vendeur_Annonces_Id_Edit_PageHandler(IExecuteHandler executeHandler, CategoryService categoryService)
+        public class PageGet : IMessage<Page>
         {
-            this.executeHandler = executeHandler;
-            this.categoryService = categoryService;
+            public Guid Id;
         }
 
-        public override async Task<Vendeur_Annonces_Id_Edit_Page> ExecuteAsync(Vendeur_Annonces_Id_Edit_Page_GET message)
+        public class Page
         {
-            var page = new Vendeur_Annonces_Id_Edit_Page();
+            public Form5<Vendeur_Annonces_Id_Edit_GET, Vendeur_Annonces_Id_Edit, AnnonceData> Data;
+            public Form5<Vendeur_Annonces_Id_Edit_POST, Void, AnnoncePostResponse> Form;
+            public Form<Categories_GET, Categories> GetCategories;
+            public Form<Villes_GET, Villes> GetVilles;
+        }
 
-            page.Data = await executeHandler.ExecuteAsync(new Vendeur_Annonces_Id_Edit_GET() { Id = message.Id });
-            page.Form = new Form<Vendeur_Annonces_Id_Edit_Page_Form_POST, Vendeur_Annonces_Id_Edit_Page_Form_POSTResponse>();
-            page.Categories = categoryService.GetCategories();
+        public class PageHandler : MessageHandler<PageGet, Page>
+        {
+            public override Task<Page> ExecuteAsync(PageGet pageGet)
+            {
+                return new Task<Page>(() => new Page()
+                {
+                    Data = new Form5<Vendeur_Annonces_Id_Edit_GET, Vendeur_Annonces_Id_Edit, AnnonceData>()
+                    {
+                        Message = new Vendeur_Annonces_Id_Edit_GET() { Id = pageGet.Id },
+                        Translate = (message, reponse) =>
+                        {
+                            return new AnnonceData()
+                            {
+                                Data = reponse,
+                                LienAnnonce = new Vendeur_Annonces_Id_GET { Id = reponse.Id }
+                            };
+                        }
+                    },
+                    Form = new Form5<Vendeur_Annonces_Id_Edit_POST, Void, AnnoncePostResponse>()
+                    {
+                        Message = new Vendeur_Annonces_Id_Edit_POST() { Id = pageGet.Id },
+                        Translate = (message, reponse) =>
+                            new AnnoncePostResponse()
+                            {
+                                LienAnnonce = new Vendeur_Annonces_Id_GET { Id = message.Id }
+                            }
+                    }
+                });
+            }
+        }
 
-            return page;
+        public class AnnonceData
+        {
+            public Vendeur_Annonces_Id_Edit Data;
+            public Vendeur_Annonces_Id_GET LienAnnonce;
+        }
+
+        public class AnnoncePostResponse
+        {
+            public Vendeur_Annonces_Id_GET LienAnnonce;
         }
     }
-
-
-
 }

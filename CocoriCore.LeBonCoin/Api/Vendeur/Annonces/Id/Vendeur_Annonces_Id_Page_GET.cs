@@ -12,9 +12,9 @@ namespace CocoriCore.LeBonCoin
 
     public class Vendeur_Annonces_Id_Page
     {
-        public Vendeur_Annonces_Id Data;
+        public Form<Vendeur_Annonces_Id_GET, Vendeur_Annonces_Id> Data;
 
-        public Vendeur_Annonces_Id_Edit_Page_GET Edit;
+        public Vendeur_Annonces_Id_Edit_Page.PageGet Edit;
 
         public Vendeur_Annonces_Id_Annuler_POST Cancel;
     }
@@ -36,8 +36,8 @@ namespace CocoriCore.LeBonCoin
             });
             return new Vendeur_Annonces_Id_Page()
             {
-                Data = data,
-                Edit = new Vendeur_Annonces_Id_Edit_Page_GET { Id = query.Id },
+                Data = new Form<Vendeur_Annonces_Id_GET, Vendeur_Annonces_Id>() { Message = new Vendeur_Annonces_Id_GET { Id = query.Id } },
+                Edit = new Vendeur_Annonces_Id_Edit_Page.PageGet { Id = query.Id },
                 Cancel = new Vendeur_Annonces_Id_Annuler_POST { Id = query.Id }
             };
         }

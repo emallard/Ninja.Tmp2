@@ -9,8 +9,16 @@ namespace CocoriCore.LeBonCoin
 
     public class Users_Inscription_Page
     {
-        public Form<Users_Inscription_Page_FormInscription_POST, Users_Inscription_Page_FormInscription_POSTResponse> Form = new Form<Users_Inscription_Page_FormInscription_POST, Users_Inscription_Page_FormInscription_POSTResponse>();
+        public Form5<Users_Inscription_POST, Users_Inscription_POSTResponse, FormInscriptionResponse> FormInscription;
+
+        public class FormInscriptionResponse
+        {
+            public IClaims Claims;
+            public Vendeur_Dashboard_Page_GET PageDashboard;
+        }
+
     }
+
 
     public class Users_Inscription_PAGEHandler : MessageHandler<Users_Inscription_Page_GET, Users_Inscription_Page>
     {
@@ -19,6 +27,16 @@ namespace CocoriCore.LeBonCoin
             await Task.CompletedTask;
             return new Users_Inscription_Page()
             {
+                FormInscription = new Form5<Users_Inscription_POST, Users_Inscription_POSTResponse, Users_Inscription_Page.FormInscriptionResponse>()
+                {
+                    Message = new Users_Inscription_POST(),
+                    Translate = (message, response) => new Users_Inscription_Page.FormInscriptionResponse()
+                    {
+                        Claims = response.Claims,
+                        PageDashboard = new Vendeur_Dashboard_Page_GET()
+                    }
+                }
+
             };
         }
     }
