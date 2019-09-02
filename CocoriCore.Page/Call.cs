@@ -3,7 +3,7 @@ using System;
 namespace CocoriCore
 {
 
-    public interface ICall : IMessage
+    public class ICall : IMessage
     {
     }
 

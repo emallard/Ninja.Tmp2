@@ -33,7 +33,8 @@ namespace CocoriCore.LeBonCoin
                 {
                     PageMessage = query,
                     Message = new Accueil_Page_Form_GET(),
-                    Translate = (m, r) => r
+                    Translate = (m, r) => r,
+                    MemberName = "Form"
                 },
                 Categories = new Call<Categories_GET, string[]>(new Categories_GET()),
                 RechercheVille = new Call<Villes_GET, string[]>(new Villes_GET()),

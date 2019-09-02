@@ -37,7 +37,8 @@ namespace CocoriCore.LeBonCoin
                 {
                     PageMessage = message,
                     Message = new Users_SaisieNouveauMotDePasse_Token_POST(),
-                    Translate = (m, r) => new Users_Connexion_Page_GET()
+                    Translate = (m, r) => new Users_Connexion_Page_GET(),
+                    MemberName = "Form"
                 }
             };
         }

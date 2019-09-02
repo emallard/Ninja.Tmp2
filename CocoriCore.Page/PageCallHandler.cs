@@ -23,7 +23,8 @@ namespace CocoriCore
         {
 
             var page = await executeHandler.ExecuteAsync(message.PageMessage);
-            var pageCall = (PageCall<TPageGet, TMessage, TMessageResponse, TPageResponse>)message.GetType().GetField(message.MemberName).InvokeGetter(page);
+            var fieldInfo = page.GetType().GetField(message.MemberName);
+            var pageCall = (PageCall<TPageGet, TMessage, TMessageResponse, TPageResponse>)fieldInfo.InvokeGetter(page);
             var messageResponse = await executeHandler.ExecuteAsync(message.Message);
             return pageCall.Translate(message.Message, messageResponse);
         }

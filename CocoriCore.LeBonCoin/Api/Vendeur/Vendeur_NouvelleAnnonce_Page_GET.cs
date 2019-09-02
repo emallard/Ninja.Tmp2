@@ -37,7 +37,8 @@ namespace CocoriCore.LeBonCoin
                     Translate = (m, id) => new Vendeur_NouvelleAnnonce_Page_Form_POSTResponse()
                     {
                         PageAnnonce = new Vendeur_Annonces_Id_Page_GET() { Id = id }
-                    }
+                    },
+                    MemberName = "Form"
                 }
             };
         }

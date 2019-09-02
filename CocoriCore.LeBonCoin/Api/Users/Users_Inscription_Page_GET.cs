@@ -35,7 +35,8 @@ namespace CocoriCore.LeBonCoin
                     {
                         Claims = response.Claims,
                         PageDashboard = new Vendeur_Dashboard_Page_GET()
-                    }
+                    },
+                    MemberName = "FormInscription"
                 }
 
             };

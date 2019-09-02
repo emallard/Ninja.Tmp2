@@ -38,7 +38,8 @@ namespace CocoriCore.LeBonCoin
                                 Data = reponse,
                                 LienAnnonce = new Vendeur_Annonces_Id_GET { Id = reponse.Id }
                             };
-                        }
+                        },
+                        MemberName = "Data"
                     },
                     Form = new PageCall<PageGet, Vendeur_Annonces_Id_Edit_POST, Void, AnnoncePostResponse>()
                     {
@@ -48,7 +49,8 @@ namespace CocoriCore.LeBonCoin
                             new AnnoncePostResponse()
                             {
                                 LienAnnonce = new Vendeur_Annonces_Id_GET { Id = message.Id }
-                            }
+                            },
+                        MemberName = "Form"
                     }
                 });
             }

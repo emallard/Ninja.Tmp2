@@ -24,6 +24,7 @@ namespace CocoriCore.LeBonCoin.Api
                 .InSingletonScope();
 
             this.Bind<IMessageBus>().To<CocoriCore.LeBonCoin.MessageBus>().InNamedScope("unitofwork");
+            this.Bind<IExecuteHandler>().To<CocoriCore.LeBonCoin.ExecuteHandler>().InNamedScope("unitofwork");
 
 
             // Middleware

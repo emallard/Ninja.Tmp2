@@ -56,7 +56,8 @@ namespace CocoriCore.LeBonCoin
                     {
                         Data = x,
                         Lien = new Annonces_Id_Page_GET() { Id = x.Id }
-                    }).ToArray()
+                    }).ToArray(),
+                    MemberName = "Items"
                 }
             };
             return response;

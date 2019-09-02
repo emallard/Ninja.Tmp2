@@ -21,7 +21,8 @@ namespace CocoriCore.LeBonCoin
                 {
                     Hello = r.Hello,
                     ALink = "/alink"
-                }
+                },
+                MemberName = "?"
             };
 
             var settings = new JsonSerializerSettings()

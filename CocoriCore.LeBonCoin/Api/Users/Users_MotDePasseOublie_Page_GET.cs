@@ -27,7 +27,8 @@ namespace CocoriCore.LeBonCoin
                 {
                     PageMessage = query,
                     Message = new Users_MotDePasseOublie_POST(),
-                    Translate = (m, r) => new Users_MotDePasseOublie_Confirmation_Page_GET()
+                    Translate = (m, r) => new Users_MotDePasseOublie_Confirmation_Page_GET(),
+                    MemberName = "Form"
                 }
             };
         }
