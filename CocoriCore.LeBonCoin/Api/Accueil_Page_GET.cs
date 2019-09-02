@@ -11,9 +11,9 @@ namespace CocoriCore.LeBonCoin
     {
         public Users_Connexion_Page_GET Connexion = new Users_Connexion_Page_GET();
         public Users_Inscription_Page_GET Inscription = new Users_Inscription_Page_GET();
-        public Form5<Accueil_Page_Form_GET, Accueil_Page_Form_GETResponse, Accueil_Page_Form_GETResponse> Form;
-        public Form<Villes_GET, Villes> RechercheVille = new Form<Villes_GET, Villes>();
-        public Form<Categories_GET, Categories> Categories;
+        public PageCall<Accueil_Page_GET, Accueil_Page_Form_GET, Accueil_Page_Form_GETResponse, Accueil_Page_Form_GETResponse> Form;
+        public Call<Villes_GET, string[]> RechercheVille;
+        public Call<Categories_GET, string[]> Categories;
         //public Form<Categories_GET, Categories_GETResponse> ListeCategories ;
         //lien : Accueil_Page_Form_GET.Ville => RechercheVille
         //       Accueil_Page_Form_GET.Categorie => ListeCategories
@@ -29,11 +29,14 @@ namespace CocoriCore.LeBonCoin
             await Task.CompletedTask;
             return new Accueil_Page()
             {
-                Form = new Form5<Accueil_Page_Form_GET, Accueil_Page_Form_GETResponse, Accueil_Page_Form_GETResponse>()
+                Form = new PageCall<Accueil_Page_GET, Accueil_Page_Form_GET, Accueil_Page_Form_GETResponse, Accueil_Page_Form_GETResponse>()
                 {
+                    PageMessage = query,
                     Message = new Accueil_Page_Form_GET(),
                     Translate = (m, r) => r
-                }
+                },
+                Categories = new Call<Categories_GET, string[]>(new Categories_GET()),
+                RechercheVille = new Call<Villes_GET, string[]>(new Villes_GET()),
             };
         }
     }

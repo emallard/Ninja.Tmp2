@@ -21,11 +21,11 @@ namespace CocoriCore.Page
         {
             var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public);
 
-            var forms = fields.Where(f => f.FieldType.IsAssignableTo(typeof(IForm)));
+            var forms = fields.Where(f => f.FieldType.IsAssignableTo(typeof(ICall)));
 
             var formTypes = forms.SelectMany(f =>
                     {
-                        var generics = f.GetMemberType().GetGenericArguments(typeof(Form<,>));
+                        var generics = f.GetMemberType().GetGenericArguments(typeof(Call<,>));
                         return new Type[] { generics[0], generics[1] };
                     }).ToArray();
 
@@ -35,7 +35,7 @@ namespace CocoriCore.Page
 
             var notArrays = fields.Where(
                                 f => !f.FieldType.IsArray
-                                  && !f.FieldType.IsAssignableTo(typeof(IForm))
+                                  && !f.FieldType.IsAssignableTo(typeof(ICall))
                                   && !f.FieldType.IsAssignableTo(typeof(IPage))
                                   )
                            .Select(f => f.FieldType)

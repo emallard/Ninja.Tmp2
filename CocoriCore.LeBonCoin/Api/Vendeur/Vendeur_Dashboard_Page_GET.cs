@@ -10,7 +10,7 @@ namespace CocoriCore.LeBonCoin
 
     public class Vendeur_Dashboard_Page
     {
-        public Form<Vendeur_Dashboard_GET, Vendeur_Dashboard> Data;
+        public Call<Vendeur_Dashboard_GET, Vendeur_Dashboard> Data;
         public Vendeur_NouvelleAnnonce_Page_GET NouvelleAnnonce = new Vendeur_NouvelleAnnonce_Page_GET();
         public Vendeur_Annonces_Page_GET Reunions = new Vendeur_Annonces_Page_GET();
         public MenuUtilisateur MenuUtilisateur = new MenuUtilisateur();
@@ -23,7 +23,7 @@ namespace CocoriCore.LeBonCoin
             await Task.CompletedTask;
             return new Vendeur_Dashboard_Page()
             {
-                Data = new Form<Vendeur_Dashboard_GET, Vendeur_Dashboard>()
+                Data = new Call<Vendeur_Dashboard_GET, Vendeur_Dashboard>()
                 {
                     Message = new Vendeur_Dashboard_GET()
                 }

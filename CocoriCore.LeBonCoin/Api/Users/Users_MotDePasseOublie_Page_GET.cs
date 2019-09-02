@@ -11,7 +11,7 @@ namespace CocoriCore.LeBonCoin
 
     public class Users_MotDePasseOublie_Page
     {
-        public Form5<Users_MotDePasseOublie_POST, Void, Users_MotDePasseOublie_Confirmation_Page_GET> Form;
+        public PageCall<Users_MotDePasseOublie_Page_GET, Users_MotDePasseOublie_POST, Void, Users_MotDePasseOublie_Confirmation_Page_GET> Form;
 
 
     }
@@ -23,8 +23,9 @@ namespace CocoriCore.LeBonCoin
             await Task.CompletedTask;
             return new Users_MotDePasseOublie_Page()
             {
-                Form = new Form5<Users_MotDePasseOublie_POST, Void, Users_MotDePasseOublie_Confirmation_Page_GET>()
+                Form = new PageCall<Users_MotDePasseOublie_Page_GET, Users_MotDePasseOublie_POST, Void, Users_MotDePasseOublie_Confirmation_Page_GET>()
                 {
+                    PageMessage = query,
                     Message = new Users_MotDePasseOublie_POST(),
                     Translate = (m, r) => new Users_MotDePasseOublie_Confirmation_Page_GET()
                 }

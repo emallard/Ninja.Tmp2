@@ -11,9 +11,9 @@ namespace CocoriCore.LeBonCoin
 
     public class Vendeur_NouvelleAnnonce_Page
     {
-        public Form<Categories_GET, Categories> Data;
+        public Call<Categories_GET, string[]> Categories;
 
-        public Form5<Vendeur_NouvelleAnnonce_POST, Guid, Vendeur_NouvelleAnnonce_Page_Form_POSTResponse> Form;
+        public PageCall<Vendeur_NouvelleAnnonce_Page_GET, Vendeur_NouvelleAnnonce_POST, Guid, Vendeur_NouvelleAnnonce_Page_Form_POSTResponse> Form;
     }
 
     public class Vendeur_NouvelleAnnonce_Page_Form_POSTResponse
@@ -29,9 +29,10 @@ namespace CocoriCore.LeBonCoin
             await Task.CompletedTask;
             return new Vendeur_NouvelleAnnonce_Page()
             {
-                Data = new Form<Categories_GET, Categories>(),
-                Form = new Form5<Vendeur_NouvelleAnnonce_POST, Guid, Vendeur_NouvelleAnnonce_Page_Form_POSTResponse>
+                Categories = new Call<Categories_GET, string[]>(new Categories_GET()),
+                Form = new PageCall<Vendeur_NouvelleAnnonce_Page_GET, Vendeur_NouvelleAnnonce_POST, Guid, Vendeur_NouvelleAnnonce_Page_Form_POSTResponse>
                 {
+                    PageMessage = message,
                     Message = new Vendeur_NouvelleAnnonce_POST(),
                     Translate = (m, id) => new Vendeur_NouvelleAnnonce_Page_Form_POSTResponse()
                     {

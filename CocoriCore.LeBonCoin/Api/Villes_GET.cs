@@ -7,18 +7,13 @@ using CocoriCore.Linq.Async;
 namespace CocoriCore.LeBonCoin
 {
 
-    public class Villes_GET : IMessage<Villes>
+    public class Villes_GET : IMessage<string[]>
     {
         public string Texte;
     }
 
-    public class Villes
-    {
-        public string[] Resultats;
-    }
 
-
-    public class Villes_GETHandler : MessageHandler<Villes_GET, Villes>
+    public class Villes_GETHandler : MessageHandler<Villes_GET, string[]>
     {
         private readonly IRepository repository;
 
@@ -27,15 +22,12 @@ namespace CocoriCore.LeBonCoin
             this.repository = repository;
         }
 
-        public override async Task<Villes> ExecuteAsync(Villes_GET command)
+        public override async Task<string[]> ExecuteAsync(Villes_GET command)
         {
             await Task.CompletedTask;
-            return new Villes()
-            {
-                Resultats = new string[] {
-                    "Paris",
-                    "Bordeaux"
-                }
+            return new string[] {
+                "Paris",
+                "Bordeaux"
             };
         }
     }

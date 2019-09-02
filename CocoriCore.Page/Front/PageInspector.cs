@@ -95,7 +95,7 @@ namespace CocoriCore.Page
 
             return fields
                 .Where(f => !f.GetMemberType().IsAssignableTo(typeof(IPage))
-                        && !f.GetMemberType().IsAssignableTo(typeof(IForm))
+                        && !f.GetMemberType().IsAssignableTo(typeof(ICall))
                         )
                 .ToArray();
         }
@@ -115,10 +115,10 @@ namespace CocoriCore.Page
             var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public);
 
             return fields
-                .Where(f => f.GetMemberType().IsAssignableTo(typeof(IForm)))
+                .Where(f => f.GetMemberType().IsAssignableTo(typeof(ICall)))
                 .Select(f =>
                 {
-                    var generics = f.GetMemberType().GetGenericArguments(typeof(Form<,>));
+                    var generics = f.GetMemberType().GetGenericArguments(typeof(Call<,>));
                     return new FormMemberInfo
                     {
                         Name = f.Name,

@@ -15,20 +15,21 @@ namespace CocoriCore.LeBonCoin
 
         public class Page
         {
-            public Form5<Vendeur_Annonces_Id_Edit_GET, Vendeur_Annonces_Id_Edit, AnnonceData> Data;
-            public Form5<Vendeur_Annonces_Id_Edit_POST, Void, AnnoncePostResponse> Form;
-            public Form<Categories_GET, Categories> GetCategories;
-            public Form<Villes_GET, Villes> GetVilles;
+            public PageCall<PageGet, Vendeur_Annonces_Id_Edit_GET, Vendeur_Annonces_Id_Edit, AnnonceData> Data;
+            public PageCall<PageGet, Vendeur_Annonces_Id_Edit_POST, Void, AnnoncePostResponse> Form;
+            public Call<Categories_GET, string[]> Categories;
+            public Call<Villes_GET, string[]> RechercheVilles;
         }
 
-        public class PageHandler : MessageHandler<PageGet, Page>
+        public class Handler : MessageHandler<PageGet, Page>
         {
             public override Task<Page> ExecuteAsync(PageGet pageGet)
             {
                 return new Task<Page>(() => new Page()
                 {
-                    Data = new Form5<Vendeur_Annonces_Id_Edit_GET, Vendeur_Annonces_Id_Edit, AnnonceData>()
+                    Data = new PageCall<PageGet, Vendeur_Annonces_Id_Edit_GET, Vendeur_Annonces_Id_Edit, AnnonceData>()
                     {
+                        PageMessage = pageGet,
                         Message = new Vendeur_Annonces_Id_Edit_GET() { Id = pageGet.Id },
                         Translate = (message, reponse) =>
                         {
@@ -39,8 +40,9 @@ namespace CocoriCore.LeBonCoin
                             };
                         }
                     },
-                    Form = new Form5<Vendeur_Annonces_Id_Edit_POST, Void, AnnoncePostResponse>()
+                    Form = new PageCall<PageGet, Vendeur_Annonces_Id_Edit_POST, Void, AnnoncePostResponse>()
                     {
+                        PageMessage = pageGet,
                         Message = new Vendeur_Annonces_Id_Edit_POST() { Id = pageGet.Id },
                         Translate = (message, reponse) =>
                             new AnnoncePostResponse()

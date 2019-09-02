@@ -28,5 +28,11 @@ namespace CocoriCore.LeBonCoin
             return (T)response;
         }
 
+        public async Task<object> ExecuteAsync(IMessage message)
+        {
+            var h = factory.Create(this.handlerTypes.GetHandlerType(message));
+            var response = await ((IHandler)h).HandleAsync(message);
+            return response;
+        }
     }
 }

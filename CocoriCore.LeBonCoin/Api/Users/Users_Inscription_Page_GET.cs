@@ -9,7 +9,7 @@ namespace CocoriCore.LeBonCoin
 
     public class Users_Inscription_Page
     {
-        public Form5<Users_Inscription_POST, Users_Inscription_POSTResponse, FormInscriptionResponse> FormInscription;
+        public PageCall<Users_Inscription_Page_GET, Users_Inscription_POST, Users_Inscription_POSTResponse, FormInscriptionResponse> FormInscription;
 
         public class FormInscriptionResponse
         {
@@ -27,8 +27,9 @@ namespace CocoriCore.LeBonCoin
             await Task.CompletedTask;
             return new Users_Inscription_Page()
             {
-                FormInscription = new Form5<Users_Inscription_POST, Users_Inscription_POSTResponse, Users_Inscription_Page.FormInscriptionResponse>()
+                FormInscription = new PageCall<Users_Inscription_Page_GET, Users_Inscription_POST, Users_Inscription_POSTResponse, Users_Inscription_Page.FormInscriptionResponse>()
                 {
+                    PageMessage = query,
                     Message = new Users_Inscription_POST(),
                     Translate = (message, response) => new Users_Inscription_Page.FormInscriptionResponse()
                     {
