@@ -36,14 +36,8 @@ namespace CocoriCore.LeBonCoin
             // claims
             kernel.Bind<TestBrowserClaimsProvider>().ToConstant(new TestBrowserClaimsProvider(response =>
             {
-                if (response is Users_Connexion_POSTResponse r)
-                    return r.Claims;
-                if (response is Users_Connexion_Page_FormConnexion_POSTResponse r2)
-                    return r2.Claims;
-                if (response is Users_Inscription_POSTResponse i)
-                    return i.Claims;
-                if (response is Users_Inscription_Page.FormInscriptionResponse i2)
-                    return i2.Claims;
+                if (response is IClaimsResponse claimsResponse)
+                    return claimsResponse.Claims;
                 return null;
             }));
             kernel.Bind<IClaimsProvider, IClaimsWriter>().To<ClaimsProviderAndWriter>().InNamedScope("unitofwork");

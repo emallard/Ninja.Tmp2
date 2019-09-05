@@ -11,9 +11,9 @@ namespace CocoriCore.LeBonCoin
     {
         public PageCall<Users_Inscription_Page_GET, Users_Inscription_POST, Users_Inscription_POSTResponse, FormInscriptionResponse> FormInscription;
 
-        public class FormInscriptionResponse
+        public class FormInscriptionResponse : IClaimsResponse
         {
-            public IClaims Claims;
+            public IClaims Claims { get; set; }
             public Vendeur_Dashboard_Page_GET PageDashboard;
         }
 

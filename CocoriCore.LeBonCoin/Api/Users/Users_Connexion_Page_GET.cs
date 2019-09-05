@@ -17,9 +17,9 @@ namespace CocoriCore.LeBonCoin
         public PageCall<Users_Connexion_Page_GET, Users_Connexion_POST, Users_Connexion_POSTResponse, Users_Connexion_Page_FormConnexion_POSTResponse> Form;
     }
 
-    public class Users_Connexion_Page_FormConnexion_POSTResponse
+    public class Users_Connexion_Page_FormConnexion_POSTResponse : IClaimsResponse
     {
-        public IClaims Claims;
+        public IClaims Claims { get; set; }
         public Vendeur_Dashboard_Page_GET PageDashboard;
     }
     /*
