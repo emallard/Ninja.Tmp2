@@ -90,7 +90,6 @@ namespace CocoriCore.LeBonCoin
             Func<TPage, PageCall<TPageGet, TMessage, TMessageResponse, TFormResponse>> getForm,
             Action<TMessage> modifyMessage
         )
-            where TMessage : new()
             where TPageGet : IMessage
         {
             var form = getForm(Page);

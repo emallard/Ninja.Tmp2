@@ -17,14 +17,11 @@ namespace CocoriCore
     public class Call<TMessage, TResponse>
         : CallInfo
         , IMessage<TResponse>
-    where TMessage : new()
     {
         //object IForm.Message;
         public TMessage Message;
         public Call()
         {
-            Message = new TMessage();
-            _Type = this.GetType();
         }
 
         public Call(TMessage message)

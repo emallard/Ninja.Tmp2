@@ -25,7 +25,6 @@ namespace CocoriCore
     public class PageCall<TPageMessage, TMessage, TResponse, TPageResponse>
             : IPageCall
             , IMessage<TPageResponse>
-        where TMessage : new()
         where TPageMessage : IMessage
 
     {

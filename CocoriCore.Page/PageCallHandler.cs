@@ -8,7 +8,7 @@ namespace CocoriCore
             MessageHandler<
                 PageCall<TPageGet, TMessage, TMessageResponse, TPageResponse>,
                 TPageResponse>
-        where TMessage : IMessage<TMessageResponse>, new()
+        where TMessage : IMessage<TMessageResponse>
         where TPageGet : IMessage
     {
         private readonly IExecuteHandler executeHandler;

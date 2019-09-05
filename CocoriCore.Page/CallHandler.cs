@@ -8,7 +8,7 @@ namespace CocoriCore
             MessageHandler<
                 Call<TMessage, TMessageResponse>,
                 TMessageResponse>
-        where TMessage : IMessage<TMessageResponse>, new()
+        where TMessage : IMessage<TMessageResponse>
     {
         private readonly IExecuteHandler executeHandler;
 

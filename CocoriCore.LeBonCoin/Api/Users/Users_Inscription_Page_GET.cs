@@ -20,26 +20,17 @@ namespace CocoriCore.LeBonCoin
     }
 
 
-    public class Users_Inscription_PAGEHandler : MessageHandler<Users_Inscription_Page_GET, Users_Inscription_Page>
+    public class Users_Inscription_PAGEHandler : PageHandler<Users_Inscription_Page_GET, Users_Inscription_Page>
     {
-        public override async Task<Users_Inscription_Page> ExecuteAsync(Users_Inscription_Page_GET query)
+        public override void ExecuteAsync(Users_Inscription_Page_GET query)
         {
-            await Task.CompletedTask;
-            return new Users_Inscription_Page()
-            {
-                FormInscription = new PageCall<Users_Inscription_Page_GET, Users_Inscription_POST, Users_Inscription_POSTResponse, Users_Inscription_Page.FormInscriptionResponse>()
-                {
-                    PageMessage = query,
-                    Message = new Users_Inscription_POST(),
-                    Translate = (message, response) => new Users_Inscription_Page.FormInscriptionResponse()
+            Create(x => x.FormInscription,
+                    new Users_Inscription_POST(),
+                    reponse => new Users_Inscription_Page.FormInscriptionResponse()
                     {
-                        Claims = response.Claims,
+                        Claims = reponse.Claims,
                         PageDashboard = new Vendeur_Dashboard_Page_GET()
-                    },
-                    MemberName = "FormInscription"
-                }
-
-            };
+                    });
         }
     }
 
