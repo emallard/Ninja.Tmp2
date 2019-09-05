@@ -57,6 +57,20 @@ namespace CocoriCore.LeBonCoin.Api
 
             let txt = await response.text();
         }
+
+        async function pagecall (callObj)
+        {
+            var myHeaders = new Headers();
+            myHeaders.append('Content-Type', 'application/json');
+            let response = await fetch('/api/pagecall',
+                {
+                    headers: myHeaders,
+                    method: 'POST',
+                    body: JSON.stringify(callObj)
+                });
+
+            let txt = await response.text();
+        }
     </script>
 </body>
 </page>

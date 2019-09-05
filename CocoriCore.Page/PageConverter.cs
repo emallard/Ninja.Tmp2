@@ -3,6 +3,7 @@ using System.Linq;
 using CocoriCore;
 using CocoriCore.Router;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CocoriCore
 {
@@ -34,8 +35,10 @@ namespace CocoriCore
         {
             var message = (IPage)value;
             var route = routerOptions.AllRoutes.First(r => r.MessageType == message.GetType());
-            writer.WriteValue(route.ParameterizedUrl);
-            // replace with values in message
+            // TODO replace with values in message
+            JObject jObject = JObject.FromObject(value);
+            jObject.Add("href", JToken.FromObject(route.ParameterizedUrl));
+            jObject.WriteTo(writer);
         }
     }
 

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace CocoriCore
 {
-    public interface IPageCall : IMessage
+    public class IPageCall : IMessage
     {
     }
 
@@ -30,11 +30,8 @@ namespace CocoriCore
     {
         public Type _Type;
         public TPageMessage PageMessage;
-        //public Type PageMessageType;
-        //public Type MessageType;
         public string MemberName;
         public TMessage Message;
-
         [JsonIgnore]
         public Func<TMessage, TResponse, TPageResponse> Translate;
 
