@@ -42,7 +42,9 @@ namespace CocoriCore.LeBonCoin.Api
             builder.Get<Annonces_Id_Page_GET>()
                                                         .SetPath(x => $"api/annonces/{x.Id}");
 
-            builder.Get<ICall>().SetPath("/api/_call");
+            builder.Post<ICall>().SetPath("api/call").UseBody();
+            builder.Get<HtmlMessage>().SetPath("api/page").UseQuery();
+            builder.Get<FavIconMessage>().SetPath("favicon.ico").UseQuery();
 
             return builder.Options;
         }

@@ -15,10 +15,15 @@ namespace CocoriCore.LeBonCoin.Api
     {
         public override void Load()
         {
+            // Repository
+            this.Bind<IUIDProvider>().To<UIDProvider>().InSingletonScope();
+            this.Bind<IInMemoryEntityStore>().To<InMemoryEntityStore>().InSingletonScope();
+            this.Bind<IRepository>().To<MemoryRepository>().InNamedScope("unitofwork");
 
 
             this.Bind<HandlerFinder>().ToConstant(
                 new HandlerFinder(
+                    CocoriCore.Page.AssemblyInfo.Assembly,
                     CocoriCore.LeBonCoin.AssemblyInfo.Assembly,
                     this.GetType().Assembly))
                 .InSingletonScope();

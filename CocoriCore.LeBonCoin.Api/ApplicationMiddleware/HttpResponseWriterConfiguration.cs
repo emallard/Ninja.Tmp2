@@ -12,6 +12,7 @@ namespace CocoriCore.LeBonCoin.Api
             var builder = new HttpResponseWriterOptionsBuilder();
             builder.For<FileResponse>().Call<HttpResponseWriterFileHandler>();
             //builder.For<IODataResponse>().Call<HttpResponseWriterODataHandler>();
+            builder.For<HtmlResponse>().Call<HttpResponseWriterHtmlHandler>();
             builder.For<object>().Call<HttpResponseWriterDefaultHandler>();
             return builder.Options;
         }
