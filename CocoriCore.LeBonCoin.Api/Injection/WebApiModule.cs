@@ -15,6 +15,8 @@ namespace CocoriCore.LeBonCoin.Api
     {
         public override void Load()
         {
+            this.Bind<IHashService>().To<HashService>().InSingletonScope();
+
             // Repository
             this.Bind<IUIDProvider>().To<UIDProvider>().InSingletonScope();
             this.Bind<IInMemoryEntityStore>().To<InMemoryEntityStore>().InSingletonScope();

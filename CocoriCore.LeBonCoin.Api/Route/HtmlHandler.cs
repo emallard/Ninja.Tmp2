@@ -40,10 +40,10 @@ namespace CocoriCore.LeBonCoin.Api
             let txt = await response.text();
             _page = JSON.parse(txt);
 
-            let html = '';
-            html += links(_page);
-
+            let html = links(_page) + forms(_page);
             document.getElementById('content').innerHTML = html;
+
+            registerOnSubmits(_page);
         }
 
         init();
@@ -70,7 +70,7 @@ namespace CocoriCore.LeBonCoin.Api
             if (response['href'] != null)
             {
                 console.log('redirect to : ' + response['href']);
-                //document.location.search = '?q=' + response['href'];
+                document.location.search = '?q=' + response['href'];
             }
         }
 
@@ -79,15 +79,72 @@ namespace CocoriCore.LeBonCoin.Api
             let html = '';
             let keys = Object.keys(page);
             for (let k of keys) {
-                console.log('page property : ' + k);
                 if (page[k]['href'] != null)
-                    html += '<a href=""' + '?q=' + page[k]['href'] + '"">' + k + '</href><br/>'
+                {
+                    console.log('link : ' + k);
+                    html += '<a href=""' + '?q=' + page[k]['href'] + '"">' + k + '</a><br/>'
+                }
             }
             return html;
         }
+
+        function forms(page)
+        {
+            let html = '';
+            let keys = Object.keys(page);
+            for (let k of keys) {
+                if (page[k]['PageMessage'] != null)
+                {
+                    console.log('form : ' + k);
+                    
+                    html += '<form id = ""' + k + '"">'
+                        + inputs(page[k])
+                        + '<button>' + k + '</button>'
+                        + '</form>';
+                }
+            }
+            return html;
+        }
+         
+        function inputs(form)
+        {
+            let html = '';
+            let keys = Object.keys(form.Message);
+            for (let k of keys) {
+                console.log('    input : ' + k);
+                html += k + ' : ' + '<input id=""' + k + '""></input><br/>';
+            }
+            return html;
+        }
+
+        function registerOnSubmits(page)
+        {
+            let keys = Object.keys(page);
+            for (let k of keys) {
+                if (page[k]['PageMessage'] != null)
+                {
+                    registerOnSubmit(k, page[k]);
+                }
+            }
+        }
+
+        function registerOnSubmit(idForm, form)
+        {
+            document.getElementById(idForm).addEventListener('submit', async (evt) => 
+            {
+                evt.preventDefault();
+                let keys = Object.keys(form.Message);
+                for (let k of keys) {
+                    form.Message[k] = document.getElementById(k).value;
+                }
+                console.log('submit ' + idForm, form.Message);
+                pagecall(form);
+            });
+        }
+
     </script>
 </body>
-</page>
+</html>
 ";
 
 
