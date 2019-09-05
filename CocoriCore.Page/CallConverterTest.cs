@@ -23,9 +23,9 @@ namespace CocoriCore.LeBonCoin
 
             var jsonString = jsonSerializer.Serialize(call);
 
-            var deserialized = (ICall)jsonSerializer.Deserialize(
+            var deserialized = (Call)jsonSerializer.Deserialize(
                     new JsonTextReader(new StringReader(jsonString)),
-                    typeof(ICall));
+                    typeof(Call));
 
             Console.WriteLine(deserialized.GetType()); // Must be Call<Message, Response>
         }

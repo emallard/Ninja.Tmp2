@@ -3,31 +3,26 @@ using System;
 namespace CocoriCore
 {
 
-    public class ICall : IMessage
-    {
-    }
-
-
-    public class CallInfo
+    public class Call : IMessage
     {
         public Type _Type;
+        public Call()
+        {
+            _Type = this.GetType();
+        }
     }
+
 
 
     public class Call<TMessage, TResponse>
-        : CallInfo
+        : Call
         , IMessage<TResponse>
     {
-        //object IForm.Message;
         public TMessage Message;
-        public Call()
-        {
-        }
 
-        public Call(TMessage message)
+        public Call(TMessage message) : base()
         {
             Message = message;
-            _Type = this.GetType();
         }
 
         public object GetMessage()

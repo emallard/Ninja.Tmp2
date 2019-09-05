@@ -34,7 +34,7 @@ namespace CocoriCore.LeBonCoin
                             m.Ville = "Paris";
                             m.Categorie = "";
                         })
-                .ThenFollow(r => r.Annonces)
+                .ThenFollow(r => r)
                 .Page;
             /*
             annonces.Items.Should().HaveCount(1);

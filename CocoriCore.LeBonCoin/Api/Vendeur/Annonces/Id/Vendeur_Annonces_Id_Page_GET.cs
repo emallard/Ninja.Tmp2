@@ -36,7 +36,7 @@ namespace CocoriCore.LeBonCoin
             });
             return new Vendeur_Annonces_Id_Page()
             {
-                Data = new Call<Vendeur_Annonces_Id_GET, Vendeur_Annonces_Id>() { Message = new Vendeur_Annonces_Id_GET { Id = query.Id } },
+                Data = new Call<Vendeur_Annonces_Id_GET, Vendeur_Annonces_Id>(new Vendeur_Annonces_Id_GET { Id = query.Id }),
                 Edit = new Vendeur_Annonces_Id_Edit_Page.PageGet { Id = query.Id },
                 Cancel = new Vendeur_Annonces_Id_Annuler_POST { Id = query.Id }
             };

@@ -24,29 +24,33 @@ namespace CocoriCore.LeBonCoin.Api
 <body>
     <div id='content'></div>
     <script>
-        var page = null;
+        var _page = null;
 
-        async function get1 ()
+        async function init ()
         {
-            var myHeaders = new Headers();
+            let myHeaders = new Headers();
             myHeaders.append('Content-Type', 'application/json');
-            let response = await fetch('/{q}',
+            let pageGet = document.location.search.replace('?q=', '');
+            let response = await fetch(pageGet,
                 {
                     headers: myHeaders,
                     method: 'GET'
                 });
 
             let txt = await response.text();
-            page = JSON.parse(txt);
+            _page = JSON.parse(txt);
 
-            //document.getElementById('content').innerHTML
+            let html = '';
+            html += links(_page);
+
+            document.getElementById('content').innerHTML = html;
         }
 
-        get1();
+        init();
 
         async function call (callObj)
         {
-            var myHeaders = new Headers();
+            let myHeaders = new Headers();
             myHeaders.append('Content-Type', 'application/json');
             let response = await fetch('/api/call',
                 {
@@ -55,27 +59,36 @@ namespace CocoriCore.LeBonCoin.Api
                     body: JSON.stringify(callObj)
                 });
 
-            let txt = await response.text();
+            return await response.json();
+
         }
 
         async function pagecall (callObj)
         {
-            var myHeaders = new Headers();
-            myHeaders.append('Content-Type', 'application/json');
-            let response = await fetch('/api/pagecall',
-                {
-                    headers: myHeaders,
-                    method: 'POST',
-                    body: JSON.stringify(callObj)
-                });
+            let response = await call(callObj);
+            console.log(response);
+            if (response['href'] != null)
+            {
+                console.log('redirect to : ' + response['href']);
+                //document.location.search = '?q=' + response['href'];
+            }
+        }
 
-            let txt = await response.text();
+        function links(page)
+        {
+            let html = '';
+            let keys = Object.keys(page);
+            for (let k of keys) {
+                console.log('page property : ' + k);
+                if (page[k]['href'] != null)
+                    html += '<a href=""' + '?q=' + page[k]['href'] + '"">' + k + '</href><br/>'
+            }
+            return html;
         }
     </script>
 </body>
 </page>
 ";
-            html = html.Replace("{q}", message.Q);
 
 
             await Task.CompletedTask;

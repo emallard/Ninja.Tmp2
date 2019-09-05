@@ -38,7 +38,7 @@ namespace CocoriCore.Page
             return await this.ExecuteAsync(message);
         }
 
-        public async Task<T> Submit<TPage, T>(TPage page, ICall form, IMessage<T> message)
+        public async Task<T> Submit<TPage, T>(TPage page, Call form, IMessage<T> message)
         {
             return (T)(await this.ExecuteAsync((IMessage)message));
         }

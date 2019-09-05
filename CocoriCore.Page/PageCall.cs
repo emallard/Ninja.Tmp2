@@ -3,42 +3,21 @@ using Newtonsoft.Json;
 
 namespace CocoriCore
 {
-    public class IPageCall : IMessage
+    public interface IPageCall
     {
     }
-
-    public class PageCallInfo
-    {
-        public Type _Type;
-    }
-    /*
-    // Données nécessaires à l'execution du call
-    public class PageCall<TPageMessage, TMessage>
-    {
-        public TPageMessage PageMessage;
-        public Type PageMessageType;
-        public Type MessageType;
-        public string MemberName;
-        public TMessage Message;
-    }*/
 
     public class PageCall<TPageMessage, TMessage, TResponse, TPageResponse>
-            : IPageCall
+            : Call
             , IMessage<TPageResponse>
         where TPageMessage : IMessage
 
     {
-        public Type _Type;
         public TPageMessage PageMessage;
         public string MemberName;
         public TMessage Message;
         [JsonIgnore]
         public Func<TMessage, TResponse, TPageResponse> Translate;
-
-        public PageCall()
-        {
-            _Type = this.GetType();
-        }
 
         /*
         public object GetMessage()

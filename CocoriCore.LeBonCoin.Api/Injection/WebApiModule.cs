@@ -59,7 +59,6 @@ namespace CocoriCore.LeBonCoin.Api
                 var serializer = new JsonSerializer();
                 serializer.Converters.Add(ctx.GetContextPreservingResolutionRoot().Get<PageConverter>());
                 serializer.Converters.Add(ctx.GetContextPreservingResolutionRoot().Get<CallConverter>());
-                serializer.Converters.Add(ctx.GetContextPreservingResolutionRoot().Get<PageCallConverter>());
                 return serializer;
             }).InSingletonScope();
             this.Bind<IClock>().To<Clock>().InSingletonScope();

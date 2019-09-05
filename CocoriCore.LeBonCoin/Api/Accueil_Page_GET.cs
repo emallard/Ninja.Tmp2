@@ -11,7 +11,7 @@ namespace CocoriCore.LeBonCoin
     {
         public Users_Connexion_Page_GET Connexion = new Users_Connexion_Page_GET();
         public Users_Inscription_Page_GET Inscription = new Users_Inscription_Page_GET();
-        public PageCall<Accueil_Page_GET, Accueil_Page_Form_GET, Accueil_Page_Form_GETResponse, Accueil_Page_Form_GETResponse> Form;
+        public PageCall<Accueil_Page_GET, Accueil_Page_Form_GET, Annonces_Page_GET, Annonces_Page_GET> Form;
         public Call<Villes_GET, string[]> RechercheVille;
         public Call<Categories_GET, string[]> Categories;
         //public Form<Categories_GET, Categories_GETResponse> ListeCategories ;
@@ -22,23 +22,17 @@ namespace CocoriCore.LeBonCoin
 
     }
 
-    public class Accueil_Page_GETHandler : MessageHandler<Accueil_Page_GET, Accueil_Page>
+    public class Accueil_Page_GETHandler : PageHandler<Accueil_Page_GET, Accueil_Page>
     {
-        public async override Task<Accueil_Page> ExecuteAsync(Accueil_Page_GET query)
+        public override void ExecuteAsync(Accueil_Page_GET query)
         {
-            await Task.CompletedTask;
-            return new Accueil_Page()
-            {
-                Form = new PageCall<Accueil_Page_GET, Accueil_Page_Form_GET, Accueil_Page_Form_GETResponse, Accueil_Page_Form_GETResponse>()
-                {
-                    PageMessage = query,
-                    Message = new Accueil_Page_Form_GET(),
-                    Translate = (m, r) => r,
-                    MemberName = "Form"
-                },
-                Categories = new Call<Categories_GET, string[]>(new Categories_GET()),
-                RechercheVille = new Call<Villes_GET, string[]>(new Villes_GET()),
-            };
+            Create(x => x.Form,
+                    new Accueil_Page_Form_GET(),
+                    r => r
+            );
+
+            Page.Categories = new Call<Categories_GET, string[]>(new Categories_GET());
+            Page.RechercheVille = new Call<Villes_GET, string[]>(new Villes_GET());
         }
     }
 }

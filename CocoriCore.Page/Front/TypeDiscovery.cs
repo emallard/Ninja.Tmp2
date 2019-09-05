@@ -21,7 +21,7 @@ namespace CocoriCore.Page
         {
             var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public);
 
-            var forms = fields.Where(f => f.FieldType.IsAssignableTo(typeof(ICall)));
+            var forms = fields.Where(f => f.FieldType.IsAssignableTo(typeof(Call)));
 
             var formTypes = forms.SelectMany(f =>
                     {
@@ -35,7 +35,7 @@ namespace CocoriCore.Page
 
             var notArrays = fields.Where(
                                 f => !f.FieldType.IsArray
-                                  && !f.FieldType.IsAssignableTo(typeof(ICall))
+                                  && !f.FieldType.IsAssignableTo(typeof(Call))
                                   && !f.FieldType.IsAssignableTo(typeof(IPage))
                                   )
                            .Select(f => f.FieldType)

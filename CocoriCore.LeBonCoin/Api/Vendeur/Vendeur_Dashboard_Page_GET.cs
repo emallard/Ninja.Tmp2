@@ -23,10 +23,7 @@ namespace CocoriCore.LeBonCoin
             await Task.CompletedTask;
             return new Vendeur_Dashboard_Page()
             {
-                Data = new Call<Vendeur_Dashboard_GET, Vendeur_Dashboard>()
-                {
-                    Message = new Vendeur_Dashboard_GET()
-                }
+                Data = new Call<Vendeur_Dashboard_GET, Vendeur_Dashboard>(new Vendeur_Dashboard_GET())
             };
         }
     }
