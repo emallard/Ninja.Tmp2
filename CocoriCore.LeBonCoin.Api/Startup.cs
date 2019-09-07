@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CocoriCore;
@@ -45,6 +46,16 @@ namespace CocoriCore.LeBonCoin.Api
             var kernel = CreateKernel();
             var unitOfWorkFactory = kernel.Get<IUnitOfWorkFactory>();
 
+            app.Use(async (ctx, next) =>
+            {
+                if (!ctx.Request.Path.Value.StartsWith("/api"))
+                {
+                    ctx.Response.ContentType = "text/html";
+                    await ctx.Response.WriteAsync(File.ReadAllText("CocoriCore.LeBonCoin.Api/page2.html"));
+                }
+                else
+                    await next();
+            });
 
             app.Use(async (ctx, next) =>
             {

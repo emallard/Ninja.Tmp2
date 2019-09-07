@@ -28,7 +28,7 @@ namespace CocoriCore.LeBonCoin
 
             var visiteur = CreateUser("visiteur");
             var annonces = visiteur
-                .Submit(p => p.Form,
+                .Submit(p => p.Rechercher,
                         m =>
                         {
                             m.Ville = "Paris";
