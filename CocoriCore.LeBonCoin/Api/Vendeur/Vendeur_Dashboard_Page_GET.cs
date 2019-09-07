@@ -10,21 +10,28 @@ namespace CocoriCore.LeBonCoin
 
     public class Vendeur_Dashboard_Page
     {
-        public Call<Vendeur_Dashboard_GET, Vendeur_Dashboard> Data;
-        public Vendeur_NouvelleAnnonce_Page_GET NouvelleAnnonce = new Vendeur_NouvelleAnnonce_Page_GET();
-        public Vendeur_Annonces_Page_GET Reunions = new Vendeur_Annonces_Page_GET();
-        public MenuUtilisateur MenuUtilisateur = new MenuUtilisateur();
+        public AsyncCall<Vendeur_Dashboard_Page_GET, Vendeur_Dashboard> Dashboard;
+        public Vendeur_NouvelleAnnonce_Page_GET NouvelleAnnonce;
+        public Vendeur_Annonces_Page_GET Reunions;
+        public MenuUtilisateur MenuUtilisateur;
     }
 
-    public class Vendeur_Dashboard_PAGEHandler : MessageHandler<Vendeur_Dashboard_Page_GET, Vendeur_Dashboard_Page>
+    public class Vendeur_Annonces_PageMapperModule : PageMapperModule
     {
-        public override async Task<Vendeur_Dashboard_Page> ExecuteAsync(Vendeur_Dashboard_Page_GET query)
+        public Vendeur_Annonces_PageMapperModule()
         {
-            await Task.CompletedTask;
-            return new Vendeur_Dashboard_Page()
+            Handle<Vendeur_Dashboard_Page_GET, Vendeur_Dashboard_Page>(x => new Vendeur_Dashboard_Page()
             {
-                Data = new Call<Vendeur_Dashboard_GET, Vendeur_Dashboard>(new Vendeur_Dashboard_GET())
-            };
+                Dashboard = new AsyncCall<Vendeur_Dashboard_Page_GET, Vendeur_Dashboard>() { PageQuery = x },
+                NouvelleAnnonce = new Vendeur_NouvelleAnnonce_Page_GET(),
+                Reunions = new Vendeur_Annonces_Page_GET(),
+                MenuUtilisateur = new MenuUtilisateur()
+            });
+
+            Map<Vendeur_Dashboard_Page_GET, Vendeur_Dashboard_GET>(x => new Vendeur_Dashboard_GET());
+            Map<Vendeur_Dashboard_GET, Vendeur_Dashboard, Vendeur_Dashboard>(
+                (m, r) => r
+            );
         }
     }
 }

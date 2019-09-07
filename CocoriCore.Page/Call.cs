@@ -17,6 +17,7 @@ namespace CocoriCore
     public class Call<TMessage, TResponse>
         : Call
         , IMessage<TResponse>
+        where TMessage : IMessage<TResponse>
     {
         public TMessage Message;
 

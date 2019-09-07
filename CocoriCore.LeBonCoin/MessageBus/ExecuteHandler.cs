@@ -9,16 +9,18 @@ namespace CocoriCore.LeBonCoin
     {
         private readonly HandlerFinder handlerTypes;
         private readonly IFactory factory;
+        private readonly IPageMapper mapper;
 
         //private readonly IRepository repository;
 
         public ExecuteHandler(
             HandlerFinder handlerTypes,
-            IFactory factory
-            )
+            IFactory factory,
+            IPageMapper mapper)
         {
             this.handlerTypes = handlerTypes;
             this.factory = factory;
+            this.mapper = mapper;
         }
 
         public async Task<T> ExecuteAsync<T>(IMessage<T> message)
@@ -30,8 +32,13 @@ namespace CocoriCore.LeBonCoin
 
         public async Task<object> ExecuteAsync(IMessage message)
         {
-            var h = factory.Create(this.handlerTypes.GetHandlerType(message));
-            var response = await ((IHandler)h).HandleAsync(message);
+            object response;
+            if (!mapper.TryHandle(message, out response))
+            {
+                var h = factory.Create(this.handlerTypes.GetHandlerType(message));
+                response = await ((IHandler)h).HandleAsync(message);
+
+            }
             return response;
         }
     }

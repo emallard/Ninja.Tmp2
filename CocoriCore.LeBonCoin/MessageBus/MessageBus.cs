@@ -9,18 +9,21 @@ namespace CocoriCore.LeBonCoin
     {
         private readonly HandlerFinder handlerTypes;
         private readonly IFactory factory;
+        private readonly IPageMapper mapper;
 
         //private readonly IRepository repository;
 
         public MessageBus(
             HandlerFinder handlerTypes,
-            IFactory factory
+            IFactory factory,
+            IPageMapper mapper
             //IRepository repository,
             //IClaimsProvider authenticator
             )
         {
             this.handlerTypes = handlerTypes;
             this.factory = factory;
+            this.mapper = mapper;
             //this.authenticator = authenticator;
         }
 
@@ -50,8 +53,9 @@ namespace CocoriCore.LeBonCoin
                             if (profile.IdUtilisateur != userClaims.Id)
                                 throw new AuthenticationException("");
                         }*/
-
-            var response = await FindHandlerAndExecute(message);
+            object response;
+            if (!mapper.TryHandle(message, out response))
+                response = await FindHandlerAndExecute(message);
 
             if (message is ICommand)
             {

@@ -13,61 +13,71 @@ namespace CocoriCore.LeBonCoin
 
     public class Users_Connexion_Page
     {
-        public Users_MotDePasseOublie_Page_GET MotDePasseOublie = new Users_MotDePasseOublie_Page_GET();
-        public PageCall<Users_Connexion_Page_GET, Users_Connexion_POST, Users_Connexion_POSTResponse, Users_Connexion_Page_FormConnexion_POSTResponse> Form;
+        public Users_MotDePasseOublie_Page_GET MotDePasseOublie;
+        //public PageCall<Users_Connexion_Page_GET, Users_Connexion_POST, Users_Connexion_POSTResponse, Users_Connexion_Page_FormConnexion_POSTResponse> Form;
+        public Form<Users_Connexion_POST, Users_Connexion_Page_SeConnecter_Reponse> SeConnecter;
     }
 
-    public class Users_Connexion_Page_FormConnexion_POSTResponse : IClaimsResponse
+    public class Users_Connexion_Page_SeConnecter_Reponse : IClaimsResponse
     {
-        public IClaims Claims { get; set; }
+
+        private IClaims claims;
         public Vendeur_Dashboard_Page_GET PageDashboard;
+        public Users_Connexion_Page_SeConnecter_Reponse(IClaims claims)
+        {
+            this.claims = claims;
+        }
+
+        public IClaims GetClaims()
+        {
+            return claims;
+        }
+
+        public object GetResponse()
+        {
+            return PageDashboard;
+        }
     }
+
+    public class Users_Connexion_PageMapperModule : PageMapperModule
+    {
+        public Users_Connexion_PageMapperModule()
+        {
+            Map<Users_Connexion_POST, Users_Connexion_POSTResponse, Users_Connexion_Page_SeConnecter_Reponse>(
+                (m, r) => new Users_Connexion_Page_SeConnecter_Reponse(r.Claims)
+                {
+                    PageDashboard = new Vendeur_Dashboard_Page_GET()
+                }
+            );
+            Handle<Users_Connexion_Page_GET, Users_Connexion_Page>(x => new Users_Connexion_Page()
+            {
+                MotDePasseOublie = new Users_MotDePasseOublie_Page_GET(),
+                SeConnecter = new Form<Users_Connexion_POST, Users_Connexion_Page_SeConnecter_Reponse>()
+            });
+        }
+    }
+
+
+
     /*
-        public class Users_Connexion_PageHandler : MessageHandler<Users_Connexion_Page_GET, Users_Connexion_Page>
+        public class Users_Connexion_PageHandler : PageHandler<Users_Connexion_Page_GET, Users_Connexion_Page>
         {
             public Users_Connexion_PageHandler()
             {
             }
 
-            public override async Task<Users_Connexion_Page> ExecuteAsync(Users_Connexion_Page_GET query)
+            public override void ExecuteAsync(Users_Connexion_Page_GET query)
             {
-                await Task.CompletedTask;
-                return new Users_Connexion_Page()
-                {
-                    Form = new PageCall<Users_Connexion_Page_GET, Users_Connexion_POST, Users_Connexion_POSTResponse, Users_Connexion_Page_FormConnexion_POSTResponse>
-                    {
-                        PageMessage = query,
-                        Message = new Users_Connexion_POST(),
-                        Translate = (message, reponse) => new Users_Connexion_Page_FormConnexion_POSTResponse()
+                Create(x => x.Form,
+                        new Users_Connexion_POST(),
+                        reponse => new Users_Connexion_Page_FormConnexion_POSTResponse()
                         {
                             Claims = reponse.Claims,
                             PageDashboard = new Vendeur_Dashboard_Page_GET()
-                        },
-                        MemberName = "Form"
-                    }
-                };
+                        });
             }
 
         }
     */
-
-    public class Users_Connexion_PageHandler : PageHandler<Users_Connexion_Page_GET, Users_Connexion_Page>
-    {
-        public Users_Connexion_PageHandler()
-        {
-        }
-
-        public override void ExecuteAsync(Users_Connexion_Page_GET query)
-        {
-            Create(x => x.Form,
-                    new Users_Connexion_POST(),
-                    reponse => new Users_Connexion_Page_FormConnexion_POSTResponse()
-                    {
-                        Claims = reponse.Claims,
-                        PageDashboard = new Vendeur_Dashboard_Page_GET()
-                    });
-        }
-
-    }
 
 }

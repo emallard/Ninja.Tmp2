@@ -15,9 +15,9 @@ namespace CocoriCore.LeBonCoin
 
     }
 
-    public class Users_Inscription_POSTResponse : IClaimsResponse
+    public class Users_Inscription_POSTResponse
     {
-        public IClaims Claims { get; set; }
+        public IClaims Claims;
     }
 
     public class Users_Inscription_POSTHandler : MessageHandler<Users_Inscription_POST, Users_Inscription_POSTResponse>

@@ -17,13 +17,13 @@ namespace CocoriCore.LeBonCoin
 
             var vendeurAnnonce = vendeurDashboard
                 .Follow(p => p.NouvelleAnnonce)
-                .Submit(p => p.Form,
+                .Submit(p => p.Creer,
                         m =>
                         {
                             m.Ville = "Paris";
                             m.Categorie = "Voitures";
                         })
-                .ThenFollow(r => r.PageAnnonce)
+                .ThenFollow(r => r)
                 .Page;
 
             var visiteur = CreateUser("visiteur");

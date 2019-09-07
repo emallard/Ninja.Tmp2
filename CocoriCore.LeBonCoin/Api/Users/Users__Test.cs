@@ -16,7 +16,7 @@ namespace CocoriCore.LeBonCoin
 
             var dashboard =
             user.Display(new Users_Inscription_Page_GET())
-                .Submit(p => p.FormInscription,
+                .Submit(p => p.Inscription,
                         m =>
                         {
                             m.Email = "aa@aa.aa";
@@ -27,7 +27,7 @@ namespace CocoriCore.LeBonCoin
                         })
                 .ThenFollow(r => r.PageDashboard);
 
-            var contenu = dashboard.Submit(x => x.Data.Message);
+            var contenu = dashboard.Submit(x => x.Dashboard);
             contenu.Nom.Should().Be("DeNice");
             contenu.Prenom.Should().Be("Brice");
             /*
@@ -52,7 +52,7 @@ namespace CocoriCore.LeBonCoin
 
             var dashboard =
             vendeur1.Display(new Users_Inscription_Page_GET())
-                .Submit(p => p.FormInscription,
+                .Submit(p => p.Inscription,
                         m =>
                         {
                             m.Email = "aa@aa.aa";
@@ -66,7 +66,7 @@ namespace CocoriCore.LeBonCoin
             var connexion = vendeur2.Follow(p => p.Connexion);
 
             Action a = () => connexion
-                .Submit(p => p.Form,
+                .Submit(p => p.SeConnecter,
                         m =>
                         {
                             m.Email = "aa@aa.aa";
@@ -76,7 +76,7 @@ namespace CocoriCore.LeBonCoin
             a.Should().Throw<Exception>();
 
             Action b = () => connexion
-                .Submit(p => p.Form,
+                .Submit(p => p.SeConnecter,
                         m =>
                         {
                             m.Email = "bb@bb.bb";
@@ -97,7 +97,7 @@ namespace CocoriCore.LeBonCoin
 
             var confirmation =
             user.Display(new Users_Inscription_Page_GET())
-                .Submit(p => p.FormInscription,
+                .Submit(p => p.Inscription,
                         m =>
                         {
                             m.Email = "aa@aa.aa";
@@ -130,7 +130,7 @@ namespace CocoriCore.LeBonCoin
                             m.Confirmation = "nouveauPassw0rd";
                         })
                 .ThenFollow(r => r)
-                .Submit(p => p.Form,
+                .Submit(p => p.SeConnecter,
                         m =>
                         {
                             m.Email = "aa@aa.aa";

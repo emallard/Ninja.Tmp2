@@ -18,34 +18,6 @@ namespace CocoriCore
         public TMessage Message;
         [JsonIgnore]
         public Func<TMessage, TResponse, TPageResponse> Translate;
-
-        /*
-        public object GetMessage()
-        {
-            return this.Message;
-        }
-        public Type GetMessageType()
-        {
-            return typeof(TMessage);
-        }
-
-        public object GetPageMessage()
-        {
-            return this.PageMessage;
-        }
-        public Type GetPageMessageType()
-        {
-            return this.PageMessageType;
-        }
-
-        public string GetMemberName()
-        {
-            return this.MemberName;
-        }
-        */
-
     }
-
-
 
 }

@@ -8,6 +8,7 @@ using Ninject.Extensions.ContextPreservation;
 using Ninject;
 using Jose;
 using CocoriCore.Router;
+using CocoriCore.Page;
 
 namespace CocoriCore.LeBonCoin.Api
 {
@@ -32,7 +33,8 @@ namespace CocoriCore.LeBonCoin.Api
 
             this.Bind<IMessageBus>().To<CocoriCore.LeBonCoin.MessageBus>().InNamedScope("unitofwork");
             this.Bind<IExecuteHandler>().To<CocoriCore.LeBonCoin.ExecuteHandler>().InNamedScope("unitofwork");
-
+            this.Bind<IPageMapper>().ToConstant(new PageMapper(CocoriCore.LeBonCoin.AssemblyInfo.Assembly));
+            this.Bind<IClaimsProvider, IClaimsWriter>().To<ClaimsProviderAndWriter>().InNamedScope("unitofwork");
 
             // Middleware
             this.Bind<ApplicationMiddleware>().ToSelf();

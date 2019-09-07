@@ -37,14 +37,13 @@ namespace CocoriCore.LeBonCoin
             kernel.Bind<TestBrowserClaimsProvider>().ToConstant(new TestBrowserClaimsProvider(response =>
             {
                 if (response is IClaimsResponse claimsResponse)
-                    return claimsResponse.Claims;
+                    return claimsResponse.GetClaims();
                 return null;
             }));
             kernel.Bind<IClaimsProvider, IClaimsWriter>().To<ClaimsProviderAndWriter>().InNamedScope("unitofwork");
-
-
             kernel.Bind<BrowserHistory>().ToSelf().InSingletonScope();
 
+            kernel.Bind<IPageMapper>().ToConstant(new PageMapper(CocoriCore.LeBonCoin.AssemblyInfo.Assembly));
         }
 
         public TestBrowserFluent<Accueil_Page> CreateUser(string id)

@@ -75,16 +75,6 @@ namespace CocoriCore.LeBonCoin
             return this.browser.Display(m).Result;
         }
 
-        /*
-        public TestBrowserFluent<TPage> Submit2<TMessage, TMessageResponse>(
-            Func<TPage, Form<TMessage, TMessageResponse>> form, Action<TMessage> modifyMessage) where TMessage : new()
-        {
-            var f = form(Page);
-            modifyMessage(f.Message);
-            var formResponse = browser.Display(f.Message).Result;
-            return this;
-        }*/
-
 
         public TestBrowserFluentSubmitted<TPage, TFormResponse> Submit<TPageGet, TMessage, TMessageResponse, TFormResponse>(
             Func<TPage, PageCall<TPageGet, TMessage, TMessageResponse, TFormResponse>> getForm,
@@ -103,6 +93,18 @@ namespace CocoriCore.LeBonCoin
                 PageMember = getForm
             };*/
 
+            var formResponse = browser.Display(form).Result;
+            return new TestBrowserFluentSubmitted<TPage, TFormResponse>(this, formResponse);
+        }
+
+        public TestBrowserFluentSubmitted<TPage, TFormResponse> Submit<TMessage, TFormResponse>(
+            Func<TPage, Form<TMessage, TFormResponse>> getForm,
+            Action<TMessage> modifyMessage
+        )
+            where TMessage : IMessage, new()
+        {
+            var form = getForm(Page);
+            modifyMessage(form.Command);
             var formResponse = browser.Display(form).Result;
             return new TestBrowserFluentSubmitted<TPage, TFormResponse>(this, formResponse);
         }

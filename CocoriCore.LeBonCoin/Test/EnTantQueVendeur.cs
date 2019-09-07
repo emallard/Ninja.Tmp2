@@ -9,7 +9,7 @@ namespace CocoriCore.LeBonCoin
         public TestBrowserFluent<Vendeur_Dashboard_Page> Play(TestBrowserFluent<Accueil_Page> browserFluent)
         {
             var dashboard = browserFluent.Display(new Users_Inscription_Page_GET())
-                .Submit(p => p.FormInscription,
+                .Submit(p => p.Inscription,
                         m =>
                         {
                             m.Email = "aa@aa.aa";

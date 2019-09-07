@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using CocoriCore;
 using CocoriCore.Router;
+using CocoriCore.Page;
+using Newtonsoft.Json;
 
 namespace CocoriCore.LeBonCoin.Api
 {
@@ -16,6 +18,7 @@ namespace CocoriCore.LeBonCoin.Api
         private readonly IHttpResponseWriter responseWriter;
         private readonly IHttpErrorWriter errorWriter;
         private readonly ITracer tracer;
+        private readonly IClaimsWriter claimsWriter;
 
         public ApplicationMiddleware(
             IRouter router,
@@ -24,7 +27,8 @@ namespace CocoriCore.LeBonCoin.Api
             IErrorBus errorBus,
             IHttpResponseWriter responseWriter,
             IHttpErrorWriter errorWriter,
-            ITracer tracer
+            ITracer tracer,
+            IClaimsWriter claimsWriter
         )
         {
             this.router = router;
@@ -34,11 +38,16 @@ namespace CocoriCore.LeBonCoin.Api
             this.responseWriter = responseWriter;
             this.errorWriter = errorWriter;
             this.tracer = tracer;
+            this.claimsWriter = claimsWriter;
         }
 
 
         public async Task InvokeAsync(HttpContext httpContext, Func<Task> next)
         {
+            string xauth;
+            if (httpContext.Request.Cookies.TryGetValue("X-Auth", out xauth))
+                claimsWriter.SetClaims(new JsonSerializer().Deserialize<UserClaims>(xauth));
+
             var start = DateTime.Now;
             Route route = null;
             try
