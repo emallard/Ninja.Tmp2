@@ -12,7 +12,7 @@ namespace CocoriCore.LeBonCoin
     {
         public AsyncCall<Vendeur_Dashboard_Page_GET, Vendeur_Dashboard> Dashboard;
         public Vendeur_NouvelleAnnonce_Page_GET NouvelleAnnonce;
-        public Vendeur_Annonces_Page_GET Reunions;
+        public Vendeur_Annonces_Page_GET MesAnnonces;
         public MenuUtilisateur MenuUtilisateur;
     }
 
@@ -24,7 +24,7 @@ namespace CocoriCore.LeBonCoin
             {
                 Dashboard = new AsyncCall<Vendeur_Dashboard_Page_GET, Vendeur_Dashboard>() { PageQuery = x },
                 NouvelleAnnonce = new Vendeur_NouvelleAnnonce_Page_GET(),
-                Reunions = new Vendeur_Annonces_Page_GET(),
+                MesAnnonces = new Vendeur_Annonces_Page_GET(),
                 MenuUtilisateur = new MenuUtilisateur()
             });
 

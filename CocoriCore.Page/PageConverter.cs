@@ -4,6 +4,7 @@ using CocoriCore;
 using CocoriCore.Router;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Soltys.ChangeCase;
 
 namespace CocoriCore
 {
@@ -35,9 +36,33 @@ namespace CocoriCore
         {
             var message = (IPage)value;
             var route = routerOptions.AllRoutes.First(r => r.MessageType == message.GetType());
-            // TODO replace with values in message
+
+            String url = route.ParameterizedUrl;
+            foreach (var p in route.UrlParameters)
+            {
+                var i = url.IndexOf(p.Name.CamelCase() + ":");
+                var j = url.IndexOf("/", i);
+                url = url.Substring(0, i)
+                    + p.InvokeGetter(message).ToString()
+                    + (j == -1 ? "" : url.Substring(j, url.Length - j));
+            }
+
+            var query = "";
+            var memberInfos = message.GetType().GetPropertiesAndFields();
+            foreach (var mi in memberInfos)
+            {
+                if (!route.UrlParameters.Any(p => p.Name == mi.Name))
+                {
+                    if (query == "")
+                        query += "?";
+                    else
+                        query += "&";
+                    query += mi.Name + "=" + mi.InvokeGetter(message);
+                }
+            }
+
             JObject jObject = JObject.FromObject(value);
-            jObject.Add("href", JToken.FromObject(route.ParameterizedUrl));
+            jObject.Add("href", JToken.FromObject(url + query));
             jObject.WriteTo(writer);
         }
     }

@@ -22,28 +22,17 @@ namespace CocoriCore.LeBonCoin
         {
             Map<Vendeur_NouvelleAnnonce_POST, Guid, Vendeur_Annonces_Id_Page_GET>((m, r) => new Vendeur_Annonces_Id_Page_GET { Id = r });
 
-            // Map<Vendeur_NouvelleAnnonce_Page_GET, Vendeur_NouvelleAnnonce_Page>
-        }
-    }
-
-
-
-    public class Vendeur_NouvelleAnnonce_Page_GETHandler : MessageHandler<Vendeur_NouvelleAnnonce_Page_GET, Vendeur_NouvelleAnnonce_Page>
-    {
-
-        public override async Task<Vendeur_NouvelleAnnonce_Page> ExecuteAsync(Vendeur_NouvelleAnnonce_Page_GET message)
-        {
-            await Task.CompletedTask;
-            return new Vendeur_NouvelleAnnonce_Page()
+            Handle<Vendeur_NouvelleAnnonce_Page_GET, Vendeur_NouvelleAnnonce_Page>(m =>
             {
-                Creer = new Form<Vendeur_NouvelleAnnonce_POST, Vendeur_Annonces_Id_Page_GET>()
+                return new Vendeur_NouvelleAnnonce_Page()
                 {
-                    Command = new Vendeur_NouvelleAnnonce_POST()
-                },
-                Categories = new Call<Categories_GET, string[]>(
-                    new Categories_GET()
-                )
-            };
+                    Creer = new Form<Vendeur_NouvelleAnnonce_POST, Vendeur_Annonces_Id_Page_GET>()
+                    {
+                        Command = new Vendeur_NouvelleAnnonce_POST()
+                    },
+                    Categories = new Call<Categories_GET, string[]>(new Categories_GET())
+                };
+            });
         }
     }
 }

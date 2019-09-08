@@ -6,10 +6,11 @@
 </head>
 
 <body>
+    <!--
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Navbar</a>
     </nav>
-
+    -->
     <div class="container">
         <div id='content'>
 
@@ -83,11 +84,12 @@
                 if (page[k]["IsAsyncCall"]) {
                     console.log('async call : ' + k);
                     let response = await call(page[k]);
+                    let responseHtml = JSON.stringify(response);
+                    /*
                     let responseHtml = '';
                     for (let x of Object.keys(response)) {
                         responseHtml += x + ' : ' + response[x] + '<br/>';
-                    }
-
+                    }*/
                     document.getElementById('content').innerHTML += responseHtml;
                 }
             }

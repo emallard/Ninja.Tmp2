@@ -8,14 +8,27 @@ namespace CocoriCore.LeBonCoin
     {
         public string Ville;
         public string Categorie;
+        public string Texte;
     }
 
     public class Vendeur_NouvelleAnnonce_POSTHandler : MessageHandler<Vendeur_NouvelleAnnonce_POST, Guid>
     {
+        private readonly IRepository repository;
+
+        public Vendeur_NouvelleAnnonce_POSTHandler(IRepository repository)
+        {
+            this.repository = repository;
+        }
+
         public async override Task<Guid> ExecuteAsync(Vendeur_NouvelleAnnonce_POST query)
         {
-            await Task.CompletedTask;
             var id = Guid.NewGuid();
+            var annonce = new Annonce();
+            annonce.Id = id;
+            annonce.Ville = query.Ville;
+            annonce.Categorie = query.Categorie;
+            annonce.Texte = query.Texte;
+            await repository.InsertAsync(annonce);
             return id;
         }
     }
