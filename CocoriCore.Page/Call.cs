@@ -5,6 +5,7 @@ namespace CocoriCore
 
     public class Call : IMessage
     {
+        public bool IsCall = true;
         public Type _Type;
         public Call()
         {

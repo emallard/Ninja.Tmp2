@@ -34,7 +34,7 @@
             _page = JSON.parse(txt);
             console.log(_page);
 
-            let html = links(_page) + forms(_page);
+            let html = format(_page);
             document.getElementById('content').innerHTML = html;
             asyncCalls(_page);
             registerOnSubmits(_page);
@@ -84,30 +84,52 @@
                 if (page[k]["IsAsyncCall"]) {
                     console.log('async call : ' + k);
                     let response = await call(page[k]);
-                    let responseHtml = JSON.stringify(response);
-                    /*
-                    let responseHtml = '';
-                    for (let x of Object.keys(response)) {
-                        responseHtml += x + ' : ' + response[x] + '<br/>';
-                    }*/
-                    document.getElementById('content').innerHTML += responseHtml;
+                    document.getElementById('content').innerHTML += format(response);
                 }
             }
         }
 
-        function forms(page) {
+        function format(obj) {
             let html = '';
-            let keys = Object.keys(page);
-            for (let k of keys) {
-                if (page[k]['Command'] != null) {
-                    console.log('form : ' + k);
 
-                    html += '<form id = "' + k + '">'
-                        + inputs(page[k])
-                        + '<button  type="submit" class="btn btn-primary">' + k + '</button>'
-                        + '</form>';
-                }
+            if (Array.isArray(obj)) {
+                html += "<ul>"
+                for (let elt of obj)
+                    html += "<li>" + format(elt) + '</li>';
+                html += "</ul>"
             }
+            else {
+                html += "<ul>"
+                let keys = Object.keys(obj);
+                for (let k of keys) {
+                    let x = obj[k];
+                    if (x["IsAsyncCall"]) { }
+                    else if (x["IsCall"]) { }
+                    else if (x["IsForm"])
+                        html += li(formatForm(k, x));
+                    else if (x["href"])
+                        html += li('<a href="' + x['href'].replace('/api', '') + '">' + k + '</a><br/>');
+                    else if (Array.isArray(x))
+                        html += li(k + " : <br/>" + format(x));
+                    else if (typeof (x) == 'object')
+                        html += li(k + ' : <br/>' + format(x));
+                    else
+                        html += li(k + " : " + x + '<br/>');
+                }
+                html += "</ul>"
+            }
+            return html;
+        }
+
+        function li(h) {
+            return '<li>' + h + '</li>';
+        }
+
+        function formatForm(k, form) {
+            let html = '<form id = "' + k + '">'
+                + inputs(form)
+                + '<button  type="submit" class="btn btn-primary">' + k + '</button>'
+                + '</form>';
             return html;
         }
 
