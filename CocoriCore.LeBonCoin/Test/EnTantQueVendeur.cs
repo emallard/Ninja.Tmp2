@@ -6,7 +6,7 @@ namespace CocoriCore.LeBonCoin
 {
     public class EnTantQueVendeur : IScenario<Accueil_Page, Vendeur_Dashboard_Page>
     {
-        public TestBrowserFluent<Vendeur_Dashboard_Page> Play(TestBrowserFluent<Accueil_Page> browserFluent)
+        public BrowserFluent<Vendeur_Dashboard_Page> Play(BrowserFluent<Accueil_Page> browserFluent)
         {
             var dashboard = browserFluent.Display(new Users_Inscription_Page_GET())
                 .Submit(p => p.Inscription,

@@ -1,20 +1,12 @@
 using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using CocoriCore;
 
 namespace CocoriCore.Page
 {
-    public class TestBrowserClaimsProvider
-    {
-        public Func<object, IClaims> OnResponse;
 
-        public TestBrowserClaimsProvider(Func<object, IClaims> onResponse)
-        {
-            OnResponse = onResponse;
-        }
-    }
-
-    public class TestBrowser
+    public class TestBrowser : IBrowser
     {
         private readonly IUnitOfWorkFactory unitOfWorkFactory;
         private readonly TestBrowserClaimsProvider browserclaimsProvider;
@@ -28,19 +20,16 @@ namespace CocoriCore.Page
             this.browserclaimsProvider = browserclaimsProvider;
         }
 
-        public async Task<T> Follow<TPage, T>(TPage page, IMessage<T> message)
+        public async Task<T> Follow<TPage, T>(TPage page, Expression<Func<TPage, IMessage<T>>> expressionMessage)
         {
+            var func = expressionMessage.Compile();
+            var message = func(page);
             return await this.ExecuteAsync(message);
         }
 
         public async Task<T> Display<T>(IMessage<T> message)
         {
             return await this.ExecuteAsync(message);
-        }
-
-        public async Task<T> Submit<TPage, T>(TPage page, Call form, IMessage<T> message)
-        {
-            return (T)(await this.ExecuteAsync((IMessage)message));
         }
 
         public async Task<T> SubmitRedirect<T>(IMessage<T> message)

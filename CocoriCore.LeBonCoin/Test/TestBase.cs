@@ -3,13 +3,14 @@ using System.Threading.Tasks;
 using CocoriCore;
 using CocoriCore.Ninject;
 using CocoriCore.Page;
+using CocoriCore.Router;
 using Ninject;
 using Ninject.Extensions.ContextPreservation;
 using Ninject.Extensions.NamedScope;
 
 namespace CocoriCore.LeBonCoin
 {
-    public class TestBase
+    public class TestBase : IDisposable
     {
         private StandardKernel kernel;
 
@@ -44,11 +45,19 @@ namespace CocoriCore.LeBonCoin
             kernel.Bind<BrowserHistory>().ToSelf().InSingletonScope();
 
             kernel.Bind<IPageMapper>().ToConstant(new PageMapper(CocoriCore.LeBonCoin.AssemblyInfo.Assembly));
+
+            kernel.Bind<IBrowser>().To<TestBrowser>();
         }
 
-        public TestBrowserFluent<Accueil_Page> CreateUser(string id)
+        public void WithSeleniumBrowser(RouterOptions routerOptions)
         {
-            return kernel.Get<TestBrowserFluent<int>>().SetId(id).Display(new Accueil_Page_GET());
+            kernel.Bind<RouterOptions>().ToConstant(routerOptions);
+            kernel.Rebind<IBrowser>().To<SeleniumBrowser>();
+        }
+
+        public BrowserFluent<Accueil_Page> CreateUser(string id)
+        {
+            return kernel.Get<BrowserFluent<int>>().SetId(id).Display(new Accueil_Page_GET());
         }
 
         public IEmailReader GetEmailReader()
@@ -59,6 +68,12 @@ namespace CocoriCore.LeBonCoin
         public BrowserHistory GetHistory()
         {
             return kernel.Get<BrowserHistory>();
+        }
+
+        public void Dispose()
+        {
+            kernel.Dispose();
+            //driver.Dispose();
         }
     }
 }

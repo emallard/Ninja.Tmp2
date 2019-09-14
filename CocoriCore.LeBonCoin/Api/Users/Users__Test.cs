@@ -8,6 +8,14 @@ namespace CocoriCore.LeBonCoin
 {
     public class Users__Test : TestBase
     {
+        [Fact]
+        public void FollowInscription()
+        {
+            var user = CreateUser("vendeur");
+
+            var dashboard =
+            user.Follow(p => p.Inscription);
+        }
 
         [Fact]
         public void InscriptionConnexion()
@@ -15,7 +23,7 @@ namespace CocoriCore.LeBonCoin
             var user = CreateUser("vendeur");
 
             var dashboard =
-            user.Display(new Users_Inscription_Page_GET())
+            user.Follow(p => p.Inscription)
                 .Submit(p => p.Inscription,
                         m =>
                         {
@@ -110,7 +118,7 @@ namespace CocoriCore.LeBonCoin
                 .Follow(p => p.MenuUtilisateur.Deconnexion)
                 .Follow(p => p.Connexion)
                 .Follow(p => p.MotDePasseOublie)
-                .Submit(p => p.Form,
+                .Submit(p => p.EnvoyerEmail,
                         m => m.Email = "aa@aa.aa")
                 .ThenFollow(r => r)
                 .Page;
@@ -122,7 +130,7 @@ namespace CocoriCore.LeBonCoin
             var lien = emails[0].Body.Lien;
 
             var dashboard = user.Display(lien)
-                .Submit(p => p.Form,
+                .Submit(p => p.ConfirmerNouveauMotDePasse,
                         m =>
                         {
                             m.Token = lien.Token;

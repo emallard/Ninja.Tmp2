@@ -12,7 +12,18 @@ namespace CocoriCore.LeBonCoin
 
     public class Users_SaisieNouveauMotDePasse_Token_Page
     {
-        public PageCall<Users_SaisieNouveauMotDePasse_Token_Page_GET, Users_SaisieNouveauMotDePasse_Token_POST, Void, Users_Connexion_Page_GET> Form;
+        //public PageCall<Users_SaisieNouveauMotDePasse_Token_Page_GET, Users_SaisieNouveauMotDePasse_Token_POST, Void, Users_Connexion_Page_GET> Form;
+        public Form<Users_SaisieNouveauMotDePasse_Token_POST, Users_Connexion_Page_GET> ConfirmerNouveauMotDePasse;
+    }
+
+    public class Users_SaisieNouveauMotDePasse_Token_PageMapperModule : PageMapperModule
+    {
+        public Users_SaisieNouveauMotDePasse_Token_PageMapperModule()
+        {
+            Map<Users_SaisieNouveauMotDePasse_Token_POST, Void, Users_Connexion_Page_GET>(
+                (m, r) => new Users_Connexion_Page_GET()
+            );
+        }
     }
 
     public class Users_SaisieNouveauMotDePasse_Token_PAGEHandler : MessageHandler<Users_SaisieNouveauMotDePasse_Token_Page_GET, Users_SaisieNouveauMotDePasse_Token_Page>
@@ -33,13 +44,7 @@ namespace CocoriCore.LeBonCoin
                 throw new Exception("token invalide");
             return new Users_SaisieNouveauMotDePasse_Token_Page()
             {
-                Form = new PageCall<Users_SaisieNouveauMotDePasse_Token_Page_GET, Users_SaisieNouveauMotDePasse_Token_POST, Void, Users_Connexion_Page_GET>
-                {
-                    PageMessage = message,
-                    Message = new Users_SaisieNouveauMotDePasse_Token_POST(),
-                    Translate = (m, r) => new Users_Connexion_Page_GET(),
-                    MemberName = "Form"
-                }
+                ConfirmerNouveauMotDePasse = new Form<Users_SaisieNouveauMotDePasse_Token_POST, Users_Connexion_Page_GET>()
             };
         }
     }

@@ -81,7 +81,7 @@ namespace CocoriCore.LeBonCoin.Api
                     await ctx.Response.WriteAsync(File.ReadAllText("CocoriCore.LeBonCoin.Api/page2.html"));
                 }
 
-                await next();
+                //await next();
             });
 
 

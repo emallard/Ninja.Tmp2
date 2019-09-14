@@ -1,11 +1,12 @@
 using System;
 using System.Threading.Tasks;
+using CocoriCore.Router;
 
 namespace CocoriCore.LeBonCoin.Api
 {
     public class Tests_Id_GET : IMessage<Tests_Id_Response>
     {
-        public Type Type;
+        public string Type;
         public string TestName;
     }
 
@@ -17,12 +18,30 @@ namespace CocoriCore.LeBonCoin.Api
 
     public class Tests_Id_Handler : MessageHandler<Tests_Id_GET, Tests_Id_Response>
     {
+        private readonly RouterOptions routerOptions;
+
+        public Tests_Id_Handler(RouterOptions routerOptions)
+        {
+            this.routerOptions = routerOptions;
+        }
+
         public override async Task<Tests_Id_Response> ExecuteAsync(Tests_Id_GET message)
         {
             await Task.CompletedTask;
-            var testInstance = (TestBase)Activator.CreateInstance(message.Type);
-            var methodInfo = message.Type.GetMethod(message.TestName);
-            methodInfo.Invoke(testInstance, null);
+
+            var testType = Type.GetType(System.Web.HttpUtility.UrlDecode(message.Type));//.Type.Replace("%20", " "));
+            var testInstance = (TestBase)Activator.CreateInstance(testType);
+
+            await Task.Run(() =>
+            {
+                testInstance.WithSeleniumBrowser(routerOptions);
+                var methodInfo = testType.GetMethod(message.TestName);
+                var result = methodInfo.Invoke(testInstance, null);
+                if (result is Task task)
+                {
+                    task.Wait(); ;
+                }
+            });
 
             return new Tests_Id_Response()
             {

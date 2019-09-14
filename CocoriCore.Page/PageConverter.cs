@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using CocoriCore;
 using CocoriCore.Router;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -13,10 +12,12 @@ namespace CocoriCore
     public class PageConverter : JsonConverter
     {
         private readonly RouterOptions routerOptions;
+        private readonly RouteToUrl routeToUrl;
 
-        public PageConverter(RouterOptions routerOptions)
+        public PageConverter(RouterOptions routerOptions, RouteToUrl routeToUrl)
         {
             this.routerOptions = routerOptions;
+            this.routeToUrl = routeToUrl;
         }
 
         public override bool CanWrite { get { return true; } }
@@ -34,37 +35,11 @@ namespace CocoriCore
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var message = (IPage)value;
-            var route = routerOptions.AllRoutes.First(r => r.MessageType == message.GetType());
-
-            String url = route.ParameterizedUrl;
-            foreach (var p in route.UrlParameters)
-            {
-                var i = url.IndexOf(p.Name.CamelCase() + ":");
-                var j = url.IndexOf("/", i);
-                url = url.Substring(0, i)
-                    + p.InvokeGetter(message).ToString()
-                    + (j == -1 ? "" : url.Substring(j, url.Length - j));
-            }
-
-            var query = "";
-            var memberInfos = message.GetType().GetPropertiesAndFields();
-            foreach (var mi in memberInfos)
-            {
-                if (!route.UrlParameters.Any(p => p.Name == mi.Name))
-                {
-                    if (query == "")
-                        query += "?";
-                    else
-                        query += "&";
-                    query += mi.Name + "=" + mi.InvokeGetter(message);
-                }
-            }
-
+            var message = (IMessage)value;
+            var url = this.routeToUrl.ToUrl(message);
             JObject jObject = JObject.FromObject(value);
-            jObject.Add("href", JToken.FromObject(url + query));
+            jObject.Add("href", JToken.FromObject(url));
             jObject.WriteTo(writer);
         }
     }
-
 }
