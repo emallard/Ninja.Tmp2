@@ -35,7 +35,7 @@ namespace CocoriCore.LeBonCoin
                         })
                 .ThenFollow(r => r.PageDashboard);
 
-            var contenu = dashboard.Submit(x => x.Dashboard);
+            var contenu = dashboard.Page.Modele.Result;
             contenu.Nom.Should().Be("DeNice");
             contenu.Prenom.Should().Be("Brice");
             /*

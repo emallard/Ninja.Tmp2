@@ -84,7 +84,8 @@
                 if (page[k]["IsAsyncCall"]) {
                     console.log('async call : ' + k);
                     let response = await call(page[k]);
-                    document.getElementById('content').innerHTML += format(response);
+                    page[k].Result = response;
+                    document.getElementById(k).innerHTML += format(response);
                 }
             }
 
@@ -105,7 +106,9 @@
                 let keys = Object.keys(obj);
                 for (let k of keys) {
                     let x = obj[k];
-                    if (x["IsAsyncCall"]) { }
+                    if (x == null) { }
+                    else if (x["IsAsyncCall"])
+                        html += `<li id="${k}">${k} : <br/></li>`;
                     else if (x["IsCall"]) { }
                     else if (x["IsForm"])
                         html += li(formatForm(k, x));
@@ -126,6 +129,7 @@
         function li(h) {
             return '<li>' + h + '</li>';
         }
+
 
         function formatForm(k, form) {
             let html = '<form id = "' + k + '">'

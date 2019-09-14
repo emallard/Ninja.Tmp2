@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CocoriCore;
 using CocoriCore.Router;
+using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
@@ -53,12 +54,22 @@ namespace CocoriCore.Page
         public async Task<T> SubmitRedirect<T>(IMessage<T> message)
         {
             await Task.CompletedTask;
+
+            // attendre que la page soit chargée
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(d => d.FindElements(By.Id("asyncCallsDone")).Count > 0);
+
             return DeserializePage<T>();
         }
 
         public T DeserializePage<T>()
         {
-            return default(T);
+            IJavaScriptExecutor js = driver as IJavaScriptExecutor;
+            var _page = (object)js.ExecuteScript("return _page;");
+
+            JObject jObject = JObject.FromObject(_page);
+            var page = jObject.ToObject<T>();
+            return page;
         }
         /*
         public void Dispose()

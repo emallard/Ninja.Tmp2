@@ -110,7 +110,7 @@ namespace CocoriCore.LeBonCoin
         public BrowserFluent<T> ThenFollow<T>(Func<TPostResponse, IMessage<T>> getMessage)
         {
             // TODO difference TestBrowser / SeleniumBrowser
-            if (browserFluent.Page != null)
+            if (browserFluent.browser is TestBrowser)
             {
                 var message = getMessage(postResponse);
                 this.browserFluent.history.Event(this.browserFluent.Id, HistoryEventType.FormRedirect, message);
@@ -119,7 +119,8 @@ namespace CocoriCore.LeBonCoin
             }
             else
             {
-                return new BrowserFluent<T>(this.browserFluent.history, this.browserFluent.browser).SetPageAndId(default(T), this.browserFluent.Id);
+                var page = browserFluent.browser.SubmitRedirect((IMessage<T>)null).Result;
+                return new BrowserFluent<T>(this.browserFluent.history, this.browserFluent.browser).SetPageAndId(page, this.browserFluent.Id);
             }
         }
     }
