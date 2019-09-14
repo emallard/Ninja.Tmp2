@@ -51,6 +51,8 @@ namespace CocoriCore.LeBonCoin.Api
             builder.Get<Tests_GET>().SetPath("api/tests");
             builder.Get<Tests_Id_GET>().SetPath(x => $"api/tests/{x.Type}/{x.TestName}").UseQuery();
 
+            builder.Get<GraphViz_GET>().SetPath("api/graph1");
+
             return builder.Options;
         }
     }
