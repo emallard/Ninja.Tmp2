@@ -21,18 +21,18 @@ namespace CocoriCore.LeBonCoin
 
     public class BrowserHistory
     {
-        private List<HistoryEvent> events = new List<HistoryEvent>();
+        public List<HistoryEvent> Events = new List<HistoryEvent>();
 
         public void Event(string id, HistoryEventType eventType, object message)
         {
-            this.events.Add(new HistoryEvent() { Id = id, EventType = eventType, Message = message });
+            this.Events.Add(new HistoryEvent() { Id = id, EventType = eventType, Message = message });
         }
 
         public string Summary()
         {
             var sb = new StringBuilder();
             var previousId = "";
-            foreach (var e in events)
+            foreach (var e in Events)
             {
                 if (e.Id != previousId)
                 {

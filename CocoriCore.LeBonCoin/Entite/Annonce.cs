@@ -6,10 +6,11 @@ namespace CocoriCore.LeBonCoin
 {
 
 
-    public class Annonce : IEntity
+    public class Annonce : IMyEntity<Annonce>
     {
         public Guid Id { get; set; }
-        public Guid IdUtilisateur { get; set; }
+        public TypedId<Annonce> TId { get; set; }
+        public TypedId<Utilisateur> IdUtilisateur { get; set; }
         public string Texte { get; set; }
         public string Categorie { get; set; }
         public string Ville { get; set; }

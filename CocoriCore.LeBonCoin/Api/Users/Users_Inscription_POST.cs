@@ -42,7 +42,7 @@ namespace CocoriCore.LeBonCoin
 
             var profile = new Profile()
             {
-                IdUtilisateur = utilisateur.Id,
+                IdUtilisateur = utilisateur.TId,
                 Nom = message.Nom,
                 Prenom = message.Prenom
             };
@@ -52,7 +52,7 @@ namespace CocoriCore.LeBonCoin
 
             return new Users_Inscription_POSTResponse()
             {
-                Claims = new UserClaims() { IdUtilisateur = utilisateur.Id }
+                Claims = new UserClaims() { IdUtilisateur = utilisateur.TId }
             };
         }
     }
