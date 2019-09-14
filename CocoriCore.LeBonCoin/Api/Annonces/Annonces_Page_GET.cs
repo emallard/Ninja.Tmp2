@@ -26,9 +26,9 @@ namespace CocoriCore.LeBonCoin
         public Annonces_Id_Page_GET Lien;
     }
 
-    public class Annonces_PageMapperModule : PageMapperModule
+    public class Annonces_PageModule : PageModule
     {
-        public Annonces_PageMapperModule()
+        public Annonces_PageModule()
         {
             Map<Annonces_Page_GET, Annonces_GET>(m => new Annonces_GET() { Categorie = m.Categorie, Ville = m.Ville });
             Map<Annonces_GET, Annonces_Item[], Annonces_Page_Item[]>((m, r) => r.Select(x => new Annonces_Page_Item()

@@ -16,9 +16,9 @@ namespace CocoriCore.LeBonCoin
         public AsyncCall<Vendeur_Dashboard_Page_GET, Vendeur_Dashboard> Modele;
     }
 
-    public class Vendeur_Annonces_PageMapperModule : PageMapperModule
+    public class Vendeur_Annonces_PageModule : PageModule
     {
-        public Vendeur_Annonces_PageMapperModule()
+        public Vendeur_Annonces_PageModule()
         {
             Handle<Vendeur_Dashboard_Page_GET, Vendeur_Dashboard_Page>(x => new Vendeur_Dashboard_Page()
             {

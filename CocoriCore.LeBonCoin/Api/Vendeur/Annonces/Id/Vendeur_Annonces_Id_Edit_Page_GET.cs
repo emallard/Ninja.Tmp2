@@ -6,7 +6,7 @@ using CocoriCore;
 namespace CocoriCore.LeBonCoin
 {
 
-    public class Vendeur_Annonces_Id_Edit_Page_GET : IMessage<Vendeur_Annonces_Id_Edit_Page>
+    public class Vendeur_Annonces_Id_Edit_Page_GET : IPage<Vendeur_Annonces_Id_Edit_Page>
     {
         public Guid Id;
     }
@@ -16,13 +16,14 @@ namespace CocoriCore.LeBonCoin
         public Call<Categories_GET, string[]> Categories;
         public Call<Villes_GET, string[]> RechercheVilles;
         public AsyncCall<Vendeur_Annonces_Id_Edit_Page_GET, AnnonceModele> Modele;
-        public Form<Vendeur_Annonces_Id_Edit_POST, Vendeur_Annonces_Id_GET> Form2;
+        public Form<Vendeur_Annonces_Id_Edit_POST, Vendeur_Annonces_Id_GET> Enregistrer;
+        public Vendeur_Annonces_Id_Page_GET Annuler;
     }
 
     public class AnnonceModele
     {
         public Vendeur_Annonces_Id_Edit_GETResponse Data;
-        public Vendeur_Annonces_Id_Page_GET LienAnnonce;
+
     }
 
     public class PageUI
@@ -31,9 +32,9 @@ namespace CocoriCore.LeBonCoin
         //                           Categories et Form2.Message.Categorie une seule fois pour un Select
     }
 
-    public class Vendeur_Annonces_Id_Edit_PageMapperModule : PageMapperModule
+    public class Vendeur_Annonces_Id_Edit_PageModule : PageModule
     {
-        public Vendeur_Annonces_Id_Edit_PageMapperModule()
+        public Vendeur_Annonces_Id_Edit_PageModule()
         {
             Map<Vendeur_Annonces_Id_Edit_Page_GET, Vendeur_Annonces_Id_Edit_GET>(
                 pageQuery => new Vendeur_Annonces_Id_Edit_GET { Id = pageQuery.Id }
@@ -41,40 +42,26 @@ namespace CocoriCore.LeBonCoin
             Map<Vendeur_Annonces_Id_Edit_GET, Vendeur_Annonces_Id_Edit_GETResponse, AnnonceModele>(
                 (m, r) => new AnnonceModele
                 {
-                    Data = r,
-                    LienAnnonce = new Vendeur_Annonces_Id_Page_GET { Id = m.Id }
+                    Data = r
                 });
             Map<Vendeur_Annonces_Id_Edit_POST, Void, Vendeur_Annonces_Id_Edit_Page_GET>(
                 (m, r) => new Vendeur_Annonces_Id_Edit_Page_GET { Id = m.Id }
             );
-        }
-    }
 
-
-    public class Vendeur_Annonces_Id_Edit_PageHandler : MessageHandler<Vendeur_Annonces_Id_Edit_Page_GET, Vendeur_Annonces_Id_Edit_Page>
-    {
-        private readonly IRepository repository;
-
-        public Vendeur_Annonces_Id_Edit_PageHandler(IRepository repository)
-        {
-            this.repository = repository;
-        }
-
-        public override async Task<Vendeur_Annonces_Id_Edit_Page> ExecuteAsync(Vendeur_Annonces_Id_Edit_Page_GET pageQuery)
-        {
-            await Task.CompletedTask;
-            return new Vendeur_Annonces_Id_Edit_Page
-            {
-                Form2 = new Form<Vendeur_Annonces_Id_Edit_POST, Vendeur_Annonces_Id_GET>()
+            Handle<Vendeur_Annonces_Id_Edit_Page_GET, Vendeur_Annonces_Id_Edit_Page>(
+                pageQuery => new Vendeur_Annonces_Id_Edit_Page
                 {
-                    Command = new Vendeur_Annonces_Id_Edit_POST()
-                },
-                //Modele = new AsyncCall<PageGet, Vendeur_Annonces_Id_Edit_GETResponse>();
-                Modele = new AsyncCall<Vendeur_Annonces_Id_Edit_Page_GET, AnnonceModele>()
-                {
-                    PageQuery = pageQuery
+                    Enregistrer = new Form<Vendeur_Annonces_Id_Edit_POST, Vendeur_Annonces_Id_GET>()
+                    {
+                        Command = new Vendeur_Annonces_Id_Edit_POST()
+                    },
+                    Annuler = new Vendeur_Annonces_Id_Page_GET { Id = pageQuery.Id },
+                    Modele = new AsyncCall<Vendeur_Annonces_Id_Edit_Page_GET, AnnonceModele>()
+                    {
+                        PageQuery = pageQuery
+                    }
                 }
-            };
+            );
         }
     }
 }

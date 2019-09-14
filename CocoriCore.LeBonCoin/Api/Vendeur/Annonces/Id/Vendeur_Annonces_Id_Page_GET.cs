@@ -13,13 +13,13 @@ namespace CocoriCore.LeBonCoin
     public class Vendeur_Annonces_Id_Page
     {
         public Vendeur_Dashboard_Page_GET RetourDashboard;
-        public AsyncCall<Vendeur_Annonces_Id_Page_GET, Vendeur_Annonces_Id> Data;
-        public Vendeur_Annonces_Id_Edit_Page_GET Edit;
+        public AsyncCall<Vendeur_Annonces_Id_Page_GET, Vendeur_Annonces_Id> Modele;
+        public Vendeur_Annonces_Id_Edit_Page_GET Modifier;
     }
 
-    public class Vendeur_Annonces_Id_PageMapperModule : PageMapperModule
+    public class Vendeur_Annonces_Id_PageModule : PageModule
     {
-        public Vendeur_Annonces_Id_PageMapperModule()
+        public Vendeur_Annonces_Id_PageModule()
         {
             Map<Vendeur_Annonces_Id_Page_GET, Vendeur_Annonces_Id_GET>(pageQuery => new Vendeur_Annonces_Id_GET { Id = pageQuery.Id });
             Map<Vendeur_Annonces_Id_GET, Vendeur_Annonces_Id, Vendeur_Annonces_Id>((m, r) => r);
@@ -29,8 +29,8 @@ namespace CocoriCore.LeBonCoin
                 return new Vendeur_Annonces_Id_Page()
                 {
                     RetourDashboard = new Vendeur_Dashboard_Page_GET(),
-                    Edit = new Vendeur_Annonces_Id_Edit_Page_GET() { Id = pageQuery.Id },
-                    Data = new AsyncCall<Vendeur_Annonces_Id_Page_GET, Vendeur_Annonces_Id>() { PageQuery = pageQuery }
+                    Modifier = new Vendeur_Annonces_Id_Edit_Page_GET() { Id = pageQuery.Id },
+                    Modele = new AsyncCall<Vendeur_Annonces_Id_Page_GET, Vendeur_Annonces_Id>() { PageQuery = pageQuery }
                 };
             });
         }

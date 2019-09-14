@@ -11,12 +11,12 @@ namespace CocoriCore
         Dictionary<Tuple<Type, Type>, PageMapping2> mappings2;
         Dictionary<Tuple<Type, Type, Type>, PageMapping3> mappings3;
         Dictionary<Tuple<Type, Type>, Type> intermediateType;
-        Dictionary<Type, MessageHandling> handlings;
+        Dictionary<Type, PageHandling> handlings;
 
         public PageMapper(params Assembly[] assemblies)
         {
-            var moduleTypes = assemblies.SelectMany(a => a.GetTypes().Where(t => t.IsAssignableTo(typeof(PageMapperModule)))).ToArray();
-            var modules = moduleTypes.Select(t => Activator.CreateInstance(t)).Cast<PageMapperModule>().ToArray();
+            var moduleTypes = assemblies.SelectMany(a => a.GetTypes().Where(t => t.IsAssignableTo(typeof(PageModule)))).ToArray();
+            var modules = moduleTypes.Select(t => Activator.CreateInstance(t)).Cast<PageModule>().ToArray();
             mappings2 = modules.SelectMany(m => m.Mappings2).ToDictionary(x => x.Key, x => x);
             mappings3 = modules.SelectMany(m => m.Mappings3).ToDictionary(x => x.Key, x => x);
 
@@ -53,7 +53,7 @@ namespace CocoriCore
         public bool TryHandle(object message, out object response)
         {
             response = null;
-            MessageHandling handling;
+            PageHandling handling;
             var found = this.handlings.TryGetValue(message.GetType(), out handling);
             if (found)
                 response = handling.Func(message);

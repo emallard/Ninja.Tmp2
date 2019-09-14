@@ -23,9 +23,9 @@ namespace CocoriCore.LeBonCoin
 
     }
 
-    public class Accueil_PageMapperModule : PageMapperModule
+    public class Accueil_PageModule : PageModule
     {
-        public Accueil_PageMapperModule()
+        public Accueil_PageModule()
         {
             Map<Accueil_Page_Form_GET, Annonces_Page_GET, Annonces_Page_GET>(
                   (m, r) => r

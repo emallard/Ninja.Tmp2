@@ -66,22 +66,11 @@
             }
         }
 
-        function links(page) {
-            let html = '';
-            let keys = Object.keys(page);
-            for (let k of keys) {
-                if (page[k]['href'] != null) {
-                    console.log('link : ' + k + " [" + page[k]['href'] + "]");
-                    html += '<a href="' + page[k]['href'].replace('/api', '') + '">' + k + '</a><br/>'
-                }
-            }
-            return html;
-        }
-
         async function asyncCalls(page) {
             let keys = Object.keys(page);
             for (let k of keys) {
-                if (page[k]["IsAsyncCall"]) {
+                if (page[k] == null) { }
+                else if (page[k]["IsAsyncCall"]) {
                     console.log('async call : ' + k);
                     let response = await call(page[k]);
                     page[k].Result = response;
@@ -156,7 +145,8 @@
         function registerOnSubmits(page) {
             let keys = Object.keys(page);
             for (let k of keys) {
-                if (page[k]['Command'] != null) {
+                if (page[k] == null) { }
+                else if (page[k]['Command'] != null) {
                     registerOnSubmit(k, page[k]);
                 }
             }

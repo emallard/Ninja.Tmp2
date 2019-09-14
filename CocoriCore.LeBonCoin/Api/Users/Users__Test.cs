@@ -9,15 +9,6 @@ namespace CocoriCore.LeBonCoin
     public class Users__Test : TestBase
     {
         [Fact]
-        public void FollowInscription()
-        {
-            var user = CreateUser("vendeur");
-
-            var dashboard =
-            user.Follow(p => p.Inscription);
-        }
-
-        [Fact]
         public void InscriptionConnexion()
         {
             var user = CreateUser("vendeur");
@@ -35,9 +26,9 @@ namespace CocoriCore.LeBonCoin
                         })
                 .ThenFollow(r => r.PageDashboard);
 
-            var contenu = dashboard.Page.Modele.Result;
-            contenu.Nom.Should().Be("DeNice");
-            contenu.Prenom.Should().Be("Brice");
+            var modele = dashboard.Page.Modele.Result;
+            modele.Nom.Should().Be("DeNice");
+            modele.Prenom.Should().Be("Brice");
             /*
 
             var accueil = await user.Click(dashboard.MenuUtilisateur.Deconnexion);

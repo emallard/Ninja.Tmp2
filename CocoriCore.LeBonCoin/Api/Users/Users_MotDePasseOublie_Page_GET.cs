@@ -14,9 +14,9 @@ namespace CocoriCore.LeBonCoin
         public Form<Users_MotDePasseOublie_POST, Users_MotDePasseOublie_Confirmation_Page_GET> EnvoyerEmail;
     }
 
-    public class Users_MotDePasseOublie_PageMapperModule : PageMapperModule
+    public class Users_MotDePasseOublie_PageModule : PageModule
     {
-        public Users_MotDePasseOublie_PageMapperModule()
+        public Users_MotDePasseOublie_PageModule()
         {
             Map<Users_MotDePasseOublie_POST, Void, Users_MotDePasseOublie_Confirmation_Page_GET>(
                 (m, r) => new Users_MotDePasseOublie_Confirmation_Page_GET()

@@ -92,8 +92,11 @@ namespace CocoriCore.Page
             {
                 var elt = driver.FindElement(By.CssSelector("#" + formName + " #" + x.Name));
                 var valueToSet = x.InvokeGetter(message);
-                elt.SendKeys(valueToSet.ToString());
-                Thread.Sleep(500);
+                if (valueToSet != null)
+                {
+                    elt.SendKeys(valueToSet.ToString());
+                    Thread.Sleep(500);
+                }
             }
 
             driver.FindElement(By.CssSelector("#" + formName + " button")).Click();

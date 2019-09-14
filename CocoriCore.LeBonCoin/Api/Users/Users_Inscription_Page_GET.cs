@@ -36,9 +36,9 @@ namespace CocoriCore.LeBonCoin
 
     }
 
-    public class Users_Inscription_PageMapperModule : PageMapperModule
+    public class Users_Inscription_PageModule : PageModule
     {
-        public Users_Inscription_PageMapperModule()
+        public Users_Inscription_PageModule()
         {
             Map<Users_Inscription_POST, Users_Inscription_POSTResponse, Users_Inscription_Page.FormInscriptionResponse>(
                 (m, r) => new Users_Inscription_Page.FormInscriptionResponse(r.Claims)

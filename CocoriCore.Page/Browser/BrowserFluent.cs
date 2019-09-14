@@ -37,7 +37,7 @@ namespace CocoriCore.LeBonCoin
             var body = (MemberExpression)expressionMessage.Body;
             var memberInfo = body.Member;
 
-            if (Page != null) // TODO dans le cas de selenium, page == null
+            if (browser is TestBrowser) // TODO dans le cas de selenium, page == null
             {
                 var func = expressionMessage.Compile();
                 var message = func(Page);
@@ -54,32 +54,11 @@ namespace CocoriCore.LeBonCoin
             return new BrowserFluent<T>(history, browser).SetPageAndId(nextPage, Id);
         }
 
-
         public BrowserFluent<TPageTo> Play<TPageTo>(IScenario<TPage, TPageTo> scenario)
         {
             return scenario.Play(this);
         }
 
-        public T Submit<T>(Func<TPage, IMessage<T>> message)
-        {
-            var m = message(Page);
-            //this.history.Event(this.Id, HistoryEventType.Display, message);
-            return this.browser.Display(m).Result;
-        }
-
-        /*
-        public TestBrowserFluentSubmitted<TPage, TFormResponse> Submit<TPageGet, TMessage, TMessageResponse, TFormResponse>(
-            Func<TPage, PageCall<TPageGet, TMessage, TMessageResponse, TFormResponse>> getForm,
-            Action<TMessage> modifyMessage
-        )
-            where TPageGet : IMessage
-        {
-            var form = getForm(Page);
-            modifyMessage(form.Message);
-            var formResponse = browser.Display(form).Result;
-            return new TestBrowserFluentSubmitted<TPage, TFormResponse>(this, formResponse);
-        }
-        */
         public TestBrowserFluentSubmitted<TPage, TFormResponse> Submit<TMessage, TFormResponse>(
             Expression<Func<TPage, Form<TMessage, TFormResponse>>> getForm,
             Action<TMessage> modifyMessage

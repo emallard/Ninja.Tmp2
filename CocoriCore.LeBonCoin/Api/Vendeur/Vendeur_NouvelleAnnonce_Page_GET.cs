@@ -16,9 +16,9 @@ namespace CocoriCore.LeBonCoin
         public Form<Vendeur_NouvelleAnnonce_POST, Vendeur_Annonces_Id_Page_GET> Creer;
     }
 
-    public class Vendeur_NouvelleAnnonce_PageMapperModule : PageMapperModule
+    public class Vendeur_NouvelleAnnonce_PageModule : PageModule
     {
-        public Vendeur_NouvelleAnnonce_PageMapperModule()
+        public Vendeur_NouvelleAnnonce_PageModule()
         {
             Map<Vendeur_NouvelleAnnonce_POST, Guid, Vendeur_Annonces_Id_Page_GET>((m, r) => new Vendeur_Annonces_Id_Page_GET { Id = r });
 

@@ -41,6 +41,9 @@ namespace CocoriCore.LeBonCoin.Api
                                                         .SetPath("api/annonces").UseQuery();
             builder.Get<Annonces_Id_Page_GET>()
                                                         .SetPath(x => $"api/annonces/{x.Id}");
+            builder.Get<Vendeur_Annonces_Id_Edit_Page_GET>()
+                                                        .SetPath(x => $"api/annonces/{x.Id}/edit");
+
 
             builder.Post<Call>().SetPath("api/call").UseBody();
             builder.Get<HtmlMessage>().SetPath("api/page").UseQuery();

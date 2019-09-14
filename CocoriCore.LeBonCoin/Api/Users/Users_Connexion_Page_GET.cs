@@ -39,9 +39,9 @@ namespace CocoriCore.LeBonCoin
         }
     }
 
-    public class Users_Connexion_PageMapperModule : PageMapperModule
+    public class Users_Connexion_PageModule : PageModule
     {
-        public Users_Connexion_PageMapperModule()
+        public Users_Connexion_PageModule()
         {
             Map<Users_Connexion_POST, Users_Connexion_POSTResponse, Users_Connexion_Page_SeConnecter_Reponse>(
                 (m, r) => new Users_Connexion_Page_SeConnecter_Reponse(r.Claims)
