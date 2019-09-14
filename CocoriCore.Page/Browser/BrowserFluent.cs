@@ -81,14 +81,14 @@ namespace CocoriCore.LeBonCoin
         }
         */
         public TestBrowserFluentSubmitted<TPage, TFormResponse> Submit<TMessage, TFormResponse>(
-            Func<TPage, Form<TMessage, TFormResponse>> getForm,
+            Expression<Func<TPage, Form<TMessage, TFormResponse>>> getForm,
             Action<TMessage> modifyMessage
         )
             where TMessage : IMessage, new()
         {
-            var form = getForm(Page);
-            modifyMessage(form.Command);
-            var formResponse = browser.Display(form).Result;
+            var command = new TMessage();
+            modifyMessage(command);
+            var formResponse = browser.Submit(Page, getForm, command).Result;
             return new TestBrowserFluentSubmitted<TPage, TFormResponse>(this, formResponse);
         }
     }
@@ -109,10 +109,18 @@ namespace CocoriCore.LeBonCoin
 
         public BrowserFluent<T> ThenFollow<T>(Func<TPostResponse, IMessage<T>> getMessage)
         {
-            var message = getMessage(postResponse);
-            this.browserFluent.history.Event(this.browserFluent.Id, HistoryEventType.FormRedirect, message);
-            var page = browserFluent.browser.SubmitRedirect(message).Result;
-            return new BrowserFluent<T>(this.browserFluent.history, this.browserFluent.browser).SetPageAndId(page, this.browserFluent.Id);
+            // TODO difference TestBrowser / SeleniumBrowser
+            if (browserFluent.Page != null)
+            {
+                var message = getMessage(postResponse);
+                this.browserFluent.history.Event(this.browserFluent.Id, HistoryEventType.FormRedirect, message);
+                var page = browserFluent.browser.SubmitRedirect(message).Result;
+                return new BrowserFluent<T>(this.browserFluent.history, this.browserFluent.browser).SetPageAndId(page, this.browserFluent.Id);
+            }
+            else
+            {
+                return new BrowserFluent<T>(this.browserFluent.history, this.browserFluent.browser).SetPageAndId(default(T), this.browserFluent.Id);
+            }
         }
     }
 }

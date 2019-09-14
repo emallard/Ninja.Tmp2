@@ -1,15 +1,17 @@
 using System;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using CocoriCore;
 using CocoriCore.Router;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Support.UI;
 
 namespace CocoriCore.Page
 {
 
-    public class SeleniumBrowser : IBrowser, IDisposable
+    public class SeleniumBrowser : IBrowser//, IDisposable
     {
         private readonly RouteToUrl routeToUrl;
         public IWebDriver driver;
@@ -25,7 +27,12 @@ namespace CocoriCore.Page
             url = url.Replace("/api", "/");
             driver.Navigate().GoToUrl(url);
 
-            return default(T);
+            // attendre que la page soit chargée
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(d => d.FindElements(By.Id("asyncCallsDone")).Count > 0);
+
+
+            return DeserializePage<T>();
         }
 
         public async Task<T> Follow<TPage, T>(TPage page, Expression<Func<TPage, IMessage<T>>> expressionMessage)
@@ -36,22 +43,51 @@ namespace CocoriCore.Page
 
             driver.FindElement(By.Id(memberInfo.Name)).Click();
 
+            // attendre que la page soit chargée
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(d => d.FindElements(By.Id("asyncCallsDone")).Count > 0);
+
             return DeserializePage<T>();
         }
 
-        public Task<T> SubmitRedirect<T>(IMessage<T> message)
+        public async Task<T> SubmitRedirect<T>(IMessage<T> message)
         {
-            throw new System.NotImplementedException();
+            await Task.CompletedTask;
+            return DeserializePage<T>();
         }
 
         public T DeserializePage<T>()
         {
             return default(T);
         }
-
+        /*
         public void Dispose()
         {
             //driver.Dispose();
+        }
+        */
+
+        public async Task<TFormResponse> Submit<TPage, TMessage, TFormResponse>(TPage page, Expression<Func<TPage, Form<TMessage, TFormResponse>>> expressionForm, TMessage message) where TMessage : IMessage, new()
+        {
+            await Task.CompletedTask;
+
+            var body = (MemberExpression)expressionForm.Body;
+            var memberInfo = body.Member;
+            var formName = memberInfo.Name;
+
+            var messageType = message.GetType();
+            var propertiesAndFields = messageType.GetPropertiesAndFields();
+            foreach (var x in propertiesAndFields)
+            {
+                var elt = driver.FindElement(By.CssSelector("#" + formName + " #" + x.Name));
+                var valueToSet = x.InvokeGetter(message);
+                elt.SendKeys(valueToSet.ToString());
+                Thread.Sleep(500);
+            }
+
+            driver.FindElement(By.CssSelector("#" + formName + " button")).Click();
+
+            return default(TFormResponse);
         }
     }
 }

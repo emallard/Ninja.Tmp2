@@ -87,6 +87,8 @@
                     document.getElementById('content').innerHTML += format(response);
                 }
             }
+
+            document.getElementById('content').innerHTML += '<div id="asyncCallsDone" style="display:none"></div>';
         }
 
         function format(obj) {
@@ -108,7 +110,7 @@
                     else if (x["IsForm"])
                         html += li(formatForm(k, x));
                     else if (x["href"])
-                        html += li('<a href="' + x['href'].replace('/api', '') + '">' + k + '</a><br/>');
+                        html += li(`<a id="${k}" href="${x['href'].replace('/api', '')}"> ${k} </a><br/>`);
                     else if (Array.isArray(x))
                         html += li(k + " : <br/>" + format(x));
                     else if (typeof (x) == 'object')

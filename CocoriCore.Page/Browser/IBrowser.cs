@@ -11,6 +11,12 @@ namespace CocoriCore.Page
 
         Task<T> Display<T>(IMessage<T> message);
 
+        Task<TFormResponse> Submit<TPage, TMessage, TFormResponse>(
+            TPage page,
+            Expression<Func<TPage, Form<TMessage, TFormResponse>>> getForm,
+            TMessage message)
+        where TMessage : IMessage, new();
+
         Task<T> SubmitRedirect<T>(IMessage<T> message);
     }
 }

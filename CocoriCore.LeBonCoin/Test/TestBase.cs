@@ -10,7 +10,7 @@ using Ninject.Extensions.NamedScope;
 
 namespace CocoriCore.LeBonCoin
 {
-    public class TestBase : IDisposable
+    public class TestBase// : IDisposable
     {
         private StandardKernel kernel;
 
@@ -69,11 +69,12 @@ namespace CocoriCore.LeBonCoin
         {
             return kernel.Get<BrowserHistory>();
         }
-
+        /*
         public void Dispose()
         {
             kernel.Dispose();
             //driver.Dispose();
         }
+        */
     }
 }
