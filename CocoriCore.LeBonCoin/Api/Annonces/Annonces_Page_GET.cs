@@ -16,8 +16,10 @@ namespace CocoriCore.LeBonCoin
     public class Annonces_Page
     {
         public AsyncCall<Annonces_Page_GET, Annonces_Page_Item[]> Items;
-        //public Call<Annonces_Page_Form_GET, Annonces_Page_Form_GETResponse> Form = new Call<Annonces_Page_Form_GET, Annonces_Page_Form_GETResponse>(new Annonces_Page_Form_GET());
+
         public Call<Villes_GET, string[]> RechercheVille = new Call<Villes_GET, string[]>(new Villes_GET());
+
+        public Form<Annonces_Page_Form_GET, Annonces_Page_GET> Rechercher;
     }
 
     public class Annonces_Page_Item
@@ -37,9 +39,17 @@ namespace CocoriCore.LeBonCoin
                 Lien = new Annonces_Id_Page_GET() { Id = x.Id }
             }).ToArray());
 
+            Map<Annonces_Page_Form_GET, Annonces_Page_GET, Annonces_Page_GET>(
+                  (m, r) => r
+              );
+
             Handle<Annonces_Page_GET, Annonces_Page>(pageQuery => new Annonces_Page()
             {
-                Items = new AsyncCall<Annonces_Page_GET, Annonces_Page_Item[]> { PageQuery = pageQuery }
+                Items = new AsyncCall<Annonces_Page_GET, Annonces_Page_Item[]> { PageQuery = pageQuery },
+                Rechercher = new Form<Annonces_Page_Form_GET, Annonces_Page_GET>()
+                {
+                    Command = new Annonces_Page_Form_GET()
+                }
             });
         }
     }

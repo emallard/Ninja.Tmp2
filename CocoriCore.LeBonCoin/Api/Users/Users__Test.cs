@@ -15,7 +15,7 @@ namespace CocoriCore.LeBonCoin
 
             var dashboard =
             user.Follow(p => p.Inscription)
-                .Submit(p => p.Inscription,
+                .Submit(p => p.SInscrire,
                         m =>
                         {
                             m.Email = "aa@aa.aa";
@@ -51,7 +51,7 @@ namespace CocoriCore.LeBonCoin
 
             var dashboard =
             vendeur1.Display(new Users_Inscription_Page_GET())
-                .Submit(p => p.Inscription,
+                .Submit(p => p.SInscrire,
                         m =>
                         {
                             m.Email = "aa@aa.aa";
@@ -96,7 +96,7 @@ namespace CocoriCore.LeBonCoin
 
             var confirmation =
             user.Display(new Users_Inscription_Page_GET())
-                .Submit(p => p.Inscription,
+                .Submit(p => p.SInscrire,
                         m =>
                         {
                             m.Email = "aa@aa.aa";

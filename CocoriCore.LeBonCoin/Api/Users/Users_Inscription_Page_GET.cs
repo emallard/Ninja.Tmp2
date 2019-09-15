@@ -10,8 +10,8 @@ namespace CocoriCore.LeBonCoin
     public class Users_Inscription_Page
     {
         //public PageCall<Users_Inscription_Page_GET, Users_Inscription_POST, Users_Inscription_POSTResponse, FormInscriptionResponse> Inscription;
-
-        public Form<Users_Inscription_POST, FormInscriptionResponse> Inscription;
+        public Users_Connexion_Page_GET Connexion;
+        public Form<Users_Inscription_POST, FormInscriptionResponse> SInscrire;
 
         public class FormInscriptionResponse : IClaimsResponse
         {
@@ -50,7 +50,8 @@ namespace CocoriCore.LeBonCoin
             Handle<Users_Inscription_Page_GET, Users_Inscription_Page>(
                 x => new Users_Inscription_Page()
                 {
-                    Inscription = new Form<Users_Inscription_POST, Users_Inscription_Page.FormInscriptionResponse>()
+                    Connexion = new Users_Connexion_Page_GET(),
+                    SInscrire = new Form<Users_Inscription_POST, Users_Inscription_Page.FormInscriptionResponse>()
                 }
             );
         }

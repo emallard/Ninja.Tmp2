@@ -13,6 +13,7 @@ namespace CocoriCore.LeBonCoin
 
     public class Users_Connexion_Page
     {
+        public Users_Inscription_Page_GET Inscription;
         public Users_MotDePasseOublie_Page_GET MotDePasseOublie;
         //public PageCall<Users_Connexion_Page_GET, Users_Connexion_POST, Users_Connexion_POSTResponse, Users_Connexion_Page_FormConnexion_POSTResponse> Form;
         public Form<Users_Connexion_POST, Users_Connexion_Page_SeConnecter_Reponse> SeConnecter;
@@ -51,6 +52,7 @@ namespace CocoriCore.LeBonCoin
             );
             Handle<Users_Connexion_Page_GET, Users_Connexion_Page>(x => new Users_Connexion_Page()
             {
+                Inscription = new Users_Inscription_Page_GET(),
                 MotDePasseOublie = new Users_MotDePasseOublie_Page_GET(),
                 SeConnecter = new Form<Users_Connexion_POST, Users_Connexion_Page_SeConnecter_Reponse>()
             });
