@@ -106,7 +106,7 @@ namespace CocoriCore.LeBonCoin
                             m.Prenom = "Jean";
                         })
                 .ThenFollow(r => r.PageDashboard)
-                .Follow(p => p.MenuUtilisateur.Deconnexion)
+                .Follow(p => p.MenuVendeur.Deconnexion)
                 .Follow(p => p.Connexion)
                 .Follow(p => p.MotDePasseOublie)
                 .Submit(p => p.EnvoyerEmail,

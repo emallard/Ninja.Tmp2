@@ -29,6 +29,8 @@ namespace CocoriCore.LeBonCoin.Api
                                                         .SetPath("api/users/inscription");
             builder.Get<Users_MotDePasseOublie_Page_GET>()
                                                         .SetPath("api/users/mot-de-passe-oublie");
+            builder.Get<Users_MotDePasseOublie_Confirmation_Page_GET>()
+                                                        .SetPath("api/users/mot-de-passe-oublie/confirmation");
             builder.Get<Vendeur_Dashboard_Page_GET>()
                                                         .SetPath("api/vendeur");
             builder.Get<Vendeur_NouvelleAnnonce_Page_GET>()
@@ -37,12 +39,13 @@ namespace CocoriCore.LeBonCoin.Api
                                                         .SetPath("api/vendeur/annonces");
             builder.Get<Vendeur_Annonces_Id_Page_GET>()
                                                         .SetPath(x => $"api/vendeur/annonces/{x.Id}");
+            builder.Get<Vendeur_Annonces_Id_Edit_Page_GET>()
+                                                        .SetPath(x => $"api/vendeur/annonces/{x.Id}/edit");
             builder.Get<Annonces_Page_GET>()
                                                         .SetPath("api/annonces").UseQuery();
             builder.Get<Annonces_Id_Page_GET>()
                                                         .SetPath(x => $"api/annonces/{x.Id}");
-            builder.Get<Vendeur_Annonces_Id_Edit_Page_GET>()
-                                                        .SetPath(x => $"api/annonces/{x.Id}/edit");
+
 
 
             builder.Post<Call>().SetPath("api/call").UseBody();
@@ -51,7 +54,7 @@ namespace CocoriCore.LeBonCoin.Api
             builder.Get<Tests_GET>().SetPath("api/tests");
             builder.Get<Tests_Id_GET>().SetPath(x => $"api/tests/{x.Type}/{x.TestName}").UseQuery();
 
-            builder.Get<GraphViz_GET>().SetPath("api/graph1");
+            builder.Get<GraphViz_GET>().SetPath("api/graph").UseQuery();
 
             return builder.Options;
         }

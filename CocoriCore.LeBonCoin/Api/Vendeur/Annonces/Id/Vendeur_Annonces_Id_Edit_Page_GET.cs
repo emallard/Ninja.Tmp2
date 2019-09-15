@@ -16,7 +16,7 @@ namespace CocoriCore.LeBonCoin
         public Call<Categories_GET, string[]> Categories;
         public Call<Villes_GET, string[]> RechercheVilles;
         public AsyncCall<Vendeur_Annonces_Id_Edit_Page_GET, AnnonceModele> Modele;
-        public Form<Vendeur_Annonces_Id_Edit_POST, Vendeur_Annonces_Id_GET> Enregistrer;
+        public Form<Vendeur_Annonces_Id_Edit_POST, Vendeur_Annonces_Id_Page_GET> Enregistrer;
         public Vendeur_Annonces_Id_Page_GET Annuler;
     }
 
@@ -51,7 +51,7 @@ namespace CocoriCore.LeBonCoin
             Handle<Vendeur_Annonces_Id_Edit_Page_GET, Vendeur_Annonces_Id_Edit_Page>(
                 pageQuery => new Vendeur_Annonces_Id_Edit_Page
                 {
-                    Enregistrer = new Form<Vendeur_Annonces_Id_Edit_POST, Vendeur_Annonces_Id_GET>()
+                    Enregistrer = new Form<Vendeur_Annonces_Id_Edit_POST, Vendeur_Annonces_Id_Page_GET>()
                     {
                         Command = new Vendeur_Annonces_Id_Edit_POST()
                     },
