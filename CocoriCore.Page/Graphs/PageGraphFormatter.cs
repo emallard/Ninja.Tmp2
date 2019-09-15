@@ -13,8 +13,6 @@ namespace CocoriCore.Page
         {
             var sb = new StringBuilder();
             sb.AppendLine("digraph G {");
-            //sb.AppendLine("rankdir=LR;");
-            //sb.AppendLine("layout=\"twopi\"");
 
             foreach (var n in graph.Nodes.OrderBy(x => x.ParameterizedUrl).ToArray())
                 sb.AppendLine(StrNode(n));
@@ -23,54 +21,41 @@ namespace CocoriCore.Page
                 sb.AppendLine(StrEdge(e));
 
             sb.AppendLine("}");
-            var dotContent = sb.ToString();
-            var svgContent = CmdDot(dotContent);
-            return svgContent;
+            return CmdDot(sb.ToString());
         }
-        /*
-                public string LinksAndFormsWithClusters(PageGraph graph)
-                {
-                    var sb = new StringBuilder();
-                    sb.AppendLine("digraph G {");
 
-                    var clusters = graph.Nodes
-                                    .Where(x => x.ParameterizedUrl != "/api")
-                                    .GroupBy(x => x.ParameterizedUrl.Split("/", StringSplitOptions.RemoveEmptyEntries)[1])
-                                    .ToArray();
+        public string LinksAndFormsWithClusters(PageGraph graph)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("digraph G {");
 
-
-                    foreach (var n in graph.Nodes.Where(x => x.ParameterizedUrl.StartsWith()))
-                    {
-                        var label = n.ParameterizedUrl.Replace("/api", "");
-                        if (label == "")
-                            label = "/";
-                        sb.AppendLine($"{n.IndexedName}[label=\"{label}\"];");
-                    }
+            var clusters = graph.Nodes
+                            .Where(x => x.ParameterizedUrl != "/api")
+                            .GroupBy(x => x.ParameterizedUrl.Split("/", StringSplitOptions.RemoveEmptyEntries)[1])
+                            .ToArray();
 
 
-                    foreach (var e in graph.Edges)
-                    {
-                        sb.Append($"{e.From.IndexedName} -> {e.To.IndexedName}");
-                        var properties = new List<string>();
-                        if (e.Visited)
-                            properties.Add("color=\"#FF0000\"");
-                        if (e.IsForm)
-                        {
-                            properties.Add("arrowhead=empty");
-                            properties.Add($"label=\"{e.Name}\"");
-                            if (!e.Visited)
-                                properties.Add("color=\"#0000FF\"");
-                        }
-                        sb.Append("[" + string.Join(",", properties) + "]");
-                        sb.AppendLine(";");
-                    }
+            sb.AppendLine(StrNode(graph.Nodes.First(n => n.ParameterizedUrl == "/api")));
 
-                    sb.AppendLine("}");
-                    var dotContent = sb.ToString();
-                    var svgContent = CmdDot(dotContent);
-                    return svgContent;
-                }
-        */
+            foreach (var g in clusters)
+            {
+                sb.AppendLine($"subgraph cluster_{g.Key}" + "{");
+                sb.AppendLine("style=filled;");
+                sb.AppendLine("color=lightgrey;");
+                sb.AppendLine($"label=\"{g.Key}\";");
+                foreach (var n in g)
+                    sb.AppendLine(StrNode(n));
+                sb.AppendLine("}");
+            }
+
+
+            foreach (var e in graph.Edges)
+                sb.AppendLine(StrEdge(e));
+
+            sb.AppendLine("}");
+            return CmdDot(sb.ToString());
+        }
+
         private string StrNode(PageNode n)
         {
             var label = n.ParameterizedUrl.Replace("/api", "");
@@ -93,7 +78,9 @@ namespace CocoriCore.Page
                 if (!e.Visited)
                     properties.Add("color=\"#0000FF\"");
             }
-            sb.Append("[" + string.Join(",", properties) + "]");
+            if (properties.Any())
+                sb.Append("[" + string.Join(",", properties) + "]");
+
             sb.Append(";");
             return sb.ToString();
         }
@@ -101,6 +88,7 @@ namespace CocoriCore.Page
         private string CmdDot(string content)
         {
             var tmp = System.IO.Path.GetTempFileName();
+            Console.WriteLine(tmp);
             File.WriteAllText(tmp, content);
             var process = new Process
             {
