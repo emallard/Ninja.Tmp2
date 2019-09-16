@@ -10,7 +10,10 @@
     </nav>
     -->
     <div class="container">
-        <div id='content'>
+        <div id='content' style="float:left">
+
+        </div>
+        <div id='graph'>
 
         </div>
     </div>
@@ -35,6 +38,15 @@
             let html = format(_tests);
             document.getElementById('content').innerHTML = html;
             registerOnClicks();
+
+
+            response = await fetch('/api/graph',
+                {
+                    headers: myHeaders,
+                    method: 'GET'
+                });
+            let svg = await response.text();
+            document.getElementById('graph').innerHTML = svg;
 
         }
 
@@ -66,8 +78,7 @@
                     let response = await fetch('/api/' + e.getAttribute('href'),
                         {
                             headers: myHeaders,
-                            method: 'GET',
-                            //body: JSON.stringify(callObj)
+                            method: 'GET'
                         });
 
                     return await response.json();

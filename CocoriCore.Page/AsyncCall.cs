@@ -2,7 +2,12 @@ using System;
 
 namespace CocoriCore
 {
-    public class AsyncCall<TPageGet, T> : IMessage<T>
+    public interface IAsyncCall
+    {
+        void SetResult(object o);
+    }
+
+    public class AsyncCall<TPageGet, T> : IMessage<T>, IAsyncCall
     {
         public bool IsAsyncCall = true;
         public Type _Type;
@@ -12,6 +17,11 @@ namespace CocoriCore
         public AsyncCall()
         {
             _Type = this.GetType();
+        }
+
+        public void SetResult(object o)
+        {
+            Result = (T)o;
         }
     }
 }

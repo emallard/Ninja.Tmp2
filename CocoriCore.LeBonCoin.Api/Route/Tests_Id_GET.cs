@@ -29,12 +29,12 @@ namespace CocoriCore.LeBonCoin.Api
         {
             await Task.CompletedTask;
 
-            var testType = Type.GetType(System.Web.HttpUtility.UrlDecode(message.Type));//.Type.Replace("%20", " "));
+            var testType = Type.GetType(System.Web.HttpUtility.UrlDecode(message.Type));
             var testInstance = (TestBase)Activator.CreateInstance(testType);
 
             await Task.Run(() =>
             {
-                testInstance.WithSeleniumBrowser(routerOptions);
+                //testInstance.WithSeleniumBrowser(routerOptions);
                 var methodInfo = testType.GetMethod(message.TestName);
                 var result = methodInfo.Invoke(testInstance, null);
                 if (result is Task task)
@@ -43,10 +43,8 @@ namespace CocoriCore.LeBonCoin.Api
                 }
             });
 
-            return new Tests_Id_Response()
-            {
-                Events = testInstance.GetHistory().Events.ToArray()
-            };
+            var events = testInstance.GetHistory().Events.ToArray();
+            return new Tests_Id_Response() { Events = events };
         }
     }
 }

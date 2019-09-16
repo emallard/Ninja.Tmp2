@@ -24,17 +24,34 @@ namespace CocoriCore.Page
         {
             var func = expressionMessage.Compile();
             var message = func(page);
-            return await this.ExecuteAsync(message);
+            var next = await this.ExecuteAsync(message);
+            return await ExecuteAsyncCalls(next);
         }
 
         public async Task<T> Display<T>(IMessage<T> message)
         {
-            return await this.ExecuteAsync(message);
+            var next = await this.ExecuteAsync(message);
+            return await ExecuteAsyncCalls(next);
         }
 
         public async Task<T> SubmitRedirect<T>(IMessage<T> message)
         {
-            return await this.ExecuteAsync(message);
+            var next = await this.ExecuteAsync(message);
+            return await ExecuteAsyncCalls(next);
+        }
+
+        private async Task<T> ExecuteAsyncCalls<T>(T page)
+        {
+            var mis = page.GetType().GetPropertiesAndFields();
+            foreach (var mi in mis)
+            {
+                if (mi.GetMemberType().IsAssignableTo<IAsyncCall>())
+                {
+                    var asyncCall = (IAsyncCall)mi.InvokeGetter(page);
+                    asyncCall.SetResult(await ExecuteAsync((IMessage)mi.InvokeGetter(page)));
+                }
+            }
+            return page;
         }
 
         private async Task<T> ExecuteAsync<T>(IMessage<T> message)
