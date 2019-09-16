@@ -40,27 +40,19 @@
 
         init();
 
-        async function call(callObj) {
-            let myHeaders = new Headers();
-            myHeaders.append('Content-Type', 'application/json');
-            let response = await fetch('/api/call',
-                {
-                    headers: myHeaders,
-                    method: 'POST',
-                    body: JSON.stringify(callObj)
-                });
-
-            return await response.json();
-
-        }
-
         function format(tests) {
-            let html = '<ul>';
-            tests.forEach((t, i) =>
-                html += li(`<a class="test-link" href="tests/${t.Type}/${t.TestName}" data-i="${i}">${t.TestName}</a>`)
-            );
-
-            html += '</ul>';
+            return formatNode(tests.RootNode);
+        }
+        function formatNode(node) {
+            let html = "" + node.Name;
+            if (node.Children.length > 0 || node.Tests.length > 0) {
+                html += '<ul>';
+                for (let c of node.Children)
+                    html += li(formatNode(c));
+                for (let t of node.Tests)
+                    html += li(`<a class="test-link" href="tests/${t.Type}/${t.TestName}">${t.TestName}</a>`)
+                html += '</ul>';
+            }
             return html;
         }
 
