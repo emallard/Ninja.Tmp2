@@ -5,7 +5,7 @@ using CocoriCore.Page;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace CocoriCore.LeBonCoin
+namespace CocoriCore
 {
     public class CallConverterTest
     {

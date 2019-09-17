@@ -6,11 +6,11 @@ using CocoriCore;
 
 namespace LeBonCoin
 {
-    public class TestHandlerFinder
+    public class HandlerFinder
     {
         private Dictionary<Type, Type> messageHandlerTypes;
 
-        public TestHandlerFinder(params Assembly[] assemblies)
+        public HandlerFinder(params Assembly[] assemblies)
         {
             //var assemblies = new Assembly[]{this.GetType().Assembly} ;
             if (assemblies.Count() == 0)
