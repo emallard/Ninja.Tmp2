@@ -6,7 +6,7 @@ using CocoriCore;
 namespace CocoriCore.LeBonCoin
 {
 
-    public class Annonces_Page_GET : IPage<Annonces_Page>, IQuery
+    public class Annonces_Page_GET : IPageQuery<Annonces_Page>, IQuery
     {
         public string Ville;
         public string Categorie;

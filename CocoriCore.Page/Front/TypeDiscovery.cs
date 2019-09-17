@@ -36,7 +36,7 @@ namespace CocoriCore.Page
             var notArrays = fields.Where(
                                 f => !f.FieldType.IsArray
                                   && !f.FieldType.IsAssignableTo(typeof(Call))
-                                  && !f.FieldType.IsAssignableTo(typeof(IPage))
+                                  && !f.FieldType.IsAssignableTo(typeof(IPageQuery))
                                   )
                            .Select(f => f.FieldType)
                            .ToArray();

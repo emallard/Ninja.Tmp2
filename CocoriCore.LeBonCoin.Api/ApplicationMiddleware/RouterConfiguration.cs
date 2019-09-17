@@ -31,6 +31,8 @@ namespace CocoriCore.LeBonCoin.Api
                                                         .SetPath("api/users/mot-de-passe-oublie");
             builder.Get<Users_MotDePasseOublie_Confirmation_Page_GET>()
                                                         .SetPath("api/users/mot-de-passe-oublie/confirmation");
+            builder.Get<Users_SaisieNouveauMotDePasse_Token_Page_GET>().UseQuery()
+                                                        .SetPath("api/users/saisie-nouveau-mot-de-passe");
             builder.Get<Vendeur_Dashboard_Page_GET>()
                                                         .SetPath("api/vendeur");
             builder.Get<Vendeur_NouvelleAnnonce_Page_GET>()
@@ -54,7 +56,7 @@ namespace CocoriCore.LeBonCoin.Api
             builder.Get<Tests_GET>().SetPath("api/tests");
             builder.Get<Tests_Id_GET>().SetPath(x => $"api/tests/{x.Type}/{x.TestName}").UseQuery();
 
-            builder.Get<GraphViz_GET>().SetPath("api/graph").UseQuery();
+            builder.Get<Graph_GET>().SetPath("api/graph").UseQuery();
 
             return builder.Options;
         }

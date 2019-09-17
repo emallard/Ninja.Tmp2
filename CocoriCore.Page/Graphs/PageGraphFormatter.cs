@@ -69,6 +69,7 @@ namespace CocoriCore.Page
             var sb = new StringBuilder();
             sb.Append($"{e.From.IndexedName} -> {e.To.IndexedName}");
             var properties = new List<string>();
+            properties.Add($"tooltip=\"{e.Name}\"");
             if (e.Visited)
                 properties.Add("color=\"#FF0000\"");
             if (e.IsForm)

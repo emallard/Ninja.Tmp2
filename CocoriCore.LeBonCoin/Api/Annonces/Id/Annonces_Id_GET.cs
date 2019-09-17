@@ -6,7 +6,7 @@ using CocoriCore;
 namespace CocoriCore.LeBonCoin
 {
 
-    public class Annonces_Id_GET : IPage<Annonces_Id_GETResponse>, IQuery
+    public class Annonces_Id_GET : IPageQuery<Annonces_Id_GETResponse>, IQuery
     {
         public Guid Id;
     }

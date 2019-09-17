@@ -31,12 +31,24 @@ namespace CocoriCore.Page
             };
         }
 
+        public PageGraph Build(Assembly assembly, Func<PageNode, bool> nodePredicate)
+        {
+            var nodes = GetPageNodes(assembly);
+            nodes = nodes.Where(nodePredicate).ToList();
+            var edges = GetPageEdges(assembly, nodes);
+            return new PageGraph()
+            {
+                Nodes = nodes,
+                Edges = edges
+            };
+        }
+
         private List<PageNode> GetPageNodes(Assembly assembly)
         {
-            var pages = assembly.GetTypes().Where(t => t.IsAssignableTo(typeof(IPage))).ToArray();
+            var pages = assembly.GetTypes().Where(t => t.IsAssignableTo(typeof(IPageQuery))).ToArray();
             int index = 0;
             var nodes = routerOptions.AllRoutes
-                .Where(r => r.MessageType.IsAssignableTo<IPage>())
+                .Where(r => r.MessageType.IsAssignableTo<IPageQuery>())
                 .Select(r => new PageNode()
                 {
                     ParameterizedUrl = r.ParameterizedUrl,
@@ -72,17 +84,20 @@ namespace CocoriCore.Page
             {
                 GetPageEdges(assembly, node, nodes, edges, memberName, memberType.GetElementType(), isForm);
             }
-            else if (memberType.IsAssignableTo(typeof(IPage)))
+            else if (memberType.IsAssignableTo(typeof(IPageQuery)))
             {
-                var target = nodes.First(n => n.QueryType == memberType);
-                edges.Add(new PageEdge()
+                var target = nodes.FirstOrDefault(n => n.QueryType == memberType);
+                if (target != null)
                 {
-                    From = node,
-                    To = target,
-                    Name = memberName,
-                    IsLink = true,
-                    IsForm = isForm
-                });
+                    edges.Add(new PageEdge()
+                    {
+                        From = node,
+                        To = target,
+                        Name = memberName,
+                        IsLink = true,
+                        IsForm = isForm
+                    });
+                }
             }
             else if (memberType.IsAssignableToGeneric(typeof(Form<,>)))
             {

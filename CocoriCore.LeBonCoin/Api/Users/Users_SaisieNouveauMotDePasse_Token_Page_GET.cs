@@ -5,15 +5,14 @@ using CocoriCore;
 namespace CocoriCore.LeBonCoin
 {
 
-    public class Users_SaisieNouveauMotDePasse_Token_Page_GET : IPage<Users_SaisieNouveauMotDePasse_Token_Page>
+    public class Users_SaisieNouveauMotDePasse_Token_Page_GET : IPageQuery<Users_SaisieNouveauMotDePasse_Token_Page>
     {
         public Guid Token;
     }
 
     public class Users_SaisieNouveauMotDePasse_Token_Page
     {
-        //public PageCall<Users_SaisieNouveauMotDePasse_Token_Page_GET, Users_SaisieNouveauMotDePasse_Token_POST, Void, Users_Connexion_Page_GET> Form;
-        public Form<Users_SaisieNouveauMotDePasse_Token_POST, Users_Connexion_Page_GET> ConfirmerNouveauMotDePasse;
+        public Form<Users_SaisieNouveauMotDePasse_Token_POST, Users_Connexion_Page_GET> ChangerMotDePasse;
     }
 
     public class Users_SaisieNouveauMotDePasse_Token_PageModule : PageModule
@@ -44,7 +43,7 @@ namespace CocoriCore.LeBonCoin
                 throw new Exception("token invalide");
             return new Users_SaisieNouveauMotDePasse_Token_Page()
             {
-                ConfirmerNouveauMotDePasse = new Form<Users_SaisieNouveauMotDePasse_Token_POST, Users_Connexion_Page_GET>()
+                ChangerMotDePasse = new Form<Users_SaisieNouveauMotDePasse_Token_POST, Users_Connexion_Page_GET>()
             };
         }
     }

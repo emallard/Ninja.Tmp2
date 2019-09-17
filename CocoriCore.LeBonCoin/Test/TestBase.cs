@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using CocoriCore;
 using CocoriCore.Ninject;
@@ -32,7 +31,7 @@ namespace CocoriCore.LeBonCoin
             kernel.Bind<IMessageBus>().To<CocoriCore.LeBonCoin.MessageBus>().InNamedScope("unitofwork");
             kernel.Bind<IExecuteHandler>().To<ExecuteHandler>().InNamedScope("unitofwork");
 
-            kernel.Bind<IEmailReader, IEmailSender>().To<EmailSenderAndReader>().InSingletonScope();
+            kernel.Bind<IEmailReader, IEmailSender>().To<TestEmailSenderAndReader>().InSingletonScope();
 
             // claims
             kernel.Bind<TestBrowserClaimsProvider>().ToConstant(new TestBrowserClaimsProvider(response =>
@@ -42,7 +41,7 @@ namespace CocoriCore.LeBonCoin
                 return null;
             }));
             kernel.Bind<IClaimsProvider, IClaimsWriter>().To<ClaimsProviderAndWriter>().InNamedScope("unitofwork");
-            kernel.Bind<BrowserHistory>().ToSelf().InSingletonScope();
+            kernel.Bind<IUserLogger, TestLogger>().To<TestLogger>().InSingletonScope();
 
             kernel.Bind<IPageMapper>().ToConstant(new PageMapper(CocoriCore.LeBonCoin.AssemblyInfo.Assembly));
 
@@ -55,19 +54,19 @@ namespace CocoriCore.LeBonCoin
             kernel.Rebind<IBrowser>().To<SeleniumBrowser>();
         }
 
-        public BrowserFluent<Accueil_Page> CreateUser(string id)
+        public BrowserFluent<Accueil_Page> CreateBrowser(string id)
         {
             return kernel.Get<BrowserFluent<int>>().SetId(id).Display(new Accueil_Page_GET());
         }
 
-        public IEmailReader GetEmailReader()
+        public UserFluent CreateUser(string id)
         {
-            return kernel.Get<IEmailReader>();
+            return kernel.Get<UserFluent>().SetId(id);
         }
 
-        public BrowserHistory GetHistory()
+        public object[] GetLogs()
         {
-            return kernel.Get<BrowserHistory>();
+            return kernel.Get<TestLogger>().Logs.ToArray();
         }
         /*
         public void Dispose()

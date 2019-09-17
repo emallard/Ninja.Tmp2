@@ -5,7 +5,7 @@ using CocoriCore;
 namespace CocoriCore.LeBonCoin
 {
 
-    public class Vendeur_Annonces_Id_GET : IPage<Vendeur_Annonces_Id>
+    public class Vendeur_Annonces_Id_GET : IPageQuery<Vendeur_Annonces_Id>
     {
         public Guid Id;
     }

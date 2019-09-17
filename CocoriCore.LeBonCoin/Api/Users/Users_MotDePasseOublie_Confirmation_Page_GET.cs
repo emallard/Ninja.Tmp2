@@ -3,7 +3,7 @@ using CocoriCore;
 
 namespace CocoriCore.LeBonCoin
 {
-    public class Users_MotDePasseOublie_Confirmation_Page_GET : IPage<Void>
+    public class Users_MotDePasseOublie_Confirmation_Page_GET : IPageQuery<Void>
     {
     }
 

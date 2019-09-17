@@ -1,7 +1,7 @@
 ﻿using System.Net.Mail;
 using System.Threading.Tasks;
 
-namespace CocoriCore.LeBonCoin
+namespace CocoriCore.Page
 {
 
     public interface IEmailReader

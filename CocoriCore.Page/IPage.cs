@@ -1,12 +1,12 @@
 namespace CocoriCore
 {
 
-    public interface IPage
+    public interface IPageQuery
     {
 
     }
 
-    public interface IPage<T> : IMessage<T>, IPage
+    public interface IPageQuery<T> : IMessage<T>, IPageQuery
     {
 
     }

@@ -13,6 +13,9 @@
         <div id='content' style="float:left">
 
         </div>
+        <div id='logs' style="float:left">
+
+        </div>
         <div id='graph'>
 
         </div>
@@ -35,11 +38,11 @@
             _tests = JSON.parse(txt);
             console.log(_tests);
 
-            let html = format(_tests);
+            let html = formatTree(_tests);
             document.getElementById('content').innerHTML = html;
             registerOnClicks();
 
-
+            /*
             response = await fetch('/api/graph',
                 {
                     headers: myHeaders,
@@ -47,12 +50,12 @@
                 });
             let svg = await response.text();
             document.getElementById('graph').innerHTML = svg;
-
+            */
         }
 
         init();
 
-        function format(tests) {
+        function formatTree(tests) {
             return formatNode(tests.RootNode);
         }
         function formatNode(node) {
@@ -81,14 +84,71 @@
                             method: 'GET'
                         });
 
-                    return await response.json();
+                    document.getElementById('logs').innerHTML = formatLogs(await response.json());
                     return false;
                 });
             });
         }
 
+        // Format Logs
+        function formatLogs(logs) {
+            let userDic = {};
+            let i = 0;
+            for (let l of logs) {
+                if (userDic[l.Id] == undefined)
+                    userDic[l.Id] = i++;
+            }
+            return formatLogs2(logs, userDic)
+        }
+
+        function formatLogs2(logs, userDic) {
+            var html = '';
+            for (let k of Object.keys(userDic)) {
+                html += '<th>' + k + '</th>';
+            }
+            html = '<tr>' + html + '</tr>'
+            for (let l of logs) {
+                var indexUser = userDic[l.Id];
+                html += '<tr>'
+                html += '<td></td>'.repeat(indexUser);
+                html += td(formatLog(l));
+                html += '<td></td>'.repeat(Object.keys(userDic).length - indexUser - 1);
+                html += '</tr>'
+            }
+            return table(html);
+        }
+
+        function formatLog(log) {
+            if (log.IsDisplay)
+                return '<br/>' + log.PageQuery.href.replace('api/', '');
+            else if (log.IsFollow)
+                return log.PageQuery.href.replace('api/', '');
+            else if (log.IsSubmit)
+                return '<span style="margin-left:10px">[' + log.MemberName + ']</span>';
+            else if (log.IsSubmitRedirect)
+                return log.PageQuery.href.replace('api/', '');
+            else if (log.IsScenarioStart)
+                return " ++ " + log.Name;
+            else if (log.IsScenarioEnd)
+                return " ++ ";
+
+            else if (log.IsReadEmail)
+                return " [X] Email ";
+            else
+                return "" + JSON.stringify(log);
+        }
+
         function li(h) {
             return '<li>' + h + '</li>';
+        }
+        function ul(h) {
+            return '<ul>' + h + '</ul>';
+        }
+        function table(h) {
+            return '<table>' + h + '</table>';
+        }
+        function td(h) {
+            return '<td>' + h + '</td>';
         }
 
     </script>

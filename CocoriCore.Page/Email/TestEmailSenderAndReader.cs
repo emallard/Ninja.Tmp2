@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CocoriCore.LeBonCoin
+namespace CocoriCore.Page
 {
 
-    public class EmailSenderAndReader : IEmailReader, IEmailSender
+    public class TestEmailSenderAndReader : IEmailReader, IEmailSender
     {
         public List<IMyMailMessage> ReadMessages = new List<IMyMailMessage>();
         public List<IMyMailMessage> NewMessages = new List<IMyMailMessage>();

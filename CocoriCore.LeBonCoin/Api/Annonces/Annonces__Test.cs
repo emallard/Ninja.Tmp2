@@ -12,7 +12,7 @@ namespace CocoriCore.LeBonCoin
         [Fact]
         public void RechercheParCategorie()
         {
-            var vendeurDashboard = CreateUser("vendeur")
+            var vendeurDashboard = CreateBrowser("vendeur")
                 .Play(new EnTantQueVendeur());
 
             var vendeurAnnonce = vendeurDashboard
@@ -26,7 +26,7 @@ namespace CocoriCore.LeBonCoin
                 .ThenFollow(r => r)
                 .Page;
 
-            var visiteur = CreateUser("visiteur");
+            var visiteur = CreateBrowser("visiteur");
             var annonces = visiteur
                 .Submit(p => p.Rechercher,
                         m =>
@@ -41,7 +41,6 @@ namespace CocoriCore.LeBonCoin
             annonces.Items[0].Ville.Should().Be("Paris");
             annonces.Items[0].Categorie.Should().Be("Voiture");
             */
-            Console.WriteLine(this.GetHistory().Summary());
         }
     }
 }

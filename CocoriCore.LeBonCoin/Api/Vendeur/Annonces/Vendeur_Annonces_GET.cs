@@ -11,7 +11,7 @@ namespace CocoriCore.LeBonCoin
 {
 
 
-    public class Vendeur_Annonces_GET : IPage<Vendeur_AnnoncesItem[]>
+    public class Vendeur_Annonces_GET : IPageQuery<Vendeur_AnnoncesItem[]>
     {
     }
 

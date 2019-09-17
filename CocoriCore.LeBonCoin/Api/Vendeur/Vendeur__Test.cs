@@ -11,7 +11,7 @@ namespace CocoriCore.LeBonCoin
         [Fact]
         public void NouvelleAnnonceEtModification()
         {
-            var dashboard = CreateUser("vendeur")
+            var dashboard = CreateBrowser("vendeur")
                 .Play(new EnTantQueVendeur());
 
             var annonce = dashboard

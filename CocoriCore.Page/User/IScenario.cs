@@ -1,4 +1,4 @@
-namespace CocoriCore.LeBonCoin
+namespace CocoriCore.Page
 {
     public interface IScenario<TPageFrom, TPageTo>
     {

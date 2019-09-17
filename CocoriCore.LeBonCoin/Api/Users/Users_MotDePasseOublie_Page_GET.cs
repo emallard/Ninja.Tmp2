@@ -4,14 +4,14 @@ using CocoriCore;
 
 namespace CocoriCore.LeBonCoin
 {
-    public class Users_MotDePasseOublie_Page_GET : IPage<Users_MotDePasseOublie_Page>
+    public class Users_MotDePasseOublie_Page_GET : IPageQuery<Users_MotDePasseOublie_Page>
     {
 
     }
 
     public class Users_MotDePasseOublie_Page
     {
-        public Form<Users_MotDePasseOublie_POST, Users_MotDePasseOublie_Confirmation_Page_GET> EnvoyerEmail;
+        public Form<Users_MotDePasseOublie_POST, Users_MotDePasseOublie_Confirmation_Page_GET> RecevoirEmail;
     }
 
     public class Users_MotDePasseOublie_PageModule : PageModule
@@ -23,7 +23,7 @@ namespace CocoriCore.LeBonCoin
             );
             Handle<Users_MotDePasseOublie_Page_GET, Users_MotDePasseOublie_Page>(x => new Users_MotDePasseOublie_Page()
             {
-                EnvoyerEmail = new Form<Users_MotDePasseOublie_POST, Users_MotDePasseOublie_Confirmation_Page_GET>()
+                RecevoirEmail = new Form<Users_MotDePasseOublie_POST, Users_MotDePasseOublie_Confirmation_Page_GET>()
             });
         }
     }

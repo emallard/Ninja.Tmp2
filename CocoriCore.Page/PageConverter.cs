@@ -25,7 +25,7 @@ namespace CocoriCore
 
         public override bool CanConvert(Type objectType)
         {
-            return typeof(IPage).IsAssignableFrom(objectType);
+            return typeof(IPageQuery).IsAssignableFrom(objectType);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)

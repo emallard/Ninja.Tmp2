@@ -1,21 +1,29 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using CocoriCore;
 using CocoriCore.Page;
 
-namespace CocoriCore.LeBonCoin
+namespace CocoriCore.Page
 {
+
+    public class BrowserFluent : BrowserFluent<int>
+    {
+        public BrowserFluent(IUserLogger logs, IBrowser browser) : base(logs, browser)
+        {
+        }
+    }
+
+
     public class BrowserFluent<TPage>
     {
-        public readonly BrowserHistory history;
+        public readonly IUserLogger logs;
         public readonly IBrowser browser;
         public TPage Page;
         public string Id;
 
-        public BrowserFluent(BrowserHistory history, IBrowser browser)
+        public BrowserFluent(IUserLogger logs, IBrowser browser)
         {
-            this.history = history;
+            this.logs = logs;
             this.browser = browser;
         }
 
@@ -34,29 +42,39 @@ namespace CocoriCore.LeBonCoin
 
         public BrowserFluent<T> Follow<T>(Expression<Func<TPage, IMessage<T>>> expressionMessage)
         {
-            var body = (MemberExpression)expressionMessage.Body;
-            var memberInfo = body.Member;
-
-            if (browser is TestBrowser) // TODO dans le cas de selenium, page == null
+            if (browser is TestBrowser)
             {
-                var func = expressionMessage.Compile();
-                var message = func(Page);
-                this.history.Event(this.Id, HistoryEventType.Follow, message);
+                var message = expressionMessage.Compile().Invoke(Page);
+                this.logs.Log(new LogFollow
+                {
+                    Id = this.Id,
+                    MemberName = ((MemberExpression)expressionMessage.Body).Member.Name,
+                    PageQuery = (IPageQuery)message
+                });
             }
+
             var nextPage = this.browser.Follow(Page, expressionMessage).Result;
-            return new BrowserFluent<T>(history, browser).SetPageAndId(nextPage, Id);
+            return new BrowserFluent<T>(logs, browser).SetPageAndId(nextPage, Id);
         }
 
         public BrowserFluent<T> Display<T>(IMessage<T> message)
         {
-            this.history.Event(this.Id, HistoryEventType.Display, message);
+            this.logs.Log(new LogDisplay { Id = this.Id, PageQuery = message });
+
             var nextPage = this.browser.Display(message).Result;
-            return new BrowserFluent<T>(history, browser).SetPageAndId(nextPage, Id);
+            return new BrowserFluent<T>(logs, browser).SetPageAndId(nextPage, Id);
         }
 
         public BrowserFluent<TPageTo> Play<TPageTo>(IScenario<TPage, TPageTo> scenario)
         {
-            return scenario.Play(this);
+            var scenarioId = Guid.NewGuid();
+            this.logs.Log(new LogScenarioStart { Id = this.Id, ScenarioId = scenarioId, Name = scenario.GetType().Name });
+
+            var result = scenario.Play(this);
+
+            this.logs.Log(new LogScenarioEnd { Id = this.Id, ScenarioId = scenarioId });
+
+            return result;
         }
 
         public TestBrowserFluentSubmitted<TPage, TFormResponse> Submit<TMessage, TFormResponse>(
@@ -67,11 +85,13 @@ namespace CocoriCore.LeBonCoin
         {
             var command = new TMessage();
             modifyMessage(command);
+
+            this.logs.Log(new LogSubmit { Id = this.Id, MemberName = ((MemberExpression)getForm.Body).Member.Name });
+
             var formResponse = browser.Submit(Page, getForm, command).Result;
             return new TestBrowserFluentSubmitted<TPage, TFormResponse>(this, formResponse);
         }
     }
-
 
     public class TestBrowserFluentSubmitted<TPage, TPostResponse>
     {
@@ -92,14 +112,19 @@ namespace CocoriCore.LeBonCoin
             if (browserFluent.browser is TestBrowser)
             {
                 var message = getMessage(postResponse);
-                this.browserFluent.history.Event(this.browserFluent.Id, HistoryEventType.FormRedirect, message);
+                browserFluent.logs.Log(new LogSubmitRedirect()
+                {
+                    Id = this.browserFluent.Id,
+                    PageQuery = (IPageQuery)message
+                });
+
                 var page = browserFluent.browser.SubmitRedirect(message).Result;
-                return new BrowserFluent<T>(this.browserFluent.history, this.browserFluent.browser).SetPageAndId(page, this.browserFluent.Id);
+                return new BrowserFluent<T>(this.browserFluent.logs, this.browserFluent.browser).SetPageAndId(page, this.browserFluent.Id);
             }
             else
             {
                 var page = browserFluent.browser.SubmitRedirect((IMessage<T>)null).Result;
-                return new BrowserFluent<T>(this.browserFluent.history, this.browserFluent.browser).SetPageAndId(page, this.browserFluent.Id);
+                return new BrowserFluent<T>(this.browserFluent.logs, this.browserFluent.browser).SetPageAndId(page, this.browserFluent.Id);
             }
         }
     }

@@ -3,7 +3,7 @@ using CocoriCore;
 
 namespace CocoriCore.LeBonCoin
 {
-    public class Users_Inscription_Page_GET : IPage<Users_Inscription_Page>, IQuery
+    public class Users_Inscription_Page_GET : IPageQuery<Users_Inscription_Page>, IQuery
     {
     }
 

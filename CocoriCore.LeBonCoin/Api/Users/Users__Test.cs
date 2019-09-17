@@ -11,7 +11,7 @@ namespace CocoriCore.LeBonCoin
         [Fact]
         public void InscriptionConnexion()
         {
-            var user = CreateUser("vendeur");
+            var user = CreateBrowser("vendeur");
 
             var dashboard =
             user.Follow(p => p.Inscription)
@@ -47,7 +47,7 @@ namespace CocoriCore.LeBonCoin
         [Fact]
         public void ImpossibleDeSeConnecter()
         {
-            var vendeur1 = CreateUser("vendeur1");
+            var vendeur1 = CreateBrowser("vendeur1");
 
             var dashboard =
             vendeur1.Display(new Users_Inscription_Page_GET())
@@ -61,7 +61,7 @@ namespace CocoriCore.LeBonCoin
                             m.Prenom = "Brice";
                         });
 
-            var vendeur2 = CreateUser("vendeur2");
+            var vendeur2 = CreateBrowser("vendeur2");
             var connexion = vendeur2.Follow(p => p.Connexion);
 
             Action a = () => connexion
@@ -83,8 +83,6 @@ namespace CocoriCore.LeBonCoin
                         });
 
             b.Should().Throw<Exception>();
-
-            Console.WriteLine(GetHistory().Summary());
         }
 
         [Fact]
@@ -92,10 +90,10 @@ namespace CocoriCore.LeBonCoin
         {
 
             var user = CreateUser("vendeur");
-            var emailReader = GetEmailReader();
 
             var confirmation =
-            user.Display(new Users_Inscription_Page_GET())
+            user.Display(new Accueil_Page_GET())
+                .Follow(p => p.Inscription)
                 .Submit(p => p.SInscrire,
                         m =>
                         {
@@ -109,22 +107,19 @@ namespace CocoriCore.LeBonCoin
                 .Follow(p => p.MenuVendeur.Deconnexion)
                 .Follow(p => p.Connexion)
                 .Follow(p => p.MotDePasseOublie)
-                .Submit(p => p.EnvoyerEmail,
+                .Submit(p => p.RecevoirEmail,
                         m => m.Email = "aa@aa.aa")
                 .ThenFollow(r => r)
                 .Page;
 
             confirmation.Should().NotBeNull();
 
-            var emails = await emailReader.Read<EmailMotDePasseOublie>("aa@aa.aa");
-            emails.Should().HaveCount(1);
-            var lien = emails[0].Body.Lien;
-
-            var dashboard = user.Display(lien)
-                .Submit(p => p.ConfirmerNouveauMotDePasse,
+            var emailMessage = await user.ReadEmail<EmailMotDePasseOublie>("aa@aa.aa");
+            var dashboard = emailMessage.Follow(body => body.Lien)
+                .Submit(p => p.ChangerMotDePasse,
                         m =>
                         {
-                            m.Token = lien.Token;
+                            m.Token = emailMessage.MailMessage.Body.Lien.Token;
                             m.MotDePasse = "nouveauPassw0rd";
                             m.Confirmation = "nouveauPassw0rd";
                         })
@@ -138,8 +133,6 @@ namespace CocoriCore.LeBonCoin
                 .ThenFollow(r => r.PageDashboard);
 
             dashboard.Page.Should().NotBeNull();
-
-            Console.WriteLine(GetHistory().Summary());
         }
     }
 }

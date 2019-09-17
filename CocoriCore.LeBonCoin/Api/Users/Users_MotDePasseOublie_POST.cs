@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using CocoriCore;
+using CocoriCore.Page;
 
 namespace CocoriCore.LeBonCoin
 {

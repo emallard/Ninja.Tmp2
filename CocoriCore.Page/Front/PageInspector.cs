@@ -27,7 +27,7 @@ namespace CocoriCore.Page
         public IEnumerable<Type> GetPageTypes()
         {
             return routerOptions.AllRoutes
-                    .Where(r => r.MessageType.IsAssignableTo(typeof(IPage)))
+                    .Where(r => r.MessageType.IsAssignableTo(typeof(IPageQuery)))
                     .Select(r => r.MessageType)
                     .ToList();
         }
@@ -66,7 +66,7 @@ namespace CocoriCore.Page
         }
         public FrontTypeInfo GetTypeInfo(Type type)
         {
-            var isPage = type.IsAssignableTo(typeof(IPage));
+            var isPage = type.IsAssignableTo(typeof(IPageQuery));
             return new FrontTypeInfo()
             {
                 Name = type.Name,
@@ -86,7 +86,7 @@ namespace CocoriCore.Page
 
         public Type GetPageResponseType(Type pageType)
         {
-            return pageType.GetGenericArguments(typeof(IPage<>))[0];
+            return pageType.GetGenericArguments(typeof(IPageQuery<>))[0];
         }
 
         public FieldInfo[] GetFields(Type type)
@@ -94,7 +94,7 @@ namespace CocoriCore.Page
             var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public);
 
             return fields
-                .Where(f => !f.GetMemberType().IsAssignableTo(typeof(IPage))
+                .Where(f => !f.GetMemberType().IsAssignableTo(typeof(IPageQuery))
                         && !f.GetMemberType().IsAssignableTo(typeof(Call))
                         )
                 .ToArray();
@@ -105,7 +105,7 @@ namespace CocoriCore.Page
             var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public);
 
             return fields
-                .Where(f => f.GetMemberType().IsAssignableTo(typeof(IPage)))
+                .Where(f => f.GetMemberType().IsAssignableTo(typeof(IPageQuery)))
                 .Select(l => new LinkMemberInfo() { Name = l.Name })
                 .ToArray();
         }

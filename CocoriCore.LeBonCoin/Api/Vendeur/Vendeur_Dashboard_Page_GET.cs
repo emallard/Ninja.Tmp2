@@ -4,7 +4,7 @@ using CocoriCore;
 
 namespace CocoriCore.LeBonCoin
 {
-    public class Vendeur_Dashboard_Page_GET : IPage<Vendeur_Dashboard_Page>
+    public class Vendeur_Dashboard_Page_GET : IPageQuery<Vendeur_Dashboard_Page>
     {
     }
 

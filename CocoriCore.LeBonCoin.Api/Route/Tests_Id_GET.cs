@@ -4,19 +4,14 @@ using CocoriCore.Router;
 
 namespace CocoriCore.LeBonCoin.Api
 {
-    public class Tests_Id_GET : IMessage<Tests_Id_Response>
+    public class Tests_Id_GET : IMessage<object[]>
     {
         public string Type;
         public string TestName;
     }
 
 
-    public class Tests_Id_Response
-    {
-        public HistoryEvent[] Events;
-    }
-
-    public class Tests_Id_Handler : MessageHandler<Tests_Id_GET, Tests_Id_Response>
+    public class Tests_Id_Handler : MessageHandler<Tests_Id_GET, object[]>
     {
         private readonly RouterOptions routerOptions;
 
@@ -25,7 +20,7 @@ namespace CocoriCore.LeBonCoin.Api
             this.routerOptions = routerOptions;
         }
 
-        public override async Task<Tests_Id_Response> ExecuteAsync(Tests_Id_GET message)
+        public override async Task<object[]> ExecuteAsync(Tests_Id_GET message)
         {
             await Task.CompletedTask;
 
@@ -43,8 +38,8 @@ namespace CocoriCore.LeBonCoin.Api
                 }
             });
 
-            var events = testInstance.GetHistory().Events.ToArray();
-            return new Tests_Id_Response() { Events = events };
+            var logs = testInstance.GetLogs();
+            return logs;
         }
     }
 }

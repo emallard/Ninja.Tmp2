@@ -3,7 +3,7 @@ using CocoriCore;
 
 namespace CocoriCore.LeBonCoin
 {
-    public class Accueil_Page_GET : IPage<Accueil_Page>
+    public class Accueil_Page_GET : IPageQuery<Accueil_Page>
     {
     }
 

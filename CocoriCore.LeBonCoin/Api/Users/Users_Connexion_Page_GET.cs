@@ -6,7 +6,7 @@ using CocoriCore;
 namespace CocoriCore.LeBonCoin
 {
 
-    public class Users_Connexion_Page_GET : IPage<Users_Connexion_Page>, IQuery
+    public class Users_Connexion_Page_GET : IPageQuery<Users_Connexion_Page>, IQuery
     {
 
     }
