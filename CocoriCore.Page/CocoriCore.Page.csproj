@@ -11,6 +11,7 @@
 </ItemGroup>
 <ItemGroup>
     <ProjectReference Include="..\CocoriCore\backend\CocoriCore\CocoriCore.csproj" />
+    <ProjectReference Include="..\CocoriCore\backend\CocoriCore.TestUtils\CocoriCore.TestUtils.csproj" />
     <ProjectReference Include="..\CocoriCore\backend\CocoriCore.Router\CocoriCore.Router.csproj" />
   </ItemGroup>
 

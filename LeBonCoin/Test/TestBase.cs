@@ -20,6 +20,7 @@ namespace LeBonCoin
             kernel.Load(new ContextPreservationModule());
             kernel.Load(new CocoricoreNinjectModule());
             kernel.Bind<IHashService>().To<HashService>().InSingletonScope();
+            kernel.Bind<IClock, SettableClock>().To<SettableClock>().InSingletonScope();
 
             // Repository
             kernel.Bind<IUIDProvider>().To<UIDProvider>().InSingletonScope();
@@ -68,6 +69,7 @@ namespace LeBonCoin
         {
             return kernel.Get<TestLogger>().Logs.ToArray();
         }
+
         /*
         public void Dispose()
         {

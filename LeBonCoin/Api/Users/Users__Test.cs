@@ -91,31 +91,22 @@ namespace LeBonCoin
 
             var user = CreateUser("vendeur");
 
-            var confirmation =
             user.Display(new Accueil_Page_GET())
-                .Follow(p => p.Inscription)
-                .Submit(p => p.SInscrire,
-                        m =>
-                        {
-                            m.Email = "aa@aa.aa";
-                            m.Password = "azerty";
-                            m.PasswordConfirmation = "azerty";
-                            m.Nom = "Dupont";
-                            m.Prenom = "Jean";
-                        })
-                .ThenFollow(r => r.PageDashboard)
+                .Play(new EnTantQueVendeur() { Email = "aa@aa.aa" })
                 .Follow(p => p.MenuVendeur.Deconnexion)
                 .Follow(p => p.Connexion)
                 .Follow(p => p.MotDePasseOublie)
                 .Submit(p => p.RecevoirEmail,
                         m => m.Email = "aa@aa.aa")
-                .ThenFollow(r => r)
-                .Page;
+                .ThenFollow(r => r);
 
-            confirmation.Should().NotBeNull();
 
             var emailMessage = await user.ReadEmail<EmailMotDePasseOublie>("aa@aa.aa");
-            var dashboard = emailMessage.Follow(body => body.Lien)
+            var saisieNouveauMotDePasse = emailMessage.Follow(body => body.Lien);
+            saisieNouveauMotDePasse.Page.TokenDejaUtilise.Should().Be(false);
+            saisieNouveauMotDePasse.Page.TokenExpire.Should().Be(false);
+
+            var dashboard = saisieNouveauMotDePasse
                 .Submit(p => p.ChangerMotDePasse,
                         m =>
                         {
@@ -133,6 +124,40 @@ namespace LeBonCoin
                 .ThenFollow(r => r.PageDashboard);
 
             dashboard.Page.Should().NotBeNull();
+
+
+            user.Comment("Reouverture de l'Email");
+            saisieNouveauMotDePasse = emailMessage.Follow(body => body.Lien);
+            saisieNouveauMotDePasse.Page.TokenDejaUtilise.Should().Be(true);
+            saisieNouveauMotDePasse.Page.TokenExpire.Should().Be(false);
+        }
+
+        [Fact]
+        public async Task MotDePasseOublieTokenExpire()
+        {
+
+            var user = CreateUser("vendeur");
+
+            var confirmation =
+            user.Display(new Accueil_Page_GET())
+                .Play(new EnTantQueVendeur() { Email = "aa@aa.aa" })
+                .Follow(p => p.MenuVendeur.Deconnexion)
+                .Follow(p => p.Connexion)
+                .Follow(p => p.MotDePasseOublie)
+                .Submit(p => p.RecevoirEmail,
+                        m => m.Email = "aa@aa.aa")
+                .ThenFollow(r => r);
+
+            user.Wait(new TimeSpan(2, 0, 0));
+
+            var saisieNouveauMotDePasse =
+            (await user.ReadEmail<EmailMotDePasseOublie>("aa@aa.aa"))
+                       .Follow(body => body.Lien)
+                       .Page;
+
+
+            saisieNouveauMotDePasse.TokenDejaUtilise.Should().Be(false);
+            saisieNouveauMotDePasse.TokenExpire.Should().Be(true);
         }
     }
 }

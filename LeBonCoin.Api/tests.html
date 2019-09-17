@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 
 <body>
@@ -36,7 +37,6 @@
 
             let txt = await response.text();
             _tests = JSON.parse(txt);
-            console.log(_tests);
 
             let html = formatTree(_tests);
             document.getElementById('content').innerHTML = html;
@@ -120,20 +120,23 @@
 
         function formatLog(log) {
             if (log.IsDisplay)
-                return '<br/>' + log.PageQuery.href.replace('api/', '');
+                return '<br/>' + log.PageQuery.href.replace('/api/', '/').replace('/api', '/');
             else if (log.IsFollow)
-                return log.PageQuery.href.replace('api/', '');
+                return log.PageQuery.href.replace('/api/', '/').replace('/api', '/');
             else if (log.IsSubmit)
                 return '<span style="margin-left:10px">[' + log.MemberName + ']</span>';
             else if (log.IsSubmitRedirect)
-                return log.PageQuery.href.replace('api/', '');
+                return log.PageQuery.href.replace('/api/', '/').replace('/api', '/');
             else if (log.IsScenarioStart)
-                return " ++ " + log.Name;
+                return "++ " + log.Name;
             else if (log.IsScenarioEnd)
-                return " ++ ";
-
+                return "++ ";
             else if (log.IsReadEmail)
-                return " [X] Email ";
+                return "<br/> [X] Email ";
+            else if (log.IsComment)
+                return `"${log.Comment}"`;
+            else if (log.IsWait)
+                return "Le temps passe : " + log.Duration;
             else
                 return "" + JSON.stringify(log);
         }

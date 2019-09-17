@@ -7,5 +7,7 @@ namespace LeBonCoin
     {
         public Guid Id { get; set; }
         public string Email { get; set; }
+        public bool Utilise { get; set; }
+        public DateTime DateExpiration { get; set; }
     }
 }

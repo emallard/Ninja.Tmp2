@@ -12,6 +12,8 @@ namespace LeBonCoin
 
     public class Users_SaisieNouveauMotDePasse_Token_Page
     {
+        public bool TokenExpire;
+        public bool TokenDejaUtilise;
         public Form<Users_SaisieNouveauMotDePasse_Token_POST, Users_Connexion_Page_GET> ChangerMotDePasse;
     }
 
@@ -28,12 +30,14 @@ namespace LeBonCoin
     public class Users_SaisieNouveauMotDePasse_Token_PAGEHandler : MessageHandler<Users_SaisieNouveauMotDePasse_Token_Page_GET, Users_SaisieNouveauMotDePasse_Token_Page>
     {
         private readonly IRepository repository;
-        private readonly IHashService hashService;
+        private readonly IClock clock;
 
-        public Users_SaisieNouveauMotDePasse_Token_PAGEHandler(IRepository repository, IHashService hashService)
+        public Users_SaisieNouveauMotDePasse_Token_PAGEHandler(
+            IRepository repository,
+            IClock clock)
         {
             this.repository = repository;
-            this.hashService = hashService;
+            this.clock = clock;
         }
 
         public async override Task<Users_SaisieNouveauMotDePasse_Token_Page> ExecuteAsync(Users_SaisieNouveauMotDePasse_Token_Page_GET message)
@@ -41,8 +45,11 @@ namespace LeBonCoin
             var token = await repository.LoadAsync<TokenMotDePasseOublie>(message.Token);
             if (token == null)
                 throw new Exception("token invalide");
+
             return new Users_SaisieNouveauMotDePasse_Token_Page()
             {
+                TokenDejaUtilise = token.Utilise,
+                TokenExpire = token.DateExpiration < clock.Now,
                 ChangerMotDePasse = new Form<Users_SaisieNouveauMotDePasse_Token_POST, Users_Connexion_Page_GET>()
             };
         }

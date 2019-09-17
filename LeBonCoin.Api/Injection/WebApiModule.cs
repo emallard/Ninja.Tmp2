@@ -17,6 +17,7 @@ namespace LeBonCoin.Api
         public override void Load()
         {
             this.Bind<IHashService>().To<HashService>().InSingletonScope();
+            this.Bind<IClock>().To<Clock>().InSingletonScope();
 
             // Repository
             this.Bind<IUIDProvider>().To<UIDProvider>().InSingletonScope();

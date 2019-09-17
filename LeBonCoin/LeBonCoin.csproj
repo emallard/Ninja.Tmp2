@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CocoriCore\backend\CocoriCore\CocoriCore.csproj" />
+    <ProjectReference Include="..\CocoriCore\backend\CocoriCore.TestUtils\CocoriCore.TestUtils.csproj" />
     <ProjectReference Include="..\CocoriCore\backend\CocoriCore.Ninject\CocoriCore.Ninject.csproj" />
     <ProjectReference Include="..\CocoriCore.Page\CocoriCore.Page.csproj" />
   </ItemGroup>
