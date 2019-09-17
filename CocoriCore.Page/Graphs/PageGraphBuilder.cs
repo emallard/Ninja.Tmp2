@@ -113,9 +113,9 @@ namespace CocoriCore.Page
             {
                 if (memberType.Assembly == assembly)
                 {
-                    foreach (var responseFi in memberType.GetPropertiesAndFields())
+                    foreach (var fi in memberType.GetPropertiesAndFields())
                     {
-                        GetPageEdges(assembly, node, nodes, edges, memberName, responseFi.GetMemberType(), isForm);
+                        GetPageEdges(assembly, node, nodes, edges, isForm ? memberName : fi.Name, fi.GetMemberType(), isForm);
                     }
                 }
             }

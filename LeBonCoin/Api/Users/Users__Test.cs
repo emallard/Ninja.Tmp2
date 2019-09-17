@@ -9,7 +9,7 @@ namespace LeBonCoin
     public class Users__Test : TestBase
     {
         [Fact]
-        public void InscriptionConnexion()
+        public void InscriptionDeconnexionConnexion()
         {
             var user = CreateBrowser("vendeur");
 
@@ -29,6 +29,23 @@ namespace LeBonCoin
             var modele = dashboard.Page.Modele.Result;
             modele.Nom.Should().Be("DeNice");
             modele.Prenom.Should().Be("Brice");
+
+            dashboard = dashboard
+                .Submit(p => p.MenuVendeur.SeDeconnecter, m => { })
+                .ThenFollow(r => r.Accueil)
+                .Follow(p => p.Connexion)
+                .Submit(p => p.SeConnecter,
+                        m =>
+                        {
+                            m.Email = "aa@aa.aa";
+                            m.Password = "azerty";
+                        })
+                .ThenFollow(r => r.PageDashboard);
+
+            modele = dashboard.Page.Modele.Result;
+            modele.Nom.Should().Be("DeNice");
+            modele.Prenom.Should().Be("Brice");
+
             /*
 
             var accueil = await user.Click(dashboard.MenuUtilisateur.Deconnexion);
@@ -45,7 +62,7 @@ namespace LeBonCoin
         }
 
         [Fact]
-        public void ImpossibleDeSeConnecter()
+        public void ImpossibleDeSeConnecterMauvaisMotDePasse()
         {
             var vendeur1 = CreateBrowser("vendeur1");
 
@@ -93,7 +110,8 @@ namespace LeBonCoin
 
             user.Display(new Accueil_Page_GET())
                 .Play(new EnTantQueVendeur() { Email = "aa@aa.aa" })
-                .Follow(p => p.MenuVendeur.Deconnexion)
+                .Submit(p => p.MenuVendeur.SeDeconnecter, m => { })
+                .ThenFollow(r => r.Accueil)
                 .Follow(p => p.Connexion)
                 .Follow(p => p.MotDePasseOublie)
                 .Submit(p => p.RecevoirEmail,
@@ -141,7 +159,9 @@ namespace LeBonCoin
             var confirmation =
             user.Display(new Accueil_Page_GET())
                 .Play(new EnTantQueVendeur() { Email = "aa@aa.aa" })
-                .Follow(p => p.MenuVendeur.Deconnexion)
+                .Submit(p => p.MenuVendeur.SeDeconnecter,
+                        m => { })
+                .ThenFollow(r => r.Accueil)
                 .Follow(p => p.Connexion)
                 .Follow(p => p.MotDePasseOublie)
                 .Submit(p => p.RecevoirEmail,
